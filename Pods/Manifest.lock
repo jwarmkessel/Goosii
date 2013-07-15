@@ -1,0 +1,16 @@
+PODS:
+  - ECSlidingViewController (0.10.0)
+  - PunchScrollView (1.0.2)
+  - SBJson (3.2)
+
+DEPENDENCIES:
+  - ECSlidingViewController (~> 0.10.0)
+  - PunchScrollView (~> 1.0.2)
+  - SBJson (~> 3.2)
+
+SPEC CHECKSUMS:
+  ECSlidingViewController: fc9a9a6564d4a64c0d8c7cf5583d2b9a469ecd04
+  PunchScrollView: 5f4bedc1230bb29dd68c09cc3b8e57547cfb962a
+  SBJson: e60b4dc22448c2ae1e754b523a4ab53408e85c8d
+
+COCOAPODS: 0.20.2

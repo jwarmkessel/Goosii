@@ -7,14 +7,90 @@
 //
 
 #import "GIAppDelegate.h"
+#import "GIPlist.h"
 
 @implementation GIAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    
+    // Let the device know we want to receive push notifications
+	[[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+     (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+
     return YES;
 }
+
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
+	NSLog(@"My token is: %@", deviceToken);
+    
+    NSString* deviceTokenStr = [[[[deviceToken description]
+                                stringByReplacingOccurrencesOfString: @"<" withString: @""]
+                               stringByReplacingOccurrencesOfString: @">" withString: @""]
+                                stringByReplacingOccurrencesOfString: @" " withString: @""];
+
+    deviceTokenStr = [deviceTokenStr stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    // Override point for customization after application launch.
+    GIPlist *loginName = [[GIPlist alloc] initWithNamespace:@"Goosii"];
+    
+    if([loginName objectForKey:@"userId"]) {
+        NSString *uniqueId = [loginName objectForKey:@"userId"];
+        NSLog(@"The saved uniqueId %@", uniqueId);
+        
+        NSString *filterStr = [uniqueId stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+        
+        NSString *urlPost = [@"http://www.Goosii.com:3001/loginUser/" stringByAppendingString:filterStr];
+        urlPost = [urlPost stringByAppendingString:@"/"];
+        urlPost = [urlPost stringByAppendingString:deviceTokenStr];
+        
+        NSURL *url = [NSURL URLWithString:urlPost];
+        NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+        NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
+        
+        if(!connection) {
+            NSLog(@"connection failed");
+        }
+    } else {
+        NSUUID *uid = [UIDevice currentDevice].identifierForVendor;
+        
+        NSLog(@"IdentifierForVendor %@",[uid UUIDString]);
+        NSString *urlPost = [@"http://www.Goosii.com:3001/createUser/" stringByAppendingString:[uid UUIDString]];
+        
+        urlPost = [urlPost stringByAppendingString:@"/"];
+        urlPost = [urlPost stringByAppendingString:deviceTokenStr];
+                
+        NSURL *url = [NSURL URLWithString:urlPost];
+        NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+        [NSURLConnection sendAsynchronousRequest:urlRequest
+                                           queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                                   
+                                   // your data or an error will be ready here
+                                   NSString* newStr = [[NSString alloc] initWithData:data
+                                                                            encoding:NSUTF8StringEncoding];
+                                   
+                                   NSLog(@"ReceivedData %@", newStr);
+                                   newStr = [newStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+                                   [loginName setObject:newStr forKey:@"userId"];
+                               }];
+    }
+
+}
+
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+	NSLog(@"Failed to get token, error: %@", error);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    NSLog(@"alert msg - %@", [[userInfo objectForKey:@"aps"] objectForKey:@"alert"]);
+    NSLog(@"alert custom - %@", [[userInfo objectForKey:@"customParam"] objectForKey:@"foo"]);
+}
+
 							
 - (void)applicationWillResignActive:(UIApplication *)application
 {
