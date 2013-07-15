@@ -185,8 +185,17 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         cellTransparentView.layer.shadowOffset = CGSizeMake(.6f, .6f);
         cellTransparentView.layer.cornerRadius = 2;
         
-        //Progress bar elements for participation rate and the duration of the contest.
+        
         float progressBarThickness = 40.0f;
+        
+        UILabel *endDateLbl = [[UILabel alloc] initWithFrame:CGRectMake(10, progressBarThickness + 15, 320.0,15.0)];
+        endDateLbl.text = @"Winner Announced July 22, 2013";
+        [endDateLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0]];
+        endDateLbl.textColor = [UIColor whiteColor];
+        endDateLbl.backgroundColor = [UIColor clearColor];
+        
+        //Progress bar elements for participation rate and the duration of the contest.
+
         CGRect timeDurationBarRect = CGRectMake(0, 10, 0, progressBarThickness);
         
         //Set the color of the progress bars.
@@ -195,6 +204,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         //Add the child elements to the cell.
         [cell addSubview:cellTransparentView];
         [cell addSubview:self.timeDurationBar];
+        [cell addSubview:endDateLbl];
 
         //Animate the progress bars to juic-ify this app!
         [UIView animateWithDuration:1 animations:^{
@@ -216,6 +226,12 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         transparentEngCell.layer.shadowOffset = CGSizeMake(.6f, .6f);
         transparentEngCell.layer.cornerRadius = 2;
         
+        UILabel *participationLbl = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 320.0,15.0)];
+        participationLbl.text = @"Your Participation";
+        [participationLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0]];
+        participationLbl.textColor = [UIColor whiteColor];
+        participationLbl.backgroundColor = [UIColor clearColor];
+        
         //Progress bar elements for participation rate and the duration of the contest.
         float progressBarThickness = 40.0f;
         CGRect participationBarRect = CGRectMake(0, 20, 0, progressBarThickness);
@@ -223,6 +239,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         
         [cell addSubview:transparentEngCell];
         [cell addSubview:self.participationBar];
+        [cell addSubview:participationLbl];
         
         //Animate the progress bars to juic-ify this app!
         [UIView animateWithDuration:1 animations:^{
