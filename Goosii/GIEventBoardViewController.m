@@ -9,14 +9,25 @@
 #import "GIEventBoardViewController.h"
 #import "GIProgressBar.h"
 #import <QuartzCore/QuartzCore.h>
+#import <Social/Social.h>
 #import "GICountingLabel.h"
 
 @interface GIEventBoardViewController ()
+{
+    UITextView *sharingTextView;
+}
+@property (nonatomic, strong) UIView *loadingMask;
+@property (nonatomic, strong) UIView *enteredPopUpView;
+
 @property (nonatomic, strong) GIProgressBar *participationBar;
 @property (nonatomic, strong) GIProgressBar *timeDurationBar;
 
 @property (nonatomic, strong) UITableViewCell *moreInfoTblViewcell;
 @property (nonatomic, strong) UITableViewCell *currentSelectedCell;
+
+@property (nonatomic, strong) UIButton *participationBtn;
+
+
 @end
 
 @implementation GIEventBoardViewController
@@ -48,6 +59,11 @@
     [self.tableView setDelegate:self];
 
     [self.tableView setBackgroundView:imgView];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:YES];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -153,7 +169,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         GICountingLabel *totalParticipantsLbl = [[GICountingLabel alloc] initWithFrame:CGRectMake((cell.frame.size.width/2 - 75.0), 0, 150, 100)];
         totalParticipantsLbl.format = @"%d";
         totalParticipantsLbl.method = UILabelCountingMethodLinear;
-        [totalParticipantsLbl countFrom:0 to:100 withDuration:3.0f];
+        [totalParticipantsLbl countFrom:50 to:100 withDuration:3.0f];
         [totalParticipantsLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:60.0]];
         totalParticipantsLbl.textColor = [UIColor whiteColor];
         totalParticipantsLbl.backgroundColor = [UIColor clearColor];
@@ -188,15 +204,15 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         
         float progressBarThickness = 40.0f;
         
-        UILabel *endDateLbl = [[UILabel alloc] initWithFrame:CGRectMake(10, progressBarThickness + 15, 320.0,15.0)];
+        UILabel *endDateLbl = [[UILabel alloc] initWithFrame:CGRectMake(10, 5.0f, 320.0,15.0)];
         endDateLbl.text = @"Winner Announced July 22, 2013";
-        [endDateLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0]];
+        [endDateLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:13.0]];
         endDateLbl.textColor = [UIColor whiteColor];
         endDateLbl.backgroundColor = [UIColor clearColor];
         
         //Progress bar elements for participation rate and the duration of the contest.
 
-        CGRect timeDurationBarRect = CGRectMake(0, 10, 0, progressBarThickness);
+        CGRect timeDurationBarRect = CGRectMake(0.0f, 20.0f, 20.0f, progressBarThickness);
         
         //Set the color of the progress bars.
         self.timeDurationBar = [[GIProgressBar alloc] initWithFrame:timeDurationBarRect hexStringColor:@"3EFF29"];
@@ -209,7 +225,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         //Animate the progress bars to juic-ify this app!
         [UIView animateWithDuration:1 animations:^{
         
-            self.timeDurationBar.frame = CGRectMake(0, 10, 50, progressBarThickness);
+            self.timeDurationBar.frame = CGRectMake(0, 20, 50, progressBarThickness);
             
         } completion:^(BOOL finished) {
             NSLog(@"done");
@@ -226,20 +242,29 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         transparentEngCell.layer.shadowOffset = CGSizeMake(.6f, .6f);
         transparentEngCell.layer.cornerRadius = 2;
         
-        UILabel *participationLbl = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 320.0,15.0)];
+        UILabel *participationLbl = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 5.0f, 320.0f,15.0f)];
         participationLbl.text = @"Your Participation";
-        [participationLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0]];
+        [participationLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:13.0f]];
         participationLbl.textColor = [UIColor whiteColor];
         participationLbl.backgroundColor = [UIColor clearColor];
         
         //Progress bar elements for participation rate and the duration of the contest.
         float progressBarThickness = 40.0f;
-        CGRect participationBarRect = CGRectMake(0, 20, 0, progressBarThickness);
-        self.participationBar = [[GIProgressBar alloc] initWithFrame:participationBarRect hexStringColor:@"ffffff"];
+        CGRect participationBarRect = CGRectMake(0.0f, 20.0f, 0.0f, progressBarThickness);
+        self.participationBar = [[GIProgressBar alloc] initWithFrame:participationBarRect hexStringColor:@"3EFF29"];
+        
+        self.participationBtn = [[UIButton alloc] initWithFrame:CGRectMake(cell.layer.frame.size.width/2 - (200/2), self.participationBar.layer.frame.origin.y + progressBarThickness + 15.0f, 200.0f, 50.0f)];
+        [self.participationBtn setTitle:@"Post To Facebook" forState:UIControlStateNormal];
+        [self.participationBtn setBackgroundColor:[self colorWithHexString:@"3B5998"]];
+        
+        [self.participationBtn addTarget:self
+                   action:@selector(participationBtnHandler)
+         forControlEvents:UIControlEventTouchDown];
         
         [cell addSubview:transparentEngCell];
         [cell addSubview:self.participationBar];
         [cell addSubview:participationLbl];
+        [cell addSubview:self.participationBtn];
         
         //Animate the progress bars to juic-ify this app!
         [UIView animateWithDuration:1 animations:^{
@@ -248,8 +273,130 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
             
         } completion:^(BOOL finished) {
             NSLog(@"done");
+            
+//            //disable touch gestures while loading mask is in place
+//            [self.tableView setUserInteractionEnabled:NO];
+//            
+//            //Create and add a loading mask behind the pop up view.
+//            self.loadingMask = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+//            [self.loadingMask setBackgroundColor:[UIColor blackColor]];
+//            [self.loadingMask setAlpha:0.5];
+//            
+//            //Add a pop up view to indicate to the user that an event has been entered into.
+//            float width = 240.0f;
+//            float height = 240.0f;
+//            
+//            CGRect popUpRect = CGRectMake(320/2-120, 100.0f, width, height);
+//            self.enteredPopUpView = [[UIView alloc] initWithFrame:popUpRect];
+//            [self.enteredPopUpView setBackgroundColor:[self colorWithHexString:@"994747"]];
+//            self.enteredPopUpView.layer.shadowColor = [UIColor blackColor].CGColor;
+//            self.enteredPopUpView.layer.shadowOpacity = 0.5;
+//            self.enteredPopUpView.layer.shadowRadius = 3;
+//            self.enteredPopUpView.layer.shadowOffset = CGSizeMake(.6f, .6f);
+//            self.enteredPopUpView.layer.cornerRadius = 4;
+//            
+//            CGRect textViewRect = CGRectMake(5.0f, 5.0f, 230.0f, 200.0f);
+//            UITextView *textView = [[UITextView alloc] initWithFrame:textViewRect];
+//            textView.text = @"You're Entered Into the Event.";
+//            textView.textAlignment = UITextAlignmentLeft;
+//            [textView setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0]];
+//            [textView setBackgroundColor:[self colorWithHexString:@"EBDCDC"]];
+//            
+//            [self.enteredPopUpView addSubview:textView];
+//            
+//            [self.view addSubview:self.loadingMask];
+//            [self.view addSubview:self.enteredPopUpView];
+//            
+//            CABasicAnimation *theAnimation;
+//            
+//            theAnimation=[CABasicAnimation animationWithKeyPath:@"opacity"];
+//            theAnimation.duration=0.2;
+//            theAnimation.repeatCount=2;
+//            theAnimation.autoreverses=YES;
+//            theAnimation.fromValue=[NSNumber numberWithFloat:1.0];
+//            theAnimation.toValue=[NSNumber numberWithFloat:0.0];
+//            [self.enteredPopUpView.layer addAnimation:theAnimation forKey:@"animateOpacity"];
         }];
     }
+}
+
+- (void)participationBtnHandler {
+    NSLog(@"participation btn clicked");
+    
+    //This is the string that will get posted to the facebook wall.
+    //http://goosii.com:3001/addFacebookPost/theString/theUserId
+    //PList *plist = [[PList alloc] initWithNamespace:@"Goosii"];
+//    NSString *userId = [plist objectForKey:@"userId"];
+//    NSString *companyId = [plist objectForKey:@"companyId"];
+//    
+//    NSString * wallText = @"I'm hanging at the HotSpot Cafe!";
+//    wallText = [wallText stringByAppendingString:@". http://yourcompanyname.Goosii.com/"];
+//    NSString *post = [self encodeToPercentEscapeString:wallText];
+//    
+//    NSString *urlPost = [@"http://50.57.225.202:3001/enterSweepstake/" stringByAppendingString:post];
+//    
+//    userId = [NSString stringWithFormat:@"/%@",userId];
+//    urlPost = [urlPost stringByAppendingString:userId];
+//    companyId = [NSString stringWithFormat:@"/%@",companyId];
+//    urlPost = [urlPost stringByAppendingString:companyId];
+//    
+//    NSLog(@"The facebook urlpost %@", urlPost);
+    
+    if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
+    {
+        SLComposeViewController *sharingComposer = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+        
+        SLComposeViewControllerCompletionHandler __block completionHandler=^(SLComposeViewControllerResult result){
+            if (result == SLComposeViewControllerResultCancelled) {
+                
+                NSLog(@"Cancelled");
+                
+            } else {
+                NSLog(@"Posting to facebook.");
+                
+                NSLog(@"The result %d", result);
+//                
+//                NSURL *url = [NSURL URLWithString:urlPost];
+//                NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+//                NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
+//                
+//                if(!connection) {
+//                    NSLog(@"connection failed");
+//                }
+//                
+//                [self performSegueWithIdentifier:@"sweepstakesDisplaySegue" sender:self];
+            }
+            
+            [sharingComposer dismissViewControllerAnimated:YES completion:nil];
+        };
+        [sharingComposer setCompletionHandler:completionHandler];
+        [sharingComposer setInitialText:[NSString stringWithFormat:@"%@ %@",[self editableText],[self permanentText]]];
+        
+        [self presentViewController:sharingComposer animated:YES completion:^{
+            for (UIView *viewLayer1 in [[sharingComposer view] subviews]) {
+                for (UIView *viewLayer2 in [viewLayer1 subviews]) {
+                    if ([viewLayer2 isKindOfClass:[UIView class]]) {
+                        for (UIView *viewLayer3 in [viewLayer2 subviews]) {
+                            if ([viewLayer3 isKindOfClass:[UITextView class]]) {
+                                [(UITextView *)viewLayer3 setDelegate:self];
+                                sharingTextView = (UITextView *)viewLayer3;
+                            }
+                        }
+                    }
+                }
+            }
+        }];
+    }
+}
+
+- (NSString *)editableText
+{
+    return @"I'm hanging at the Hot Spot Cafe!"; //This is the text the user will be able to edit
+}
+
+- (NSString *)permanentText
+{
+    return @"http://yourcompanyname.Goosii.com/"; //The user will not be able to modify this text.
 }
 
 #pragma mark - Table view data source
@@ -304,32 +451,32 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
-    if(indexPath.row == 2) {
-        [self moreInfoCellHandler];
-        NSIndexPath *path = [NSIndexPath indexPathForRow:1 inSection:0];
-        self.currentSelectedCell = [self.tableView cellForRowAtIndexPath:path];
-        
-        // This is where magic happens...
-        [self.tableView beginUpdates];
-        [self.tableView endUpdates];
-    }
+//    if(indexPath.row == 2) {
+//        [self moreInfoCellHandler];
+//        NSIndexPath *path = [NSIndexPath indexPathForRow:1 inSection:0];
+//        self.currentSelectedCell = [self.tableView cellForRowAtIndexPath:path];
+//        
+//        // This is where magic happens...
+//        [self.tableView beginUpdates];
+//        [self.tableView endUpdates];
+//    }
 }
 
-- (void)moreInfoCellHandler {
-    NSLog(@"more info button clicked");
-    NSInteger animatedCellIndex = 1;
-    NSMutableArray *indexPathsArray = [[NSMutableArray alloc] init];
-    NSNumber *number = [NSNumber numberWithInt:animatedCellIndex];
-    [indexPathsArray addObject:number];
-    
-    [self.tableView reloadRowsAtIndexPaths:indexPathsArray withRowAnimation:UITableViewRowAnimationFade];
-    [UIView animateWithDuration:0.3 animations:^{
-        self.currentSelectedCell.frame = CGRectMake(0.0, 0.0, self.currentSelectedCell.layer.frame.size.width, 400.0f);
-
-    } completion:^(BOOL finished) {
-        NSLog(@"Expansion complete");
-    }];
-}
+//- (void)moreInfoCellHandler {
+//    NSLog(@"more info button clicked");
+//    NSInteger animatedCellIndex = 1;
+//    NSMutableArray *indexPathsArray = [[NSMutableArray alloc] init];
+//    NSNumber *number = [NSNumber numberWithInt:animatedCellIndex];
+//    [indexPathsArray addObject:number];
+//    
+//    [self.tableView reloadRowsAtIndexPaths:indexPathsArray withRowAnimation:UITableViewRowAnimationFade];
+//    [UIView animateWithDuration:0.3 animations:^{
+//        self.currentSelectedCell.frame = CGRectMake(0.0, 0.0, self.currentSelectedCell.layer.frame.size.width, 400.0f);
+//
+//    } completion:^(BOOL finished) {
+//        NSLog(@"Expansion complete");
+//    }];
+//}
 
 -(UIColor*)colorWithHexString:(NSString*)hex
 {

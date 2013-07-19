@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GIMainViewController : UITableViewController
+@interface GIMainViewController : UITableViewController <UIScrollViewDelegate> {
+    IBOutlet UIScrollView *scrollView1;	// holds five small images to scroll horizontally
+    IBOutlet UIPageControl *pageControl;    
+}
 
+@property (nonatomic, retain) UIView *scrollView1;
+@property (nonatomic, retain) UIPageControl *pageControl;
 @end
