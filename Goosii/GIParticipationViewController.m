@@ -9,6 +9,8 @@
 #import "GIParticipationViewController.h"
 #import <ECSlidingViewController.h>
 #import "GIMenuViewController.h"
+#import <SBJson.h>
+#import "GICompany.h"
 
 @interface GIParticipationViewController ()
 @property (strong, nonatomic) NSArray *sweepstakesAry;
@@ -66,18 +68,49 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)makeContestRequest {
+    NSString *urlString = @"http://www.goosii.com:3001/nearbyCompanies";
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+    
+    [NSURLConnection sendAsynchronousRequest:urlRequest
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                               
+                               // your data or an error will be ready here
+                               NSString* newStr = [[NSString alloc] initWithData:data
+                                                                        encoding:NSUTF8StringEncoding];
+                               
+                               NSLog(@"ReceivedData %@", newStr);
+                               
+                               SBJsonParser *parser = [[SBJsonParser alloc] init];
+                               
+                               NSArray *jsonObject = [parser objectWithString:newStr];
+                               
+                               for (id company in jsonObject) {
+                                   NSDictionary *company = [jsonObject objectAtIndex:0];
+                                   
+                                   NSString *latitudeStr = [company objectForKey:@"latitude"];
+                                   NSString *longitudeStr = [company objectForKey:@"longitude"];
+                                   
+                                   GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"]];
+                                   
+                               }
+                               [self.tableView reloadData];
+                               //[self.loadingMask removeFromSuperview];
+                               
+                           }];
+}
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
     return 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
     return 0;
 }

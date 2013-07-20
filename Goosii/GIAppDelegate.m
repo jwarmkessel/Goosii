@@ -96,9 +96,9 @@
         
         NSString *urlPost = [@"http://www.Goosii.com:3001/loginUser/" stringByAppendingString:filterStr];
         
-        if([loginName objectForKey:@"userId"]) {
+        if([loginName objectForKey:@"userDevicePushToken"]) {
             urlPost = [urlPost stringByAppendingString:@"/"];
-            urlPost = [urlPost stringByAppendingString:[loginName objectForKey:@"userId"]];
+            urlPost = [urlPost stringByAppendingString:[loginName objectForKey:@"userDevicePushToken"]];
         } else {
             urlPost = [urlPost stringByAppendingString:@"/"];
             urlPost = [urlPost stringByAppendingString:@"empty"];
