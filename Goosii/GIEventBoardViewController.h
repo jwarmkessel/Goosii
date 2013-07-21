@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+@class GICompany;
 @interface GIEventBoardViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
-
+@property (nonatomic, strong) GICompany * company;
 @end

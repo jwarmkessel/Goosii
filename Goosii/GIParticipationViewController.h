@@ -10,5 +10,4 @@
 
 @interface GIParticipationViewController : UITableViewController <UITableViewDataSource>
 
-@property (nonatomic, strong) NSMutableArray *eventsList;
 @end

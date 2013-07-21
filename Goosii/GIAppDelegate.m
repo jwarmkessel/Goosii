@@ -86,19 +86,19 @@
 {
 	NSLog(@"Failed to get token, error: %@", error);
     
-    GIPlist *loginName = [[GIPlist alloc] initWithNamespace:@"Goosii"];
+    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
     
-    if([loginName objectForKey:@"userId"]) {
-        NSString *uniqueId = [loginName objectForKey:@"userId"];
+    if([plist objectForKey:@"userId"]) {
+        NSString *uniqueId = [plist objectForKey:@"userId"];
         NSLog(@"The saved uniqueId %@", uniqueId);
         
         NSString *filterStr = [uniqueId stringByReplacingOccurrencesOfString:@"\"" withString:@""];
         
         NSString *urlPost = [@"http://www.Goosii.com:3001/loginUser/" stringByAppendingString:filterStr];
         
-        if([loginName objectForKey:@"userDevicePushToken"]) {
+        if([plist objectForKey:@"userDevicePushToken"]) {
             urlPost = [urlPost stringByAppendingString:@"/"];
-            urlPost = [urlPost stringByAppendingString:[loginName objectForKey:@"userDevicePushToken"]];
+            urlPost = [urlPost stringByAppendingString:[plist objectForKey:@"userDevicePushToken"]];
         } else {
             urlPost = [urlPost stringByAppendingString:@"/"];
             urlPost = [urlPost stringByAppendingString:@"empty"];
@@ -132,7 +132,7 @@
                                    
                                    NSLog(@"ReceivedData %@", newStr);
                                    newStr = [newStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
-                                   [loginName setObject:newStr forKey:@"userId"];
+                                   [plist setObject:newStr forKey:@"userId"];
                                }];
     }
 

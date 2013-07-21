@@ -18,5 +18,6 @@
 @property (strong, nonatomic) NSString *telephone;
 
 -(id) initWithName:(NSString*)companyName companyId:(NSString*)companyId address:(NSString*)address telephone:(NSString*)telephone;
+
 -(id) initWithName:(NSString*)companyName companyId:(NSString*)companyId address:(NSString*)address telephone:(NSString*)telephone longitude:(NSString*)longitude latitude:(NSString *)latitude;
 @end

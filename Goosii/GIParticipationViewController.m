@@ -11,13 +11,18 @@
 #import "GIMenuViewController.h"
 #import <SBJson.h>
 #import "GICompany.h"
+#import "GIPlist.h"
 
 @interface GIParticipationViewController ()
-@property (strong, nonatomic) NSArray *sweepstakesAry;
+
+@property (nonatomic, strong) NSMutableArray *eventsList;
+
+- (void)makeContestRequest;
+
 @end
 
 @implementation GIParticipationViewController
-@synthesize sweepstakesAry;
+@synthesize eventsList;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -47,7 +52,7 @@
     
     //    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     
-    self.sweepstakesAry = [NSArray arrayWithObjects:@"one", @"two", nil];
+    [self makeContestRequest];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -69,8 +74,13 @@
 }
 
 - (void)makeContestRequest {
-    NSString *urlString = @"http://www.goosii.com:3001/nearbyCompanies";
+    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
+    NSString *urlString = @"http://www.goosii.com:3001/getUserContests/";
+    urlString = [urlString stringByAppendingString:[plist objectForKey:@"userId"]];
+    
+    NSLog(@"getUserContests %@", urlString);
     NSURL *url = [NSURL URLWithString:urlString];
+    
     NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
     
     [NSURLConnection sendAsynchronousRequest:urlRequest
@@ -88,12 +98,12 @@
                                NSArray *jsonObject = [parser objectWithString:newStr];
                                
                                for (id company in jsonObject) {
-                                   NSDictionary *company = [jsonObject objectAtIndex:0];
+                                   //NSDictionary *company = [jsonObject objectAtIndex:0];
                                    
-                                   NSString *latitudeStr = [company objectForKey:@"latitude"];
-                                   NSString *longitudeStr = [company objectForKey:@"longitude"];
+                                   NSLog(@"Company name %@", [company objectForKey:@"name"]);
+
                                    
-                                   GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"]];
+                                   //GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"]];
                                    
                                }
                                [self.tableView reloadData];

@@ -31,6 +31,7 @@
 @end
 
 @implementation GIEventBoardViewController
+@synthesize company;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -62,8 +63,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:YES];
-    
+    [super viewWillAppear:YES];    
 }
 
 - (void)didReceiveMemoryWarning

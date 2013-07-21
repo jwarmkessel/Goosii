@@ -10,6 +10,8 @@
 #import <SBJson.h>
 #import "GICompany.h"
 #import "GIDashboardViewController.h"
+#import "GIEventBoardViewController.h"
+#import "GIPlist.h"
 
 #define METERS_PER_MILE 1609.344
 #define METERS_TO_MILE_CONVERSION 0.00062137
@@ -136,6 +138,28 @@
     //[self.navigationController pushViewController:detailViewController animated:YES];
     
     [self performSegueWithIdentifier:@"testTableViewSegue" sender:self];
+    
+    GICompany *curCompany = [self.nearbyLocationsAry objectAtIndex:indexPath.row];
+    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
+    
+    //Enter the user into the contest if they haven't already.
+    NSString *urlString = @"http://www.goosii.com:3001/enterContest";
+    urlString = [urlString stringByAppendingFormat:@"/%@", [plist objectForKey:@"userId"]];
+    urlString = [urlString stringByAppendingFormat:@"/%@", curCompany.companyId];
+
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+    
+    [NSURLConnection sendAsynchronousRequest:urlRequest
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                               
+                               // your data or an error will be ready here
+                               NSString* newStr = [[NSString alloc] initWithData:data
+                                                                        encoding:NSUTF8StringEncoding];
+                               NSLog(@"enterContests response: %@", newStr);
+                               
+                           }];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -148,7 +172,8 @@
         
         [vc setCompany:[self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row]];
     } else if([[segue identifier] isEqualToString:@"testTableViewSegue"]) {
-        
+        GIEventBoardViewController *vc = [segue destinationViewController];
+        vc.company = [self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row];
     }
 }
 
@@ -192,14 +217,12 @@
                                NSString* newStr = [[NSString alloc] initWithData:data
                                                                         encoding:NSUTF8StringEncoding];
                                
-                               NSLog(@"ReceivedData %@", newStr);
-                               
                                SBJsonParser *parser = [[SBJsonParser alloc] init];
                                
                                NSArray *jsonObject = [parser objectWithString:newStr];
                                
                                for (id company in jsonObject) {
-                                   NSDictionary *company = [jsonObject objectAtIndex:0];
+                                   //NSDictionary *company = [jsonObject objectAtIndex:0];
                                    
                                    NSString *latitudeStr = [company objectForKey:@"latitude"];
                                    NSString *longitudeStr = [company objectForKey:@"longitude"];
