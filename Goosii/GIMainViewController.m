@@ -117,8 +117,8 @@ BOOL pageControlUsed;
 	
 	[self layoutScrollImages];	// now place the photos in serial layout within the scrollview
     
-    [self.tableView addSubview:scrollView1];
-    [self.tableView addSubview:pageControl];
+    //[self.tableView addSubview:scrollView1];
+    //[self.tableView addSubview:pageControl];
 
 }
 
@@ -142,10 +142,10 @@ BOOL pageControlUsed;
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell
 forRowAtIndexPath:(NSIndexPath *)indexPath {
     UIImageView *animation = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    animation.image = [UIImage imageNamed:@"Intro_00080.png"];
+    animation.image = [UIImage imageNamed:@"Intro_00079.png"];
     [cell addSubview:animation];
     
-    
+    [self runLogoAnimation];
     
 //    cell.backgroundColor = [self colorWithHexString:@"C63D0F"];
 //    
