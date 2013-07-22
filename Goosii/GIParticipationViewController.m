@@ -15,14 +15,13 @@
 
 @interface GIParticipationViewController ()
 
-@property (nonatomic, strong) NSMutableArray *eventsList;
 
 - (void)makeContestRequest;
 
 @end
 
 @implementation GIParticipationViewController
-@synthesize eventsList;
+@synthesize eventList;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -52,6 +51,8 @@
     
     //    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     
+    //Initialize the dataSource
+    self.eventList = [[NSMutableArray alloc] init];
     [self makeContestRequest];
 }
 
@@ -103,9 +104,14 @@
                                    NSLog(@"Company name %@", [company objectForKey:@"name"]);
 
                                    
-                                   //GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"]];
+                                   GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"]];
+                                   
+                                   NSLog(@"About to add company object");
+                                   [self.eventList addObject:companyObj];
+                                   NSLog(@"Added company object");                                   
                                    
                                }
+                               
                                [self.tableView reloadData];
                                //[self.loadingMask removeFromSuperview];
                                
@@ -116,21 +122,26 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 0;
+    return [self.eventList count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    GICompany *company = [self.eventList objectAtIndex:indexPath.row];
     
-    // Configure the cell...
+    NSLog(@"cellForRowAtIndexPath %@", company.address);
+    cell.textLabel.text = company.name;
     
     return cell;
 }
@@ -187,4 +198,8 @@
      */
 }
 
+- (void)viewDidUnload {
+    [self setEventList:nil];
+    [super viewDidUnload];
+}
 @end
