@@ -12,9 +12,10 @@
 #import <SBJson.h>
 #import "GICompany.h"
 #import "GIPlist.h"
+#import "GIEventBoardViewController.h"
 
 @interface GIParticipationViewController ()
-
+@property (nonatomic, strong) GICompany *selCompany;
 
 - (void)makeContestRequest;
 
@@ -72,6 +73,14 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    if([[segue identifier] isEqualToString:@"tabViewControllerSegue"]) {
+//        GIEventBoardViewController *vc = [segue destinationViewController];
+//        vc.company = [self.eventList objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+    }
 }
 
 - (void)makeContestRequest {
@@ -196,6 +205,7 @@
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
+    [self performSegueWithIdentifier:@"tabViewControllerSegue" sender:self];
 }
 
 - (void)viewDidUnload {
