@@ -18,6 +18,7 @@
 @property (nonatomic, strong) GICompany *selCompany;
 
 - (void)makeContestRequest;
+- (BOOL)determineFulfillment: (NSString*)companyId;
 
 @end
 
@@ -80,6 +81,8 @@
     if([[segue identifier] isEqualToString:@"tabViewControllerSegue"]) {
 //        GIEventBoardViewController *vc = [segue destinationViewController];
 //        vc.company = [self.eventList objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+    } else if([[segue identifier] isEqualToString:@"fulfillmentViewSegue"]) {
+        
     }
 }
 
@@ -108,17 +111,8 @@
                                NSArray *jsonObject = [parser objectWithString:newStr];
                                
                                for (id company in jsonObject) {
-                                   //NSDictionary *company = [jsonObject objectAtIndex:0];
-                                   
-                                   NSLog(@"Company name %@", [company objectForKey:@"name"]);
-
-                                   
                                    GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"]];
-                                   
-                                   NSLog(@"About to add company object");
                                    [self.eventList addObject:companyObj];
-                                   NSLog(@"Added company object");                                   
-                                   
                                }
                                
                                [self.tableView reloadData];
@@ -126,6 +120,48 @@
                                
                            }];
 }
+
+- (BOOL)determineFulfillment: (NSString*)companyId {
+    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
+    NSString *urlString = @"http://www.goosii.com:3001/getUserFulfillments/";
+    urlString = [urlString stringByAppendingString:[plist objectForKey:@"userId"]];
+    urlString = [urlString stringByAppendingString:@"/"];
+    urlString = [urlString stringByAppendingString:companyId];
+    
+    NSLog(@"getUserContests %@", urlString);
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+
+    NSError *requestError;
+    NSURLResponse *urlResponse = nil;
+    NSData *response = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&urlResponse error:&requestError];
+    /* Return Value
+     The downloaded data for the URL request. Returns nil if a connection could not be created or if the download fails.
+     */
+    if (response == nil) {
+        NSLog(@"Response was nil");
+        if (requestError != nil) {
+            NSLog(@"huh");
+        }
+        
+        return NO;
+    }
+    else {
+        NSLog(@"ReceivedData %@", response);
+        
+        SBJsonParser *parser = [[SBJsonParser alloc] init];
+        
+//        NSArray *jsonObject = [parser objectWithString:response];
+//        
+//        for (id fulfillments in jsonObject) {
+//            NSLog(@"Company name %@", [fulfillments objectForKey:@"companyId"]);
+//        }
+        return YES;
+    }
+}
+
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -149,7 +185,6 @@
     }
     GICompany *company = [self.eventList objectAtIndex:indexPath.row];
     
-    NSLog(@"cellForRowAtIndexPath %@", company.address);
     cell.textLabel.text = company.name;
     
     return cell;
@@ -205,7 +240,19 @@
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
-    [self performSegueWithIdentifier:@"tabViewControllerSegue" sender:self];
+    
+    //Determine whether selected event has fulfillment requirements.
+    GICompany *company = [self.eventList objectAtIndex:indexPath.row];
+    NSLog(@"The company id to use %@", company.companyId);
+    
+    BOOL fulfillment = [self determineFulfillment:company.companyId];
+    
+    if(fulfillment == YES) {
+        [self performSegueWithIdentifier:@"fulfillmentViewSegue" sender:self];    
+    } else {
+        [self performSegueWithIdentifier:@"tabViewControllerSegue" sender:self];
+    }
+
 }
 
 - (void)viewDidUnload {

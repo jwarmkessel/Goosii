@@ -24,9 +24,7 @@
 
 @property (nonatomic, strong) UITableViewCell *moreInfoTblViewcell;
 @property (nonatomic, strong) UITableViewCell *currentSelectedCell;
-
 @property (nonatomic, strong) UIButton *participationBtn;
-
 
 @end
 
@@ -93,7 +91,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         [companyNameLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0]];
         companyNameLbl.textColor = [UIColor whiteColor];
         companyNameLbl.backgroundColor = [UIColor clearColor];
-        companyNameLbl.textAlignment = UITextAlignmentCenter;
+        companyNameLbl.textAlignment = NSTextAlignmentCenter;
         
         UIView *transparentCompanyNameCell = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height)];
         [transparentCompanyNameCell setAlpha:1];

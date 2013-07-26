@@ -216,6 +216,7 @@
 		83F9239B179D5B9800E97376 /* Intro_00087@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F922F0179D5B9800E97376 /* Intro_00087@2x.png */; };
 		83F9239C179D5B9800E97376 /* Intro_00088@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F922F1179D5B9800E97376 /* Intro_00088@2x.png */; };
 		83F9239D179D5B9800E97376 /* Intro_00089@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F922F2179D5B9800E97376 /* Intro_00089@2x.png */; };
+		83F923A017A2253500E97376 /* GIFulfillmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F9239F17A2253500E97376 /* GIFulfillmentViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -446,6 +447,8 @@
 		83F922F0179D5B9800E97376 /* Intro_00087@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Intro_00087@2x.png"; sourceTree = "<group>"; };
 		83F922F1179D5B9800E97376 /* Intro_00088@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Intro_00088@2x.png"; sourceTree = "<group>"; };
 		83F922F2179D5B9800E97376 /* Intro_00089@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Intro_00089@2x.png"; sourceTree = "<group>"; };
+		83F9239E17A2253500E97376 /* GIFulfillmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIFulfillmentViewController.h; sourceTree = "<group>"; };
+		83F9239F17A2253500E97376 /* GIFulfillmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIFulfillmentViewController.m; sourceTree = "<group>"; };
 		9FE17D0685D8428287E7C265 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -618,6 +621,8 @@
 				83196B041783AF67008A6107 /* GIDashboardViewController.m */,
 				83196B1D17900272008A6107 /* GIEventBoardViewController.h */,
 				83196B1E17900272008A6107 /* GIEventBoardViewController.m */,
+				83F9239E17A2253500E97376 /* GIFulfillmentViewController.h */,
+				83F9239F17A2253500E97376 /* GIFulfillmentViewController.m */,
 			);
 			name = Dashboard;
 			sourceTree = "<group>";
@@ -1143,6 +1148,7 @@
 				83196B1F17900273008A6107 /* GIEventBoardViewController.m in Sources */,
 				83196B2517900437008A6107 /* GIEventViewCell.m in Sources */,
 				83196CB217914B36008A6107 /* GICountingLabel.m in Sources */,
+				83F923A017A2253500E97376 /* GIFulfillmentViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

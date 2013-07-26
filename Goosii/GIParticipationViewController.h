@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GIParticipationViewController : UITableViewController <UITableViewDataSource>
+@interface GIParticipationViewController : UITableViewController <UITableViewDataSource, NSURLConnectionDelegate>
 @property (strong, nonatomic) NSMutableArray *eventList;
 @end
