@@ -227,7 +227,12 @@
                                    NSString *latitudeStr = [company objectForKey:@"latitude"];
                                    NSString *longitudeStr = [company objectForKey:@"longitude"];
                                    
-                                   GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"]];
+                                   NSArray *participantsAry = [company objectForKey:@"participants"];
+                                                                      
+                                   NSString *totalParticipants = [NSString stringWithFormat:@"%lu", (unsigned long)[participantsAry count]];
+
+                                   NSLog(@"The Phone number %@", [company objectForKey:@"telephone"]);
+                                   GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"] numOfParticipants:totalParticipants];
                                    
                                    //Determine whether company is near enough
                                    CLLocation *companyLocation = [[CLLocation alloc] initWithLatitude:[latitudeStr floatValue] longitude:[longitudeStr floatValue]];

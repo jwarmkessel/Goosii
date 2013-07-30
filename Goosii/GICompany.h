@@ -16,8 +16,9 @@
 @property (strong, nonatomic) NSString *post;
 @property (strong, nonatomic) NSString *address;
 @property (strong, nonatomic) NSString *telephone;
+@property (strong, nonatomic) NSString *totalParticipants;
 
--(id) initWithName:(NSString*)companyName companyId:(NSString*)companyId address:(NSString*)address telephone:(NSString*)telephone;
+-(id) initWithName:(NSString*)companyName companyId:(NSString*)companyId address:(NSString*)address telephone:(NSString*)telephone numOfParticipants:(NSString*)totalParticipants;
 
--(id) initWithName:(NSString*)companyName companyId:(NSString*)companyId address:(NSString*)address telephone:(NSString*)telephone longitude:(NSString*)longitude latitude:(NSString *)latitude;
+//-(id) initWithName:(NSString*)companyName companyId:(NSString*)companyId address:(NSString*)address telephone:(NSString*)telephone longitude:(NSString*)longitude latitude:(NSString *)latitude;
 @end

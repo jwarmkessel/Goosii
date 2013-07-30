@@ -111,7 +111,14 @@
                                NSArray *jsonObject = [parser objectWithString:newStr];
                                
                                for (id company in jsonObject) {
-                                   GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"]];
+                                   
+                                   NSArray *participantsAry = [company objectForKey:@"participants"];
+                                   
+                                   NSString *totalParticipants = [NSString stringWithFormat:@"%lu", (unsigned long)[participantsAry count]];
+                                   
+                                   
+                                   GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"] numOfParticipants:totalParticipants];
+
                                    [self.eventList addObject:companyObj];
                                }
                                
@@ -136,11 +143,15 @@
     NSError *requestError;
     NSURLResponse *urlResponse = nil;
     NSData *response = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&urlResponse error:&requestError];
-    /* Return Value
-     The downloaded data for the URL request. Returns nil if a connection could not be created or if the download fails.
-     */
-    if (response == nil) {
-        NSLog(@"Response was nil");
+
+    NSString* newStr = [[NSString alloc] initWithData:response
+                                             encoding:NSUTF8StringEncoding];
+    
+    SBJsonParser *parser = [[SBJsonParser alloc] init];
+    NSDictionary *fulfillment = [parser objectWithString:newStr];
+
+    if ([fulfillment objectForKey:@"companyId"] == nil) {
+        NSLog(@"Response was nil %@", newStr);
         if (requestError != nil) {
             NSLog(@"huh");
         }
@@ -148,19 +159,11 @@
         return NO;
     }
     else {
-        NSLog(@"ReceivedData %@", response);
-        
-        SBJsonParser *parser = [[SBJsonParser alloc] init];
-        
-//        NSArray *jsonObject = [parser objectWithString:response];
-//        
-//        for (id fulfillments in jsonObject) {
-//            NSLog(@"Company name %@", [fulfillments objectForKey:@"companyId"]);
-//        }
+        NSLog(@"ReceivedData %@", newStr);
+
         return YES;
     }
 }
-
 
 #pragma mark - Table view data source
 

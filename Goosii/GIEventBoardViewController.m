@@ -11,6 +11,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <Social/Social.h>
 #import "GICountingLabel.h"
+#import "GICompany.h"
 
 @interface GIEventBoardViewController ()
 {
@@ -87,7 +88,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         //Create a transparent layer on top of the cell as a background to the elements on top of it.
         //This is required because otherwise the alpha set on this element affects its child elements.
         UILabel *companyNameLbl = [[UILabel alloc] initWithFrame:CGRectMake((cell.layer.frame.size.width/2-160), 0.0, 320.0, 50.0)];
-        companyNameLbl.text = @"HOT SPOT CAFE";
+        companyNameLbl.text = self.company.name;
         [companyNameLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0]];
         companyNameLbl.textColor = [UIColor whiteColor];
         companyNameLbl.backgroundColor = [UIColor clearColor];
@@ -117,24 +118,16 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 //        secondCell.layer.cornerRadius = 2;
         
         UILabel *addressLbl = [[UILabel alloc] initWithFrame:CGRectMake(10, (10/2+2.5), 320.0,15.0)];
-        addressLbl.text = @"2133 Morill Ave";
+        addressLbl.text = self.company.address;
         [addressLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0]];
         addressLbl.textColor = [UIColor whiteColor];
         addressLbl.backgroundColor = [UIColor clearColor];
 
-        UILabel *cityInfoLbl = [[UILabel alloc] initWithFrame:CGRectMake(10, addressLbl.layer.frame.origin.y + 15, 320.0,15.0)];
-        cityInfoLbl.text = @"San Jose";
-        [cityInfoLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0]];
-        cityInfoLbl.textColor = [UIColor whiteColor];
-        cityInfoLbl.backgroundColor = [UIColor clearColor];
-        
-        
 //        [secondCell.layer setBorderColor:[UIColor blackColor].CGColor];
 //        [secondCell.layer setBorderWidth:0.5f];
         
         [cell addSubview:addressCell];
         [cell addSubview:addressLbl];
-        [cell addSubview:cityInfoLbl];
         
     }else if(telephoneCellIndex == curCellIndex) {
         UIView *telephoneCell = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height)];
@@ -142,7 +135,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         [telephoneCell setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
 
         UILabel *telephoneLbl = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, cell.layer.frame.size.height - 40, 320.0, 50.0)];
-        telephoneLbl.text = @"(408)605-4692";
+        
+        telephoneLbl.text = [NSString stringWithFormat:@"%@", self.company.telephone];
         [telephoneLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0]];
         telephoneLbl.textColor = [UIColor whiteColor];
         telephoneLbl.backgroundColor = [UIColor clearColor];
@@ -150,8 +144,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         [cell addSubview:telephoneCell];
         [cell addSubview:telephoneLbl];
         
-    }else if(totalParticipantsCellIndex == curCellIndex){
-        
+    }else if(totalParticipantsCellIndex == curCellIndex){        
         //Create a transparent layer on top of the cell as a background to the elements on top of it.
         //This is required because otherwise the alpha set on this element affects its child elements.
         UIView *transparentTotalParticipantCell = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height)];
@@ -163,11 +156,11 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         transparentTotalParticipantCell.layer.shadowOffset = CGSizeMake(.6f, .6f);
         transparentTotalParticipantCell.layer.cornerRadius = 2;
         
-        //Create an animated counter to display the number of participants.
+        //Create an animated counter to display the number of participants.        
         GICountingLabel *totalParticipantsLbl = [[GICountingLabel alloc] initWithFrame:CGRectMake((cell.frame.size.width/2 - 75.0), 0, 150, 100)];
         totalParticipantsLbl.format = @"%d";
         totalParticipantsLbl.method = UILabelCountingMethodLinear;
-        [totalParticipantsLbl countFrom:50 to:100 withDuration:3.0f];
+        [totalParticipantsLbl countFrom:0 to:[self.company.totalParticipants floatValue] withDuration:3.0f];
         [totalParticipantsLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:60.0]];
         totalParticipantsLbl.textColor = [UIColor whiteColor];
         totalParticipantsLbl.backgroundColor = [UIColor clearColor];
@@ -198,7 +191,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         cellTransparentView.layer.shadowRadius = 3;
         cellTransparentView.layer.shadowOffset = CGSizeMake(.6f, .6f);
         cellTransparentView.layer.cornerRadius = 2;
-        
         
         float progressBarThickness = 40.0f;
         

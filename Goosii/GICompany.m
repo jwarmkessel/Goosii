@@ -11,7 +11,7 @@
 @implementation GICompany
 @synthesize name, companyId, address, telephone;
 
--(id) initWithName:(NSString*)companyName companyId:(NSString*)identifier address:(NSString*)companyAddress telephone:(NSString*)companyTelephone {
+-(id) initWithName:(NSString*)companyName companyId:(NSString*)identifier address:(NSString*)companyAddress telephone:(NSString*)companyTelephone numOfParticipants:(NSString*)totalParticipants {
     
     self = [super init];
     if( !self ) return nil;
@@ -20,6 +20,7 @@
     self.companyId = identifier;
     self.address = companyAddress;
     self.telephone = companyTelephone;
+    self.totalParticipants = totalParticipants;
     
     return self;
 }
