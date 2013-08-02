@@ -146,6 +146,8 @@
     NSString *urlString = @"http://www.goosii.com:3001/enterContest";
     urlString = [urlString stringByAppendingFormat:@"/%@", [plist objectForKey:@"userId"]];
     urlString = [urlString stringByAppendingFormat:@"/%@", curCompany.companyId];
+    
+    NSLog(@"Requesting %@", urlString);
 
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
@@ -204,8 +206,10 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
     NSLog(@"The manager.location %@", manager.location);
     NSString *urlString = @"http://www.goosii.com:3001/nearbyCompanies";
+    urlString = [urlString stringByAppendingFormat:@"/%@", [plist objectForKey:@"userId"]];    
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
     
@@ -231,16 +235,64 @@
                                                                       
                                    NSString *totalParticipants = [NSString stringWithFormat:@"%lu", (unsigned long)[participantsAry count]];
 
-                                   NSLog(@"The Phone number %@", [company objectForKey:@"telephone"]);
-                                   GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"] numOfParticipants:totalParticipants];
+                                   //NSLog(@"The Phone number %@", [company objectForKey:@"telephone"]);
                                    
+                                   //Determine percentage of time
+                                   NSTimeInterval timeInMiliseconds = [[NSDate date] timeIntervalSince1970];
+                                   
+                                   //NSLog(@"The Current Date %f", timeInMiliseconds);
+                                   NSDictionary *event = [company objectForKey:@"contest"];
+                                   float startDate = floor([[event objectForKey:@"startDate"] floatValue]);
+                                   float endDate = floor([[event objectForKey:@"endDate"] floatValue]);
+                                   
+                                   //NSLog(@"The start %f, end %f", startDate, endDate);
+                                   float curTime = floor(timeInMiliseconds);
+                                   
+                                   float totalDuration = endDate - startDate;
+                                   
+                                   float elapsedTime = curTime - totalDuration;
+                                   
+                                   float percentage = totalDuration / elapsedTime;
+                                   
+                                   NSString *timePercent = [NSString stringWithFormat:@"%f", percentage];
+                                   
+                                   NSLog(@"The percentage %f, elapsed %f, totalDuration %f, curTime %f", percentage, elapsedTime, totalDuration, curTime);
+                                   //****************************
+                                   //Calculate percentage
+                                   //NSLog(@"The user object %@", [company objectForKey:@"user"]);
+                                   float partPercentage = 0;
+                                   
+                                   NSDictionary *userObj = [company objectForKey:@"user"];
+                                   NSArray *contests = [userObj objectForKey:@"contests"];
+                                   for (id contest in contests) {
+                                       NSString *contestCompanyId =[contest objectForKey:@"companyId"];
+                                       NSString *companyId = [company objectForKey:@"_id"];
+                                       
+                                       if([contestCompanyId isEqualToString:companyId]) {
+                                       
+                                           float ttlParticipationCount = [[contest objectForKey:@"participationCount"] floatValue];
+                                           
+                                           if(totalDuration != 0.0) {
+                                               partPercentage = totalDuration / 86400000;
+                                               partPercentage = floor(partPercentage);
+                                               partPercentage = ttlParticipationCount / partPercentage;
+                                           }
+                                       }
+                                   }
+                                   
+                                   NSLog(@"Blah Blah Participation count %f", partPercentage);
+                                   NSString *partPer = [NSString stringWithFormat:@"%f", partPercentage];
+                                  //****************************
+                                   GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"] numOfParticipants:totalParticipants time:timePercent participation:partPer];
+                                   
+
                                    //Determine whether company is near enough
                                    CLLocation *companyLocation = [[CLLocation alloc] initWithLatitude:[latitudeStr floatValue] longitude:[longitudeStr floatValue]];
                                    float distanceInMiles = METERS_TO_MILE_CONVERSION * [manager.location distanceFromLocation:companyLocation];
-                                   NSLog(@"%f miles", distanceInMiles);
+                                   //NSLog(@"%f miles", distanceInMiles);
                                    
                                    if(distanceInMiles < DISTANCE_ALLOWED_FROM_COMPANY) {
-                                       NSLog(@"Include the %@", [company objectForKey:@"name"]);
+                                       //NSLog(@"Include the %@", [company objectForKey:@"name"]);
                                        [self.nearbyLocationsAry addObject:companyObj];
                                    }
                                }

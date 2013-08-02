@@ -176,10 +176,10 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         
         if(i<10) {
             animationFileNameStr = [NSString stringWithFormat:@"Intro_0000%d.png", i];
-            NSLog(@"File names %@", animationFileNameStr);
+            //NSLog(@"File names %@", animationFileNameStr);
         } else {
             animationFileNameStr = [NSString stringWithFormat:@"Intro_000%d.png", i];
-            NSLog(@"File names %@", animationFileNameStr);
+            //NSLog(@"File names %@", animationFileNameStr);
         }
         
         UIImage *image = (UIImage*)[UIImage imageNamed:animationFileNameStr];

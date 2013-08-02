@@ -9,9 +9,9 @@
 #import "GICompany.h"
 
 @implementation GICompany
-@synthesize name, companyId, address, telephone;
+@synthesize name, companyId, address, telephone, totalParticipants, timePercentage, participationPercentage;
 
--(id) initWithName:(NSString*)companyName companyId:(NSString*)identifier address:(NSString*)companyAddress telephone:(NSString*)companyTelephone numOfParticipants:(NSString*)totalParticipants {
+-(id) initWithName:(NSString*)companyName companyId:(NSString*)identifier address:(NSString*)companyAddress telephone:(NSString*)companyTelephone numOfParticipants:(NSString*)ttlParticipants time:(NSString*)timePercent participation:(NSString*)partPercent{
     
     self = [super init];
     if( !self ) return nil;
@@ -20,7 +20,10 @@
     self.companyId = identifier;
     self.address = companyAddress;
     self.telephone = companyTelephone;
-    self.totalParticipants = totalParticipants;
+    self.totalParticipants = ttlParticipants;
+    self.timePercentage = timePercent;
+    self.participationPercentage = partPercent;
+    
     
     return self;
 }

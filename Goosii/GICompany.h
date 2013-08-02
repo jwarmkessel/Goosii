@@ -8,7 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-@interface GICompany : NSObject
+@interface GICompany : NSObject {
+
+}
+
 @property (strong, nonatomic) NSString *name;
 @property (strong, nonatomic) NSString *companyId;
 @property (strong, nonatomic) NSString *startDate;
@@ -18,7 +21,12 @@
 @property (strong, nonatomic) NSString *telephone;
 @property (strong, nonatomic) NSString *totalParticipants;
 
--(id) initWithName:(NSString*)companyName companyId:(NSString*)companyId address:(NSString*)address telephone:(NSString*)telephone numOfParticipants:(NSString*)totalParticipants;
+@property (strong, nonatomic) NSString *timePercentage;
+@property (strong, nonatomic) NSString *participationPercentage;
+
+-(id) initWithName:(NSString*)companyName companyId:(NSString*)identifier address:(NSString*)companyAddress telephone:(NSString*)companyTelephone numOfParticipants:(NSString*)ttllParticipants time:(NSString*)timePercent participation:(NSString*)partPercent;
+
+//-(id) initWithName:(NSString*)companyName companyId:(NSString*)companyId address:(NSString*)address telephone:(NSString*)telephone numOfParticipants:(NSString*)totalParticipants;
 
 //-(id) initWithName:(NSString*)companyName companyId:(NSString*)companyId address:(NSString*)address telephone:(NSString*)telephone longitude:(NSString*)longitude latitude:(NSString *)latitude;
 @end

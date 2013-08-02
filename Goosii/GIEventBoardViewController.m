@@ -12,6 +12,7 @@
 #import <Social/Social.h>
 #import "GICountingLabel.h"
 #import "GICompany.h"
+#import "GIPlist.h"
 
 @interface GIEventBoardViewController ()
 {
@@ -345,16 +346,29 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                 NSLog(@"Posting to facebook.");
                 
                 NSLog(@"The result %d", result);
-//                
-//                NSURL *url = [NSURL URLWithString:urlPost];
-//                NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-//                NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
-//                
-//                if(!connection) {
-//                    NSLog(@"connection failed");
-//                }
-//                
-//                [self performSegueWithIdentifier:@"sweepstakesDisplaySegue" sender:self];
+                GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
+                NSString *urlString = @"http://www.goosii.com:3001/addUserParticipation/";
+                urlString = [urlString stringByAppendingString:[plist objectForKey:@"userId"]];
+                urlString = [urlString stringByAppendingString:@"/"];
+                urlString = [urlString stringByAppendingString:self.company.companyId];
+                
+                NSLog(@"getUserContests %@", urlString);
+                NSURL *url = [NSURL URLWithString:urlString];
+                
+                NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+                
+                [NSURLConnection sendAsynchronousRequest:urlRequest
+                                                   queue:[NSOperationQueue mainQueue]
+                                       completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                                           
+                                           // your data or an error will be ready here
+                                           NSString* newStr = [[NSString alloc] initWithData:data
+                                                                                    encoding:NSUTF8StringEncoding];
+                                           
+                                           NSLog(@"ReceivedData %@", newStr);
+                                           
+                                       }];
+
             }
             
             [sharingComposer dismissViewControllerAnimated:YES completion:nil];
