@@ -252,7 +252,7 @@
                                    
                                    float elapsedTime = curTime - totalDuration;
                                    
-                                   float percentage = totalDuration / elapsedTime;
+                                   float percentage = elapsedTime / totalDuration;
                                    
                                    NSString *timePercent = [NSString stringWithFormat:@"%f", percentage];
                                    

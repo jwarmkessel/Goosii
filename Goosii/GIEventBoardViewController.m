@@ -162,45 +162,27 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         cellTransparentView.layer.cornerRadius = 2;
         
         float progressBarThickness = 40.0f;
-        /**/
         
-        NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:[self.company.endDate floatValue]];
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateStyle:NSDateFormatterShortStyle];
-        NSString *dateString = [formatter stringFromDate:date];
-        NSLog(@"Date: %@", dateString);
-        /**/
-        
-        //NSDate *date = [[NSDate alloc] initWithTimeIntervalSince1970:[self.company.endDate floatValue]];
-        NSLog(@"The announce date %f", [self.company.endDate floatValue]);
-        
-        // (Step 1) Convert epoch time to SECONDS since 1970
-        NSTimeInterval seconds = [self.company.endDate doubleValue];
+        //Convert milliseconds to seconds.
+        NSTimeInterval seconds = [self.company.endDate floatValue];
         seconds = seconds / 1000;
-        NSLog (@"Epoch time %@ equates to %qi seconds since 1970", self.company.endDate, (long long) seconds);
         
-        // (Step 2) Create NSDate object
+        //Initiate the date object and formatter and set the participation string.
         NSDate *epochNSDate = [[NSDate alloc] initWithTimeIntervalSince1970:seconds];
-        NSLog (@"Epoch time %@ equates to UTC %@", self.company.endDate, epochNSDate);
-//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//        dateFormatter.dateFormat = @"MM/dd/yyyy HH:mm";
-//        
-//        NSTimeZone *gmt = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
-//        [dateFormatter setTimeZone:gmt];
-//        NSString *timeStamp = [dateFormatter stringFromDate:date];
-//        
-//        NSLog(@"Date: %@", timeStamp);        
-//        /**/
-        NSString *announceDateStr = [NSString stringWithFormat:@"Winner to be announced %@", epochNSDate];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateFormat = @"MM/dd/yyyy HH:mm";
+        NSString *timeStamp = [dateFormatter stringFromDate:epochNSDate];
+        NSString *announceDateStr = [NSString stringWithFormat:@"Winner to be announced %@", timeStamp];
+        
         UILabel *endDateLbl = [[UILabel alloc] initWithFrame:CGRectMake(10, 5.0f, 320.0,15.0)];
         endDateLbl.text = announceDateStr;
         [endDateLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:13.0]];
         endDateLbl.textColor = [UIColor whiteColor];
         endDateLbl.backgroundColor = [UIColor clearColor];
         
-        //Progress bar elements for participation rate and the duration of the contest.
-
-        CGRect timeDurationBarRect = CGRectMake(0.0f, 20.0f, 20.0f, progressBarThickness);
+        //Percentage * width = curWidth
+        
+        CGRect timeDurationBarRect = CGRectMake(0.0f, 20.0f, 0.0f, progressBarThickness);
         
         //Set the color of the progress bars.
         self.timeDurationBar = [[GIProgressBar alloc] initWithFrame:timeDurationBarRect hexStringColor:@"3EFF29"];
@@ -212,8 +194,11 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
         //Animate the progress bars to juic-ify this app!
         [UIView animateWithDuration:1 animations:^{
-        
-            self.timeDurationBar.frame = CGRectMake(0, 20, 50, progressBarThickness);
+            
+            float percentWidth = [self.company.timePercentage floatValue] * cell.frame.size.width;
+            NSLog(@"The percentage %f and cell width %f", [self.company.timePercentage floatValue], cell.frame.size.width);
+            NSLog(@"The caluc %f", percentWidth);
+            self.timeDurationBar.frame = CGRectMake(0, 20, percentWidth, progressBarThickness);
             
         } completion:^(BOOL finished) {
             NSLog(@"done");
