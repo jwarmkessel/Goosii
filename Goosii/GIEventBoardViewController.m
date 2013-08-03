@@ -79,6 +79,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger progressBarCellIndex = 5;
     NSInteger engagementCellIndex = 7;
     NSInteger companyNameCellIndex = 1;
+    NSInteger participationButtonIndex = 9;
 
     
     //The current index
@@ -159,7 +160,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         cellTransparentView.layer.shadowOpacity = 0.5;
         cellTransparentView.layer.shadowRadius = 3;
         cellTransparentView.layer.shadowOffset = CGSizeMake(.6f, .6f);
-        cellTransparentView.layer.cornerRadius = 2;
+        cellTransparentView.layer.cornerRadius = 4;
         
         float progressBarThickness = 40.0f;
         
@@ -180,15 +181,35 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         endDateLbl.textColor = [UIColor whiteColor];
         endDateLbl.backgroundColor = [UIColor clearColor];
         
-        //Percentage * width = curWidth
         
-        CGRect timeDurationBarRect = CGRectMake(0.0f, 20.0f, 0.0f, progressBarThickness);
+        
+        
+        float progressBarWidth = 280.0f;
+        float xPos = (cell.frame.size.width/2 - (progressBarWidth/2));
+        
+        CGRect timeDurationBarRect = CGRectMake(xPos, 20.0f, 0.0f, progressBarThickness);
         
         //Set the color of the progress bars.
+        CGRect backgroundRect = CGRectMake(xPos, 20.0f, progressBarWidth, progressBarThickness);
+
+        
+        
+        
+        
+        
+        GIProgressBar *backgroundProgressBar = [[GIProgressBar alloc] initWithFrame:backgroundRect hexStringColor:@"FF3100"];
+        
+                
+        
         self.timeDurationBar = [[GIProgressBar alloc] initWithFrame:timeDurationBarRect hexStringColor:@"3EFF29"];
+        
+        
+        
+        
         
         //Add the child elements to the cell.
         [cell addSubview:cellTransparentView];
+        [cell addSubview:backgroundProgressBar];
         [cell addSubview:self.timeDurationBar];
         [cell addSubview:endDateLbl];
 
@@ -198,7 +219,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
             float percentWidth = [self.company.timePercentage floatValue] * cell.frame.size.width;
             NSLog(@"The percentage %f and cell width %f", [self.company.timePercentage floatValue], cell.frame.size.width);
             NSLog(@"The caluc %f", percentWidth);
-            self.timeDurationBar.frame = CGRectMake(0, 20, percentWidth, progressBarThickness);
+            self.timeDurationBar.frame = CGRectMake(xPos, 20, percentWidth, progressBarThickness);
             
         } completion:^(BOOL finished) {
             NSLog(@"done");
@@ -213,7 +234,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         transparentEngCell.layer.shadowOpacity = 0.5;
         transparentEngCell.layer.shadowRadius = 3;
         transparentEngCell.layer.shadowOffset = CGSizeMake(.6f, .6f);
-        transparentEngCell.layer.cornerRadius = 2;
+        transparentEngCell.layer.cornerRadius = 4;
         
         UILabel *participationLbl = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 5.0f, 320.0f,15.0f)];
         participationLbl.text = @"Your Participation";
@@ -222,75 +243,113 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         participationLbl.backgroundColor = [UIColor clearColor];
         
         //Progress bar elements for participation rate and the duration of the contest.
+        float progressBarWidth = 280.0f;
+        float xPos = (cell.frame.size.width/2 - (progressBarWidth/2));
         float progressBarThickness = 40.0f;
-        CGRect participationBarRect = CGRectMake(0.0f, 20.0f, 0.0f, progressBarThickness);
+        CGRect participationBarBackgroundRect = CGRectMake(xPos, 20.0f, progressBarWidth, progressBarThickness);
+        
+        GIProgressBar *participationBarBackground = [[GIProgressBar alloc] initWithFrame:participationBarBackgroundRect hexStringColor:@"FF3100"];
+        
+        
+        
+        
+        
+        
+        
+
+        CGRect participationBarRect = CGRectMake(xPos, 20.0f, 0.0f, progressBarThickness);
         self.participationBar = [[GIProgressBar alloc] initWithFrame:participationBarRect hexStringColor:@"3EFF29"];
         
         self.participationBtn = [[UIButton alloc] initWithFrame:CGRectMake(cell.layer.frame.size.width/2 - (200/2), self.participationBar.layer.frame.origin.y + progressBarThickness + 15.0f, 200.0f, 50.0f)];
-        [self.participationBtn setTitle:@"Post To Facebook" forState:UIControlStateNormal];
-        [self.participationBtn setBackgroundColor:[self colorWithHexString:@"3B5998"]];
-        
-        [self.participationBtn addTarget:self
-                   action:@selector(participationBtnHandler)
-         forControlEvents:UIControlEventTouchDown];
-        
+
         [cell addSubview:transparentEngCell];
+        [cell addSubview:participationBarBackground];
         [cell addSubview:self.participationBar];
         [cell addSubview:participationLbl];
-        [cell addSubview:self.participationBtn];
+
         
         //Animate the progress bars to juic-ify this app!
         [UIView animateWithDuration:1 animations:^{
             
-            self.participationBar.frame = CGRectMake(0, 20, 150, progressBarThickness);
+            float partWidth = [self.company.participationPercentage floatValue] * cell.frame.size.width;
+            NSLog(@"The percentage %f and cell width %f", [self.company.participationPercentage floatValue], cell.frame.size.width);
+            NSLog(@"The caluc %f", partWidth);
+            self.participationBar.frame = CGRectMake(xPos, 20, partWidth, progressBarThickness);
             
         } completion:^(BOOL finished) {
             NSLog(@"done");
-            
-//            //disable touch gestures while loading mask is in place
-//            [self.tableView setUserInteractionEnabled:NO];
-//            
-//            //Create and add a loading mask behind the pop up view.
-//            self.loadingMask = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//            [self.loadingMask setBackgroundColor:[UIColor blackColor]];
-//            [self.loadingMask setAlpha:0.5];
-//            
-//            //Add a pop up view to indicate to the user that an event has been entered into.
-//            float width = 240.0f;
-//            float height = 240.0f;
-//            
-//            CGRect popUpRect = CGRectMake(320/2-120, 100.0f, width, height);
-//            self.enteredPopUpView = [[UIView alloc] initWithFrame:popUpRect];
-//            [self.enteredPopUpView setBackgroundColor:[self colorWithHexString:@"994747"]];
-//            self.enteredPopUpView.layer.shadowColor = [UIColor blackColor].CGColor;
-//            self.enteredPopUpView.layer.shadowOpacity = 0.5;
-//            self.enteredPopUpView.layer.shadowRadius = 3;
-//            self.enteredPopUpView.layer.shadowOffset = CGSizeMake(.6f, .6f);
-//            self.enteredPopUpView.layer.cornerRadius = 4;
-//            
-//            CGRect textViewRect = CGRectMake(5.0f, 5.0f, 230.0f, 200.0f);
-//            UITextView *textView = [[UITextView alloc] initWithFrame:textViewRect];
-//            textView.text = @"You're Entered Into the Event.";
-//            textView.textAlignment = UITextAlignmentLeft;
-//            [textView setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0]];
-//            [textView setBackgroundColor:[self colorWithHexString:@"EBDCDC"]];
-//            
-//            [self.enteredPopUpView addSubview:textView];
-//            
-//            [self.view addSubview:self.loadingMask];
-//            [self.view addSubview:self.enteredPopUpView];
-//            
-//            CABasicAnimation *theAnimation;
-//            
-//            theAnimation=[CABasicAnimation animationWithKeyPath:@"opacity"];
-//            theAnimation.duration=0.2;
-//            theAnimation.repeatCount=2;
-//            theAnimation.autoreverses=YES;
-//            theAnimation.fromValue=[NSNumber numberWithFloat:1.0];
-//            theAnimation.toValue=[NSNumber numberWithFloat:0.0];
-//            [self.enteredPopUpView.layer addAnimation:theAnimation forKey:@"animateOpacity"];
         }];
+    } else if(participationButtonIndex == curCellIndex) {
+        
+        CGRect backgroundImageView = CGRectMake((cell.frame.size.width/2-(cell.frame.size.width/2)), 0.0f, cell.frame.size.width, cell.frame.size.height);
+
+        UIImage *participationBtnImage = [UIImage imageNamed:@"FB_Back.png"];
+        UIImage *fbParticipationBtnImage = [UIImage imageNamed:@"FB_Button.png"];
+        UIImageView *participationBackgroundImageView = [[UIImageView alloc] initWithFrame:backgroundImageView];
+        [participationBackgroundImageView setImage:participationBtnImage];
+        
+        CGRect fbBackgroundImageView = CGRectMake((cell.frame.size.width/2-44), 50.0f, 95.0, 95.0f);
+        
+        self.participationBtn = [[UIButton alloc] initWithFrame:fbBackgroundImageView];
+        [self.participationBtn setBackgroundImage:fbParticipationBtnImage forState:UIControlStateNormal];
+        
+        [self.participationBtn addTarget:self
+                                  action:@selector(participationBtnHandler)
+                        forControlEvents:UIControlEventTouchDown];
+        
+        UILabel *fbPartLbl = [[UILabel alloc] initWithFrame:CGRectMake((cell.frame.size.width/2-110), 10.0f, 220.0f,30.0f)];
+        fbPartLbl.text = @"Post To Increase Participation";
+        [fbPartLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
+        fbPartLbl.textColor = [UIColor whiteColor];
+        fbPartLbl.backgroundColor = [UIColor clearColor];
+        fbPartLbl.textAlignment = NSTextAlignmentCenter;
+        
+        [cell addSubview:participationBackgroundImageView];
+        [cell addSubview:fbPartLbl];
+        [cell addSubview:self.participationBtn];
     }
+    //            //disable touch gestures while loading mask is in place
+    //            [self.tableView setUserInteractionEnabled:NO];
+    //
+    //            //Create and add a loading mask behind the pop up view.
+    //            self.loadingMask = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    //            [self.loadingMask setBackgroundColor:[UIColor blackColor]];
+    //            [self.loadingMask setAlpha:0.5];
+    //
+    //            //Add a pop up view to indicate to the user that an event has been entered into.
+    //            float width = 240.0f;
+    //            float height = 240.0f;
+    //
+    //            CGRect popUpRect = CGRectMake(320/2-120, 100.0f, width, height);
+    //            self.enteredPopUpView = [[UIView alloc] initWithFrame:popUpRect];
+    //            [self.enteredPopUpView setBackgroundColor:[self colorWithHexString:@"994747"]];
+    //            self.enteredPopUpView.layer.shadowColor = [UIColor blackColor].CGColor;
+    //            self.enteredPopUpView.layer.shadowOpacity = 0.5;
+    //            self.enteredPopUpView.layer.shadowRadius = 3;
+    //            self.enteredPopUpView.layer.shadowOffset = CGSizeMake(.6f, .6f);
+    //            self.enteredPopUpView.layer.cornerRadius = 4;
+    //
+    //            CGRect textViewRect = CGRectMake(5.0f, 5.0f, 230.0f, 200.0f);
+    //            UITextView *textView = [[UITextView alloc] initWithFrame:textViewRect];
+    //            textView.text = @"You're Entered Into the Event.";
+    //            textView.textAlignment = UITextAlignmentLeft;
+    //            [textView setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0]];
+    //            [textView setBackgroundColor:[self colorWithHexString:@"EBDCDC"]];
+    //
+    //            [self.enteredPopUpView addSubview:textView];
+    //
+    //            [self.view addSubview:self.loadingMask];
+    //            [self.view addSubview:self.enteredPopUpView];
+    //
+    //            CABasicAnimation *theAnimation;
+    //
+    //            theAnimation=[CABasicAnimation animationWithKeyPath:@"opacity"];
+    //            theAnimation.duration=0.2;
+    //            theAnimation.repeatCount=2;
+    //            theAnimation.autoreverses=YES;
+    //            theAnimation.fromValue=[NSNumber numberWithFloat:1.0];
+    //            theAnimation.toValue=[NSNumber numberWithFloat:0.0];
+    //            [self.enteredPopUpView.layer addAnimation:theAnimation forKey:@"animateOpacity"];
 }
 
 - (void)participationBtnHandler {

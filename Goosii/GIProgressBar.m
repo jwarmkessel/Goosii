@@ -30,12 +30,12 @@
 {
     // Drawing code
     UIColor *fillColor = [self colorWithHexString:self.hexColor];
-    UIColor *strokeColor = [self colorWithHexString:@"ffffff"];
+    UIColor *strokeColor = [self colorWithHexString:@"000000"];
     //UIColor *fillColor = [UIColor colorWithRed:0.526 green:0.525 blue:0.526 alpha:1];
     //UIColor *strokeColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
     
-    UIBezierPath *roundedRectanglePath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, 310, 40) cornerRadius:4];
-    
+    UIBezierPath *roundedRectanglePath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, 310, 40) cornerRadius:1];
+
     [fillColor setFill];
     [roundedRectanglePath fill];
     [strokeColor setStroke];
@@ -83,7 +83,5 @@
                             blue:((float) b / 255.0f)
                            alpha:1.0f];
 }
-
-
 
 @end

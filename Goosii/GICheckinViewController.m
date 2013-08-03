@@ -273,9 +273,11 @@
                                            float ttlParticipationCount = [[contest objectForKey:@"participationCount"] floatValue];
                                            
                                            if(totalDuration != 0.0) {
-                                               partPercentage = totalDuration / 86400000;
+                                               partPercentage = elapsedTime / 86400000;
                                                partPercentage = floor(partPercentage);
+                                               NSLog(@"Number of days %f", partPercentage);
                                                partPercentage = ttlParticipationCount / partPercentage;
+                                               NSLog(@"Total participation points %f", ttlParticipationCount);                                               
                                            }
                                        }
                                    }
