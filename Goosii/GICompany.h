@@ -24,7 +24,7 @@
 @property (strong, nonatomic) NSString *timePercentage;
 @property (strong, nonatomic) NSString *participationPercentage;
 
--(id) initWithName:(NSString*)companyName companyId:(NSString*)identifier address:(NSString*)companyAddress telephone:(NSString*)companyTelephone numOfParticipants:(NSString*)ttllParticipants time:(NSString*)timePercent participation:(NSString*)partPercent;
+-(id) initWithName:(NSString*)companyName companyId:(NSString*)identifier address:(NSString*)companyAddress telephone:(NSString*)companyTelephone numOfParticipants:(NSString*)ttlParticipants time:(NSString*)timePercent participation:(NSString*)partPercent startDate:(NSString*)start endDate:(NSString*)end;
 
 //-(id) initWithName:(NSString*)companyName companyId:(NSString*)companyId address:(NSString*)address telephone:(NSString*)telephone numOfParticipants:(NSString*)totalParticipants;
 

@@ -296,6 +296,15 @@
 		83F9243D17A483CB00E97376 /* Intro_00076-586h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F923EE17A483CB00E97376 /* Intro_00076-586h@2x.png */; };
 		83F9243E17A483CB00E97376 /* Intro_00077-586h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F923EF17A483CB00E97376 /* Intro_00077-586h@2x.png */; };
 		83F9243F17A483CB00E97376 /* Intro_00078-586h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F923F017A483CB00E97376 /* Intro_00078-586h@2x.png */; };
+		83F9244A17AC937F00E97376 /* Company_Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F9244117AC937F00E97376 /* Company_Back.png */; };
+		83F9244B17AC937F00E97376 /* FB_Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F9244217AC937F00E97376 /* FB_Back.png */; };
+		83F9244C17AC937F00E97376 /* FB_Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F9244317AC937F00E97376 /* FB_Button.png */; };
+		83F9244D17AC937F00E97376 /* Info_Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F9244417AC937F00E97376 /* Info_Button.png */; };
+		83F9244E17AC937F00E97376 /* No_Partic_Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F9244517AC937F00E97376 /* No_Partic_Back.png */; };
+		83F9244F17AC937F00E97376 /* Partic_Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F9244617AC937F00E97376 /* Partic_Back.png */; };
+		83F9245017AC937F00E97376 /* Partic_Bar_Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F9244717AC937F00E97376 /* Partic_Bar_Back.png */; };
+		83F9245117AC937F00E97376 /* Winner_Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F9244817AC937F00E97376 /* Winner_Back.png */; };
+		83F9245217AC937F00E97376 /* Winner_Bar_Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F9244917AC937F00E97376 /* Winner_Bar_Back.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -607,6 +616,15 @@
 		83F923EE17A483CB00E97376 /* Intro_00076-586h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Intro_00076-586h@2x.png"; sourceTree = "<group>"; };
 		83F923EF17A483CB00E97376 /* Intro_00077-586h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Intro_00077-586h@2x.png"; sourceTree = "<group>"; };
 		83F923F017A483CB00E97376 /* Intro_00078-586h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Intro_00078-586h@2x.png"; sourceTree = "<group>"; };
+		83F9244117AC937F00E97376 /* Company_Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Company_Back.png; sourceTree = "<group>"; };
+		83F9244217AC937F00E97376 /* FB_Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FB_Back.png; sourceTree = "<group>"; };
+		83F9244317AC937F00E97376 /* FB_Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FB_Button.png; sourceTree = "<group>"; };
+		83F9244417AC937F00E97376 /* Info_Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Info_Button.png; sourceTree = "<group>"; };
+		83F9244517AC937F00E97376 /* No_Partic_Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = No_Partic_Back.png; sourceTree = "<group>"; };
+		83F9244617AC937F00E97376 /* Partic_Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Partic_Back.png; sourceTree = "<group>"; };
+		83F9244717AC937F00E97376 /* Partic_Bar_Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Partic_Bar_Back.png; sourceTree = "<group>"; };
+		83F9244817AC937F00E97376 /* Winner_Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Winner_Back.png; sourceTree = "<group>"; };
+		83F9244917AC937F00E97376 /* Winner_Bar_Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Winner_Bar_Back.png; sourceTree = "<group>"; };
 		9FE17D0685D8428287E7C265 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -682,6 +700,7 @@
 		8309748817837C0900ABC1CF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				83F9244017AC935E00E97376 /* EventDrillDownAssets */,
 				830D2D161797E15C003EA961 /* DELETE THIS */,
 				83196AF917839232008A6107 /* ActivityFlowAssets */,
 				83196AF817839229008A6107 /* DashboardAssets */,
@@ -1096,6 +1115,22 @@
 			name = GoosiiFirstScreenAnimation_iphone5;
 			sourceTree = "<group>";
 		};
+		83F9244017AC935E00E97376 /* EventDrillDownAssets */ = {
+			isa = PBXGroup;
+			children = (
+				83F9244117AC937F00E97376 /* Company_Back.png */,
+				83F9244217AC937F00E97376 /* FB_Back.png */,
+				83F9244317AC937F00E97376 /* FB_Button.png */,
+				83F9244417AC937F00E97376 /* Info_Button.png */,
+				83F9244517AC937F00E97376 /* No_Partic_Back.png */,
+				83F9244617AC937F00E97376 /* Partic_Back.png */,
+				83F9244717AC937F00E97376 /* Partic_Bar_Back.png */,
+				83F9244817AC937F00E97376 /* Winner_Back.png */,
+				83F9244917AC937F00E97376 /* Winner_Bar_Back.png */,
+			);
+			name = EventDrillDownAssets;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1415,6 +1450,15 @@
 				83F9243D17A483CB00E97376 /* Intro_00076-586h@2x.png in Resources */,
 				83F9243E17A483CB00E97376 /* Intro_00077-586h@2x.png in Resources */,
 				83F9243F17A483CB00E97376 /* Intro_00078-586h@2x.png in Resources */,
+				83F9244A17AC937F00E97376 /* Company_Back.png in Resources */,
+				83F9244B17AC937F00E97376 /* FB_Back.png in Resources */,
+				83F9244C17AC937F00E97376 /* FB_Button.png in Resources */,
+				83F9244D17AC937F00E97376 /* Info_Button.png in Resources */,
+				83F9244E17AC937F00E97376 /* No_Partic_Back.png in Resources */,
+				83F9244F17AC937F00E97376 /* Partic_Back.png in Resources */,
+				83F9245017AC937F00E97376 /* Partic_Bar_Back.png in Resources */,
+				83F9245117AC937F00E97376 /* Winner_Back.png in Resources */,
+				83F9245217AC937F00E97376 /* Winner_Bar_Back.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

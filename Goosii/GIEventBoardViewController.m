@@ -75,12 +75,11 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell
 forRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    NSInteger totalParticipantsCellIndex = 4;
-    NSInteger progressBarCellIndex = 6;
-    NSInteger engagementCellIndex = 8;
+    NSInteger totalParticipantsCellIndex = 3;
+    NSInteger progressBarCellIndex = 5;
+    NSInteger engagementCellIndex = 7;
     NSInteger companyNameCellIndex = 1;
-    NSInteger moreInfoCellIndex = 2;
-    NSInteger telephoneCellIndex = 3;
+
     
     //The current index
     NSInteger curCellIndex = [indexPath row];
@@ -88,7 +87,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     if(companyNameCellIndex == curCellIndex) {
         //Create a transparent layer on top of the cell as a background to the elements on top of it.
         //This is required because otherwise the alpha set on this element affects its child elements.
-        UILabel *companyNameLbl = [[UILabel alloc] initWithFrame:CGRectMake((cell.layer.frame.size.width/2-160), 0.0, 320.0, 50.0)];
+        UILabel *companyNameLbl = [[UILabel alloc] initWithFrame:CGRectMake((cell.layer.frame.size.width/2-160), (cell.layer.frame.size.height/2-25), 320.0, 50.0)];
         companyNameLbl.text = self.company.name;
         [companyNameLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0]];
         companyNameLbl.textColor = [UIColor whiteColor];
@@ -98,57 +97,26 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         UIView *transparentCompanyNameCell = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height)];
         [transparentCompanyNameCell setAlpha:1];
         [transparentCompanyNameCell setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
-//        transparentCompanyNameCell.layer.shadowColor = [UIColor blackColor].CGColor;
-//        transparentCompanyNameCell.layer.shadowOpacity = 0.5;
-//        transparentCompanyNameCell.layer.shadowRadius = 3;
-//        transparentCompanyNameCell.layer.shadowOffset = CGSizeMake(.6f, .6f);
-//        transparentCompanyNameCell.layer.cornerRadius = 2;
+        transparentCompanyNameCell.layer.shadowColor = [UIColor blackColor].CGColor;
+        transparentCompanyNameCell.layer.shadowOpacity = 0.5;
+        transparentCompanyNameCell.layer.shadowRadius = 3;
+        transparentCompanyNameCell.layer.shadowOffset = CGSizeMake(.6f, .6f);
+        transparentCompanyNameCell.layer.cornerRadius = 4;
+        
+        CGRect infoRect = CGRectMake((cell.layer.frame.size.width-50), (cell.layer.frame.size.height/2-15), 31, 30.0);;
+        UIButton* infoBtn = [[UIButton alloc] initWithFrame:infoRect];
+        UIImage *infoBtnImage = [UIImage imageNamed:@"Info_Button.png"];
+        [infoBtn setBackgroundImage:infoBtnImage forState:UIControlStateNormal];
   
         self.moreInfoTblViewcell = cell;
         [cell addSubview:transparentCompanyNameCell];
         [cell addSubview:companyNameLbl];
-        
-    }else if(moreInfoCellIndex == curCellIndex){
-        UIView *addressCell = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height)];
-        [addressCell setAlpha:1];
-        [addressCell setBackgroundColor:[self colorWithHexString:@"A60C00"]];
-//        secondCell.layer.shadowColor = [UIColor blackColor].CGColor;
-//        secondCell.layer.shadowOpacity = 0.5;
-//        secondCell.layer.shadowRadius = 3;
-//        secondCell.layer.shadowOffset = CGSizeMake(.6f, .6f);
-//        secondCell.layer.cornerRadius = 2;
-        
-        UILabel *addressLbl = [[UILabel alloc] initWithFrame:CGRectMake(10, (10/2+2.5), 320.0,15.0)];
-        addressLbl.text = self.company.address;
-        [addressLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0]];
-        addressLbl.textColor = [UIColor whiteColor];
-        addressLbl.backgroundColor = [UIColor clearColor];
-
-//        [secondCell.layer setBorderColor:[UIColor blackColor].CGColor];
-//        [secondCell.layer setBorderWidth:0.5f];
-        
-        [cell addSubview:addressCell];
-        [cell addSubview:addressLbl];
-        
-    }else if(telephoneCellIndex == curCellIndex) {
-        UIView *telephoneCell = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height)];
-        [telephoneCell setAlpha:1];
-        [telephoneCell setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
-
-        UILabel *telephoneLbl = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, cell.layer.frame.size.height - 40, 320.0, 50.0)];
-        
-        telephoneLbl.text = [NSString stringWithFormat:@"%@", self.company.telephone];
-        [telephoneLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0]];
-        telephoneLbl.textColor = [UIColor whiteColor];
-        telephoneLbl.backgroundColor = [UIColor clearColor];
-        
-        [cell addSubview:telephoneCell];
-        [cell addSubview:telephoneLbl];
-        
+        [cell addSubview:infoBtn];
+                
     }else if(totalParticipantsCellIndex == curCellIndex){        
         //Create a transparent layer on top of the cell as a background to the elements on top of it.
         //This is required because otherwise the alpha set on this element affects its child elements.
-        UIView *transparentTotalParticipantCell = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height)];
+        UIView *transparentTotalParticipantCell = [[UIView alloc] initWithFrame:CGRectMake((cell.layer.frame.size.width/2-80), 0, cell.frame.size.width/2, cell.frame.size.height)];
         [transparentTotalParticipantCell setAlpha:0.6];
         [transparentTotalParticipantCell setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
         transparentTotalParticipantCell.layer.shadowColor = [UIColor blackColor].CGColor;
@@ -158,7 +126,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         transparentTotalParticipantCell.layer.cornerRadius = 2;
         
         //Create an animated counter to display the number of participants.        
-        GICountingLabel *totalParticipantsLbl = [[GICountingLabel alloc] initWithFrame:CGRectMake((cell.frame.size.width/2 - 75.0), 0, 150, 100)];
+        GICountingLabel *totalParticipantsLbl = [[GICountingLabel alloc] initWithFrame:CGRectMake((cell.frame.size.width/2 - 80.0), -10, 150, 100)];
         totalParticipantsLbl.format = @"%d";
         totalParticipantsLbl.method = UILabelCountingMethodLinear;
         [totalParticipantsLbl countFrom:0 to:[self.company.totalParticipants floatValue] withDuration:3.0f];
@@ -167,9 +135,9 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         totalParticipantsLbl.backgroundColor = [UIColor clearColor];
         totalParticipantsLbl.textAlignment = NSTextAlignmentCenter;
         
-        UILabel *ttlPartLbl = [[UILabel alloc] initWithFrame:CGRectMake(cell.layer.frame.size.width/2-160, cell.layer.frame.size.height - 40, 320.0, 50.0)];
+        UILabel *ttlPartLbl = [[UILabel alloc] initWithFrame:CGRectMake(cell.layer.frame.size.width/2-160, transparentTotalParticipantCell.layer.frame.size.height - 35, 320.0, 50.0)];
         ttlPartLbl.text = @"Participating";
-        [ttlPartLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0]];
+        [ttlPartLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0]];
         ttlPartLbl.textColor = [UIColor whiteColor];
         ttlPartLbl.backgroundColor = [UIColor clearColor];
         ttlPartLbl.textAlignment = NSTextAlignmentCenter;
@@ -194,9 +162,38 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         cellTransparentView.layer.cornerRadius = 2;
         
         float progressBarThickness = 40.0f;
+        /**/
         
+        NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:[self.company.endDate floatValue]];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateStyle:NSDateFormatterShortStyle];
+        NSString *dateString = [formatter stringFromDate:date];
+        NSLog(@"Date: %@", dateString);
+        /**/
+        
+        //NSDate *date = [[NSDate alloc] initWithTimeIntervalSince1970:[self.company.endDate floatValue]];
+        NSLog(@"The announce date %f", [self.company.endDate floatValue]);
+        
+        // (Step 1) Convert epoch time to SECONDS since 1970
+        NSTimeInterval seconds = [self.company.endDate doubleValue];
+        seconds = seconds / 1000;
+        NSLog (@"Epoch time %@ equates to %qi seconds since 1970", self.company.endDate, (long long) seconds);
+        
+        // (Step 2) Create NSDate object
+        NSDate *epochNSDate = [[NSDate alloc] initWithTimeIntervalSince1970:seconds];
+        NSLog (@"Epoch time %@ equates to UTC %@", self.company.endDate, epochNSDate);
+//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//        dateFormatter.dateFormat = @"MM/dd/yyyy HH:mm";
+//        
+//        NSTimeZone *gmt = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
+//        [dateFormatter setTimeZone:gmt];
+//        NSString *timeStamp = [dateFormatter stringFromDate:date];
+//        
+//        NSLog(@"Date: %@", timeStamp);        
+//        /**/
+        NSString *announceDateStr = [NSString stringWithFormat:@"Winner to be announced %@", epochNSDate];
         UILabel *endDateLbl = [[UILabel alloc] initWithFrame:CGRectMake(10, 5.0f, 320.0,15.0)];
-        endDateLbl.text = @"Winner Announced July 22, 2013";
+        endDateLbl.text = announceDateStr;
         [endDateLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:13.0]];
         endDateLbl.textColor = [UIColor whiteColor];
         endDateLbl.backgroundColor = [UIColor clearColor];

@@ -283,7 +283,7 @@
                                    NSLog(@"Blah Blah Participation count %f", partPercentage);
                                    NSString *partPer = [NSString stringWithFormat:@"%f", partPercentage];
                                   //****************************
-                                   GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"] numOfParticipants:totalParticipants time:timePercent participation:partPer];
+                                   GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"] numOfParticipants:totalParticipants time:timePercent participation:partPer startDate:[event objectForKey:@"startDate"] endDate:[event objectForKey:@"endDate"]];
                                    
 
                                    //Determine whether company is near enough
