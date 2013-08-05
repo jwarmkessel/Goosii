@@ -12,6 +12,7 @@
 #import "GIDashboardViewController.h"
 #import "GIEventBoardViewController.h"
 #import "GIPlist.h"
+#import "GIFulfillmentViewController.h"
 
 #define METERS_PER_MILE 1609.344
 #define METERS_TO_MILE_CONVERSION 0.00062137
@@ -137,7 +138,21 @@
     // Pass the selected object to the new view controller.
     //[self.navigationController pushViewController:detailViewController animated:YES];
     
-    [self performSegueWithIdentifier:@"testTableViewSegue" sender:self];
+    GICompany *selectedCompany = [self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+    
+    NSString *segueName;
+    
+    if([selectedCompany.reward isEqualToString:@"YES"]) {
+        segueName = @"rewardViewSegue";
+    } else if([selectedCompany.fulfillment isEqualToString:@"YES"]) {
+        segueName = @"fulfillmentViewSegue";
+    } else {
+        segueName = @"testTableViewSegue";
+    }
+    segueName = @"testTableViewSegue";
+    NSLog(@"Segue path is %@", segueName);
+    
+    [self performSegueWithIdentifier:segueName sender:self];
     
     GICompany *curCompany = [self.nearbyLocationsAry objectAtIndex:indexPath.row];
     GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
@@ -166,13 +181,28 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Make sure your segue name in storyboard is the same as this line
-    if ([[segue identifier] isEqualToString:@"dashboardDisplaySegue"]) {
+    
+    /*
+     Get selected comp obj.
+     reward trigger
+     fulfillment trigger
+     segueName = @"rewardViewSegue";
+
+     segueName = @"fulfillmentViewSegue";
+
+     segueName = @"testTableViewSegue";
+     */
+    if ([[segue identifier] isEqualToString:@"rewardViewSegue"]) {
         // Get reference to the destination view controller
-        GIDashboardViewController *vc = [segue destinationViewController];
+        //GIDashboardViewController *vc = [segue destinationViewController];
         
         // Pass any objects to the view controller here, like...
         
-        [vc setCompany:[self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row]];
+        //[vc setCompany:[self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row]];
+    } else if([[segue identifier] isEqualToString:@"fulfillmentViewSegue"]) {
+        GIFulfillmentViewController *vc = [segue destinationViewController];
+        //vc.company = [self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+   
     } else if([[segue identifier] isEqualToString:@"testTableViewSegue"]) {
         GIEventBoardViewController *vc = [segue destinationViewController];
         vc.company = [self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row];
@@ -256,10 +286,9 @@
                                    
                                    NSString *timePercent = [NSString stringWithFormat:@"%f", percentage];
                                    
-                                   NSLog(@"The percentage %f, elapsed %f, totalDuration %f, curTime %f", percentage, elapsedTime, totalDuration, curTime);
-                                   //****************************
-                                   //Calculate percentage
-                                   //NSLog(@"The user object %@", [company objectForKey:@"user"]);
+//                                   NSLog(@"The percentage %f, elapsed %f, totalDuration %f, curTime %f", percentage, elapsedTime, totalDuration, curTime);
+                                   
+                                   //Calc percentage.
                                    float partPercentage = 0;
                                    
                                    NSDictionary *userObj = [company objectForKey:@"user"];
@@ -275,17 +304,45 @@
                                            if(totalDuration != 0.0) {
                                                partPercentage = elapsedTime / 86400000;
                                                partPercentage = floor(partPercentage);
-                                               NSLog(@"Number of days %f", partPercentage);
                                                partPercentage = ttlParticipationCount / partPercentage;
-                                               NSLog(@"Total participation points %f", ttlParticipationCount);                                               
                                            }
                                        }
                                    }
                                    
-                                   NSLog(@"Blah Blah Participation count %f", partPercentage);
                                    NSString *partPer = [NSString stringWithFormat:@"%f", partPercentage];
-                                  //****************************
-                                   GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"] numOfParticipants:totalParticipants time:timePercent participation:partPer startDate:[event objectForKey:@"startDate"] endDate:[event objectForKey:@"endDate"]];
+                                   
+                                   //Check fulfillments
+                                   NSArray *fulfillments = [userObj objectForKey:@"fulfillments"];
+                                   
+                                   NSString *isFulfillment = @"NO";
+                                   for (id contest in fulfillments) {
+                                       NSString *contestCompanyId =[contest objectForKey:@"companyId"];
+                                       NSString *companyId = [company objectForKey:@"_id"];
+                                       
+                                       if([contestCompanyId isEqualToString:companyId]) {
+                                           NSLog(@"Setting fulfillment for %@", [company objectForKey:@"name"]);                                           
+                                           isFulfillment = @"YES";
+                                       }
+                                   }
+                                   
+                                   NSString * isReward = @"NO";
+                                   
+                                  //Check rewards
+                                   NSArray *rewards = [userObj objectForKey:@"rewards"];
+                                   
+                                   for (id contest in rewards) {
+                                       NSString *contestCompanyId =[contest objectForKey:@"companyId"];
+                                       NSString *companyId = [company objectForKey:@"_id"];
+                                       
+                                       if([contestCompanyId isEqualToString:companyId]) {
+                                           
+                                           NSLog(@"Setting reward for %@", [company objectForKey:@"name"]);
+                                           isReward = @"YES";
+                                       }
+                                   }
+                                   
+                                   //Create company object and push to array.
+                                   GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"] numOfParticipants:totalParticipants time:timePercent participation:partPer startDate:[event objectForKey:@"startDate"] endDate:[event objectForKey:@"endDate"] fulfillment:isFulfillment reward:isReward];
                                    
 
                                    //Determine whether company is near enough

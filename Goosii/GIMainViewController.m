@@ -61,6 +61,8 @@ BOOL pageControlUsed;
 {
     [super viewDidLoad];
     
+    CGRect rect = [[UIScreen mainScreen] bounds];
+    NSLog(@"Main Screen Width %f and screen Height %f", rect.size.width, rect.size.height);
     //View configurations.
     self.tableView.scrollEnabled = NO;
     self.navigationController.navigationBarHidden = YES;
@@ -107,7 +109,6 @@ BOOL pageControlUsed;
 		
 		// setup each frame to a default height and width, it will be properly placed when we call "updateScrollList"
 		CGRect rect = imageView.frame;
-        NSLog(@"The %d frame %f", i, imageView.frame.size.height);
 		rect.size.height = kScrollObjHeight;
 		rect.size.width = kScrollObjWidth;
 		imageView.frame = rect;

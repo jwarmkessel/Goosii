@@ -9,9 +9,9 @@
 #import "GICompany.h"
 
 @implementation GICompany
-@synthesize name, companyId, address, telephone, totalParticipants, timePercentage, participationPercentage, startDate, endDate;
+@synthesize name, companyId, address, telephone, totalParticipants, timePercentage, participationPercentage, startDate, endDate, fulfillment, reward, responseStr;
 
--(id) initWithName:(NSString*)companyName companyId:(NSString*)identifier address:(NSString*)companyAddress telephone:(NSString*)companyTelephone numOfParticipants:(NSString*)ttlParticipants time:(NSString*)timePercent participation:(NSString*)partPercent startDate:(NSString*)start endDate:(NSString*)end{
+-(id) initWithName:(NSString*)companyName companyId:(NSString*)identifier address:(NSString*)companyAddress telephone:(NSString*)companyTelephone numOfParticipants:(NSString*)ttlParticipants time:(NSString*)timePercent participation:(NSString*)partPercent startDate:(NSString*)start endDate:(NSString*)end fulfillment:(NSString*)isFulfillment reward:(NSString*)isReward {
     
     self = [super init];
     if( !self ) return nil;
@@ -25,6 +25,8 @@
     self.participationPercentage = partPercent;
     self.startDate = start;
     self.endDate = end;
+    self.fulfillment = isFulfillment;
+    self.reward = isReward;
     
     return self;
 }

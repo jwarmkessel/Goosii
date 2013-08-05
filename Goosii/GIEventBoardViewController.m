@@ -162,7 +162,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         cellTransparentView.layer.shadowOffset = CGSizeMake(.6f, .6f);
         cellTransparentView.layer.cornerRadius = 4;
         
-        float progressBarThickness = 40.0f;
+        float progressBarThickness = 20.0f;
         
         //Convert milliseconds to seconds.
         NSTimeInterval seconds = [self.company.endDate floatValue];
@@ -181,9 +181,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         endDateLbl.textColor = [UIColor whiteColor];
         endDateLbl.backgroundColor = [UIColor clearColor];
         
-        
-        
-        
         float progressBarWidth = 280.0f;
         float xPos = (cell.frame.size.width/2 - (progressBarWidth/2));
         
@@ -192,21 +189,9 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         //Set the color of the progress bars.
         CGRect backgroundRect = CGRectMake(xPos, 20.0f, progressBarWidth, progressBarThickness);
 
-        
-        
-        
-        
-        
         GIProgressBar *backgroundProgressBar = [[GIProgressBar alloc] initWithFrame:backgroundRect hexStringColor:@"FF3100"];
-        
-                
-        
         self.timeDurationBar = [[GIProgressBar alloc] initWithFrame:timeDurationBarRect hexStringColor:@"3EFF29"];
-        
-        
-        
-        
-        
+
         //Add the child elements to the cell.
         [cell addSubview:cellTransparentView];
         [cell addSubview:backgroundProgressBar];
@@ -245,18 +230,11 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         //Progress bar elements for participation rate and the duration of the contest.
         float progressBarWidth = 280.0f;
         float xPos = (cell.frame.size.width/2 - (progressBarWidth/2));
-        float progressBarThickness = 40.0f;
+        float progressBarThickness = 20.0f;
         CGRect participationBarBackgroundRect = CGRectMake(xPos, 20.0f, progressBarWidth, progressBarThickness);
         
         GIProgressBar *participationBarBackground = [[GIProgressBar alloc] initWithFrame:participationBarBackgroundRect hexStringColor:@"FF3100"];
         
-        
-        
-        
-        
-        
-        
-
         CGRect participationBarRect = CGRectMake(xPos, 20.0f, 0.0f, progressBarThickness);
         self.participationBar = [[GIProgressBar alloc] initWithFrame:participationBarRect hexStringColor:@"3EFF29"];
         
@@ -353,26 +331,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 - (void)participationBtnHandler {
-    NSLog(@"participation btn clicked");
-    
-    //This is the string that will get posted to the facebook wall.
-    //http://goosii.com:3001/addFacebookPost/theString/theUserId
-    //PList *plist = [[PList alloc] initWithNamespace:@"Goosii"];
-//    NSString *userId = [plist objectForKey:@"userId"];
-//    NSString *companyId = [plist objectForKey:@"companyId"];
-//    
-//    NSString * wallText = @"I'm hanging at the HotSpot Cafe!";
-//    wallText = [wallText stringByAppendingString:@". http://yourcompanyname.Goosii.com/"];
-//    NSString *post = [self encodeToPercentEscapeString:wallText];
-//    
-//    NSString *urlPost = [@"http://50.57.225.202:3001/enterSweepstake/" stringByAppendingString:post];
-//    
-//    userId = [NSString stringWithFormat:@"/%@",userId];
-//    urlPost = [urlPost stringByAppendingString:userId];
-//    companyId = [NSString stringWithFormat:@"/%@",companyId];
-//    urlPost = [urlPost stringByAppendingString:companyId];
-//    
-//    NSLog(@"The facebook urlpost %@", urlPost);
     
     if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
     {
