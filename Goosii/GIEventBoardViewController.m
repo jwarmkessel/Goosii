@@ -13,7 +13,7 @@
 #import "GICountingLabel.h"
 #import "GICompany.h"
 #import "GIPlist.h"
-
+#import "GICheckinViewController.h"
 @interface GIEventBoardViewController ()
 {
     UITextView *sharingTextView;
@@ -60,6 +60,34 @@
     [self.tableView setDelegate:self];
 
     [self.tableView setBackgroundView:imgView];
+    
+    // change the back button to cancel and add an event handler
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"back"
+                                                                   style:UIBarButtonItemStyleBordered
+                                                                  target:self
+                                                                  action:@selector(handleBack:)];
+    
+    self.navigationItem.leftBarButtonItem = backButton;
+}
+
+- (void) handleBack:(id)sender {
+    // pop to root view controller
+    NSArray *viewControllerArray = [self.navigationController viewControllers];
+    NSLog(@"Nav controller array %lu", (unsigned long)[[self.navigationController viewControllers] count]);
+    int parentViewControllerIndex = [viewControllerArray count] - 2;
+    
+    
+    
+    if([[self.navigationController.viewControllers objectAtIndex:(parentViewControllerIndex)] isKindOfClass:[GICheckinViewController class]])
+    {
+        NSLog(@"Fucking awesome");
+        GICheckinViewController *checkinViewController = [self.navigationController.viewControllers objectAtIndex:(parentViewControllerIndex)];
+
+        [checkinViewController viewDidLoad];
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -244,7 +272,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         [cell addSubview:participationBarBackground];
         [cell addSubview:self.participationBar];
         [cell addSubview:participationLbl];
-
         
         //Animate the progress bars to juic-ify this app!
         [UIView animateWithDuration:1 animations:^{
