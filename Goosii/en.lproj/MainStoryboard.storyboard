@@ -188,7 +188,7 @@
                     </tableView>
                     <connections>
                         <outlet property="view" destination="VwC-dL-50g" id="e3U-Qy-0xT"/>
-                        <segue destination="lRG-hr-8DZ" kind="push" identifier="testTableViewSegue" id="G0Z-Z4-O7V"/>
+                        <segue destination="lRG-hr-8DZ" kind="push" identifier="eventDrillDownViewSegue" id="G0Z-Z4-O7V"/>
                         <segue destination="GfH-FH-JsU" kind="push" identifier="fulfillmentViewSegue" id="DLJ-A9-Tj2"/>
                         <segue destination="mfL-8Q-OuG" kind="push" identifier="rewardViewSegue" id="qd7-fi-Id7"/>
                     </connections>
@@ -394,6 +394,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="dec-2j-6Lj"/>
-        <segue reference="G0Z-Z4-O7V"/>
+        <segue reference="nhI-oA-tfl"/>
     </inferredMetricsTieBreakers>
 </document>

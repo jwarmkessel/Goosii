@@ -21,10 +21,11 @@
 @interface GICheckinViewController ()
 @property (strong, nonatomic) UIView *loadingMask;
 @property (strong, nonatomic) CLLocationManager *locationManager;
+@property (strong, nonatomic) UIActivityIndicatorView *indicator;
 @end
 
 @implementation GICheckinViewController
-@synthesize loadingMask, nearbyLocationsAry, locationManager;
+@synthesize loadingMask, nearbyLocationsAry, locationManager, indicator;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -56,7 +57,17 @@
     self.loadingMask.backgroundColor = [UIColor blackColor];
     self.loadingMask.alpha = 0.5;
     
+    self.indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicator.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
+    indicator.center = self.view.center;
+    [self.view addSubview:indicator];
+    [indicator bringSubviewToFront:self.view];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = TRUE;
+    
     [self.view addSubview:self.loadingMask];
+    [self.view addSubview:indicator];
+    
+    [indicator startAnimating];
 }
 
 - (void)didReceiveMemoryWarning
@@ -147,9 +158,9 @@
     } else if([selectedCompany.fulfillment isEqualToString:@"YES"]) {
         segueName = @"fulfillmentViewSegue";
     } else {
-        segueName = @"testTableViewSegue";
+        segueName = @"eventDrillDownViewSegue";
     }
-    segueName = @"testTableViewSegue";
+    segueName = @"eventDrillDownViewSegue";
     NSLog(@"Segue path is %@", segueName);
     
     [self performSegueWithIdentifier:segueName sender:self];
@@ -203,9 +214,20 @@
         GIFulfillmentViewController *vc = [segue destinationViewController];
         //vc.company = [self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row];
    
-    } else if([[segue identifier] isEqualToString:@"testTableViewSegue"]) {
+    } else if([[segue identifier] isEqualToString:@"eventDrillDownViewSegue"]) {
         GIEventBoardViewController *vc = [segue destinationViewController];
         vc.company = [self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+        
+        NSTimeInterval timeInMilliseconds = [[NSDate date] timeIntervalSince1970];
+        
+        timeInMilliseconds = timeInMilliseconds/1000;
+        
+        NSLog(@"startDate %f v curDate %f", [[vc.company startDate] floatValue], floor(timeInMilliseconds));
+        if([[vc.company startDate] floatValue] <= timeInMilliseconds) {
+            NSLog(@"Currently no events");
+            [vc noEventsPopUp];
+            
+        }
     }
 }
 
@@ -357,6 +379,7 @@
                                }
                                [self.tableView reloadData];
                                [self.loadingMask removeFromSuperview];
+                               [indicator stopAnimating];
 
                            }];
     

@@ -9,6 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @class GICompany;
-@interface GIEventBoardViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
+
+@interface GIEventBoardViewController : UITableViewController  {
+    BOOL isEvent;
+}
+
 @property (nonatomic, strong) GICompany * company;
+
+- (void)noEventsPopUp;
 @end
