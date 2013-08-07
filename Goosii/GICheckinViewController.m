@@ -200,7 +200,7 @@
         
         //[vc setCompany:[self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row]];
     } else if([[segue identifier] isEqualToString:@"fulfillmentViewSegue"]) {
-        GIFulfillmentViewController *vc = [segue destinationViewController];
+//        GIFulfillmentViewController *vc = [segue destinationViewController];
         //vc.company = [self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row];
    
     } else if([[segue identifier] isEqualToString:@"eventDrillDownViewSegue"]) {
@@ -381,7 +381,7 @@
                                    }
                                    
                                    //Create company object and push to array.
-                                   GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"] numOfParticipants:totalParticipants time:timePercent participation:partPer startDate:[event objectForKey:@"startDate"] endDate:[event objectForKey:@"endDate"] fulfillment:isFulfillment reward:isReward];
+                                   GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"] numOfParticipants:totalParticipants time:timePercent participation:partPer startDate:[event objectForKey:@"startDate"] endDate:[event objectForKey:@"endDate"] fulfillment:isFulfillment reward:isReward longitude:[company objectForKey:@"longitude"] latitude:[company objectForKey:@"latitude"]];
                                    
 
                                    //Determine whether company is near enough

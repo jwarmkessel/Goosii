@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import <MapKit/MapKit.h>
 @class GICompany;
 
-@interface GIEventBoardViewController : UITableViewController  {
+@interface GIEventBoardViewController : UITableViewController <MKMapViewDelegate, UITextViewDelegate> {
     BOOL isEvent;
 }
 

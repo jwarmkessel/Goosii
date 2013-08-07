@@ -104,7 +104,7 @@
                         for (UIView *viewLayer3 in [viewLayer2 subviews]) {
                             if ([viewLayer3 isKindOfClass:[UITextView class]]) {
                                 [(UITextView *)viewLayer3 setDelegate:self];
-                                sharingTextView = (UITextView *)viewLayer3;
+                                sharingTextView = (UITextView *)viewLayer3;                            
                             }
                         }
                     }

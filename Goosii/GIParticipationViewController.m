@@ -106,21 +106,21 @@
                                
                                NSLog(@"ReceivedData %@", newStr);
                                
-                               SBJsonParser *parser = [[SBJsonParser alloc] init];
+//                               SBJsonParser *parser = [[SBJsonParser alloc] init];
+//                               
+//                               NSArray *jsonObject = [parser objectWithString:newStr];
                                
-                               NSArray *jsonObject = [parser objectWithString:newStr];
-                               
-                               for (id company in jsonObject) {
-                                   
-                                   NSArray *participantsAry = [company objectForKey:@"participants"];
-                                   
-                                   NSString *totalParticipants = [NSString stringWithFormat:@"%lu", (unsigned long)[participantsAry count]];
-                                   
-                                   
-                                   //GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"] numOfParticipants:totalParticipants];
-
-                                   //[self.eventList addObject:companyObj];
-                               }
+//                               for (id company in jsonObject) {
+//                                   
+//                                   NSArray *participantsAry = [company objectForKey:@"participants"];
+//                                   
+//                                   NSString *totalParticipants = [NSString stringWithFormat:@"%lu", (unsigned long)[participantsAry count]];
+//                                   
+//                                   
+//                                   //GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"] numOfParticipants:totalParticipants];
+//
+//                                   [self.eventList addObject:companyObj];
+//                               }
                                
                                [self.tableView reloadData];
                                //[self.loadingMask removeFromSuperview];

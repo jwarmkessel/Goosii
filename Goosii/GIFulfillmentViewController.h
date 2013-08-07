@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GIFulfillmentViewController : UIViewController
+@interface GIFulfillmentViewController : UIViewController <UITextViewDelegate>
 
 @end

@@ -71,8 +71,20 @@
                                                                    style:UIBarButtonItemStyleBordered
                                                                   target:self
                                                                   action:@selector(handleBack:)];
-    
     self.navigationItem.leftBarButtonItem = backButton;
+
+    //Set the color of the NavBar
+    self.navigationController.navigationBar.tintColor = [self colorWithHexString:@"C63D0F"];
+    self.wantsFullScreenLayout = YES;
+    [self.navigationController.navigationBar setAlpha:0.8];
+}
+
+- (void)mapViewWillStartLoadingMap:(MKMapView *)mapView {
+    
+}
+
+- (void)mapViewDidFinishLoadingMap:(MKMapView *)mapView {
+    
 }
 
 - (void)showCompanyInfo {
@@ -87,12 +99,16 @@
     self.mapView.layer.borderColor = [UIColor blackColor].CGColor;
     self.mapView.layer.borderWidth = 3.0f;
     
+    [self.mapView.layer setBorderColor:[self colorWithHexString:@"C63D0F"].CGColor];
+    [self.mapView.layer setBorderWidth:1.5f];
+    
     UITextView *noEventLbl = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 10.0f, 300.0f,150.0f)];
     noEventLbl.text = self.company.name;
     noEventLbl.textAlignment = NSTextAlignmentCenter;;
     [noEventLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
     noEventLbl.textColor = [UIColor whiteColor];
     noEventLbl.backgroundColor = [UIColor clearColor];
+    noEventLbl.editable = NO;
     
     // border radius
     [self.mapView.layer setCornerRadius:10.0f];
@@ -111,7 +127,30 @@
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];
     [window addSubview:self.mapView];
     
+    MKCoordinateRegion newRegion;
+
+    NSLog(@"Latitude %f", [self.company.latitude doubleValue]);
+    newRegion.center.latitude = [self.company.latitude doubleValue];
+    newRegion.center.longitude = [self.company.longitude doubleValue];
+    newRegion.span.latitudeDelta = 1.0;
+    newRegion.span.longitudeDelta = 8.0;
+    [self.mapView setRegion:newRegion animated:YES];
+    
     [self.mapView addSubview:noEventLbl];
+    
+    [UIView animateWithDuration:2.0 animations:^{
+        [self.mapView setAlpha:0.6];
+        MKCoordinateRegion newRegion;
+        
+        newRegion.center.latitude = [self.company.latitude doubleValue];
+        newRegion.center.longitude = [self.company.longitude doubleValue];
+        
+        newRegion.span.latitudeDelta = 0.05;
+        newRegion.span.longitudeDelta = 0.05;
+        [self.mapView setRegion:newRegion animated:YES];
+    } completion:^(BOOL finished) {
+        NSLog(@"Done");
+    }];
 }
 
 - (void)showNoEventsPopUp {
@@ -132,6 +171,7 @@
     [noEventLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
     noEventLbl.textColor = [UIColor whiteColor];
     noEventLbl.backgroundColor = [UIColor clearColor];
+    noEventLbl.editable = NO;
     
     // border radius
     [self.noEventsPopUpView.layer setCornerRadius:30.0f];
