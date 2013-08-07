@@ -14,6 +14,9 @@
 #import "GICompany.h"
 #import "GIPlist.h"
 #import "GICheckinViewController.h"
+#import <MapKit/MapKit.h>
+
+
 @interface GIEventBoardViewController ()
 {
     UITextView *sharingTextView;
@@ -29,10 +32,11 @@
 @property (nonatomic, strong) UIButton *participationBtn;
 
 @property (nonatomic, strong) UIView *noEventsPopUpView;
+@property (nonatomic, strong) MKMapView *mapView;
 @end
 
 @implementation GIEventBoardViewController
-@synthesize company, noEventsPopUpView;
+@synthesize company, noEventsPopUpView, mapView;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -71,7 +75,46 @@
     self.navigationItem.leftBarButtonItem = backButton;
 }
 
-- (void)noEventsPopUp {
+- (void)showCompanyInfo {
+    float xPos = [[UIScreen mainScreen] bounds].size.width;
+    //UIView *noEventsPopUpMask = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    [self.tableView setAlpha:0.5];
+    xPos = xPos/2 - 150.0f;
+    float yPos = 30.0f;
+    CGRect noEventsPopUpRect = CGRectMake(xPos, yPos, 300.0f, [[UIScreen mainScreen] bounds].size.height - 60.0f);
+    self.mapView = [[MKMapView alloc] initWithFrame:noEventsPopUpRect];
+    self.mapView.layer.borderColor = [UIColor blackColor].CGColor;
+    self.mapView.layer.borderWidth = 3.0f;
+    
+    UITextView *noEventLbl = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 10.0f, 300.0f,150.0f)];
+    noEventLbl.text = self.company.name;
+    noEventLbl.textAlignment = NSTextAlignmentCenter;;
+    [noEventLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
+    noEventLbl.textColor = [UIColor whiteColor];
+    noEventLbl.backgroundColor = [UIColor clearColor];
+    
+    // border radius
+    [self.mapView.layer setCornerRadius:10.0f];
+    
+    // border
+    //    [self.noEventsPopUpView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
+    [self.mapView.layer setBorderWidth:1.5f];
+    
+    // drop shadow
+    [self.mapView.layer setShadowColor:[UIColor blackColor].CGColor];
+    [self.mapView.layer setShadowOpacity:0.8];
+    [self.mapView.layer setShadowRadius:3.0];
+    [self.mapView.layer setShadowOffset:CGSizeMake(2.0, 2.0)];
+    
+    [self.mapView setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    [window addSubview:self.mapView];
+    
+    [self.mapView addSubview:noEventLbl];
+}
+
+- (void)showNoEventsPopUp {
     float xPos = [[UIScreen mainScreen] bounds].size.width;
     //UIView *noEventsPopUpMask = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
@@ -214,6 +257,10 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         UIButton* infoBtn = [[UIButton alloc] initWithFrame:infoRect];
         UIImage *infoBtnImage = [UIImage imageNamed:@"Info_Button.png"];
         [infoBtn setBackgroundImage:infoBtnImage forState:UIControlStateNormal];
+        
+        [infoBtn addTarget:self
+                 action:@selector(showCompanyInfo)
+                  forControlEvents:UIControlEventTouchDown];
   
         self.moreInfoTblViewcell = cell;
         [cell addSubview:transparentCompanyNameCell];

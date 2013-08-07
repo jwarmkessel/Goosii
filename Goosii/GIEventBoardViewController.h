@@ -16,5 +16,5 @@
 
 @property (nonatomic, strong) GICompany * company;
 
-- (void)noEventsPopUp;
+- (void)showNoEventsPopUp;
 @end

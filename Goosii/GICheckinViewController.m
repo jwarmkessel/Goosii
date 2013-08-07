@@ -191,18 +191,7 @@
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Make sure your segue name in storyboard is the same as this line
-    
-    /*
-     Get selected comp obj.
-     reward trigger
-     fulfillment trigger
-     segueName = @"rewardViewSegue";
 
-     segueName = @"fulfillmentViewSegue";
-
-     segueName = @"testTableViewSegue";
-     */
     if ([[segue identifier] isEqualToString:@"rewardViewSegue"]) {
         // Get reference to the destination view controller
         //GIDashboardViewController *vc = [segue destinationViewController];
@@ -222,10 +211,11 @@
         
         timeInMilliseconds = timeInMilliseconds/1000;
         
-        NSLog(@"startDate %f v curDate %f", [[vc.company startDate] floatValue], floor(timeInMilliseconds));
+        //NSLog(@"startDate %f v curDate %f", [[vc.company startDate] floatValue], floor(timeInMilliseconds));
+        
         if([[vc.company startDate] floatValue] <= timeInMilliseconds) {
             NSLog(@"Currently no events");
-            [vc noEventsPopUp];
+            [vc showNoEventsPopUp];
             
         }
     }
@@ -294,39 +284,66 @@
                                    
                                    //NSLog(@"The Current Date %f", timeInMiliseconds);
                                    NSDictionary *event = [company objectForKey:@"contest"];
-                                   float startDate = floor([[event objectForKey:@"startDate"] floatValue]);
-                                   float endDate = floor([[event objectForKey:@"endDate"] floatValue]);
                                    
-                                   //NSLog(@"The start %f, end %f", startDate, endDate);
-                                   float curTime = floor(timeInMiliseconds);
+                                   double startDate = floor([[event objectForKey:@"startDate"] doubleValue]);
+                                   double endDate = floor([[event objectForKey:@"endDate"] doubleValue]);
+                                   startDate = startDate / 1000;
+                                   endDate = endDate / 1000;
+                                   NSLog(@"START DATE %f", startDate);
+                                   NSLog(@"END DATE %f", endDate);
                                    
-                                   float totalDuration = endDate - startDate;
                                    
-                                   float elapsedTime = curTime - totalDuration;
+                                   double curTime = floor(timeInMiliseconds);
+                                   NSLog(@"CURRENT DATE %f", curTime);
+
+                                   NSLog(@"----------------------------------------");
+
+                                   double totalDuration = endDate - startDate;
+                                   NSLog(@"TOTAL DURATION IN MIL %f", totalDuration);
                                    
-                                   float percentage = elapsedTime / totalDuration;
+                                   //Elapsed time in seconds equals the current time minus the startdate.
+                                   NSLog(@"START DATE AGAIN ----------> %f", startDate);
+                                   
+                                   
+                                   double elapsedTime = curTime - startDate;
+                                   
+                                   NSLog(@"ELAPSED TIME %f", elapsedTime);
+                                   
+                                   double percentage = elapsedTime / totalDuration;
+                                   
+                                   NSLog(@"PERCENTAGE OF TIME ----------> %f", percentage);
                                    
                                    NSString *timePercent = [NSString stringWithFormat:@"%f", percentage];
                                    
-//                                   NSLog(@"The percentage %f, elapsed %f, totalDuration %f, curTime %f", percentage, elapsedTime, totalDuration, curTime);
-                                   
-                                   //Calc percentage.
+                                   //Calculate Participation Percentage.
                                    float partPercentage = 0;
                                    
                                    NSDictionary *userObj = [company objectForKey:@"user"];
                                    NSArray *contests = [userObj objectForKey:@"contests"];
                                    for (id contest in contests) {
+                                       partPercentage = 0;
+                                       
                                        NSString *contestCompanyId =[contest objectForKey:@"companyId"];
                                        NSString *companyId = [company objectForKey:@"_id"];
                                        
                                        if([contestCompanyId isEqualToString:companyId]) {
-                                       
-                                           float ttlParticipationCount = [[contest objectForKey:@"participationCount"] floatValue];
+                                           
+                                           float ttlParticipationCount = 0;
+                                           
+                                           if([contest objectForKey:@"participationCount"] == nil) {
+                                               NSLog(@"total participation is nil so we add one");
+                                               ttlParticipationCount = 1;
+                                           } else {
+                                               ttlParticipationCount = [[contest objectForKey:@"participationCount"] floatValue];
+                                           }
+                                           
+                                           NSLog(@"The participation count %f", ttlParticipationCount);
                                            
                                            if(totalDuration != 0.0) {
-                                               partPercentage = elapsedTime / 86400000;
+                                               partPercentage = elapsedTime / 86400;
                                                partPercentage = floor(partPercentage);
-                                               partPercentage = ttlParticipationCount / partPercentage;
+                                               partPercentage =  ttlParticipationCount / partPercentage;
+                                               NSLog(@"PART PERCENTAGE %f", partPercentage);
                                            }
                                        }
                                    }
