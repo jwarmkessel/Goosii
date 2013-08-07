@@ -13,6 +13,7 @@
 #import "GIEventBoardViewController.h"
 #import "GIPlist.h"
 #import "GIFulfillmentViewController.h"
+#import "GIMainViewController.h"
 
 #define METERS_PER_MILE 1609.344
 #define METERS_TO_MILE_CONVERSION 0.00062137
@@ -41,6 +42,8 @@
     [super viewDidLoad];
     
     self.navigationController.navigationBarHidden = NO;
+    self.navigationController.navigationBar.autoresizesSubviews = YES;
+    [self.tableView setContentInset:UIEdgeInsetsMake(-20,0,0,0)];
 
     self.locationManager = [[CLLocationManager alloc] init];
     [self.locationManager setDelegate:self];
@@ -49,14 +52,29 @@
     [self.locationManager startUpdatingLocation];
     
     self.nearbyLocationsAry = [[NSMutableArray alloc] init];
+    
+    // change the back button to cancel and add an event handler
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"back"
+                                                                   style:UIBarButtonItemStyleBordered
+                                                                  target:self
+                                                                  action:@selector(handleBack:)];
+    self.navigationItem.leftBarButtonItem = backButton;
+    
+    //Set the color of the NavBar
+    self.navigationController.navigationBar.tintColor = [self colorWithHexString:@"C63D0F"];
+    self.wantsFullScreenLayout = YES;
+    self.navigationController.navigationBar.translucent = YES;
+    [self.navigationController.navigationBar setAlpha:0.9];
+
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:YES];
+    
     self.loadingMask = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.loadingMask.backgroundColor = [UIColor blackColor];
     self.loadingMask.alpha = 0.5;
-    
+
     self.indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     indicator.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
     indicator.center = self.view.center;
@@ -68,6 +86,7 @@
     [self.view addSubview:indicator];
     
     [indicator startAnimating];
+    [super viewWillAppear:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -76,6 +95,16 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void) handleBack:(id)sender {
+    // pop to root view controller
+    NSArray *viewControllerArray = [self.navigationController viewControllers];
+    int parentViewControllerIndex = [viewControllerArray count] - 2;
+    GIMainViewController *checkinViewController = [self.navigationController.viewControllers objectAtIndex:(parentViewControllerIndex)];
+    [self.navigationController popViewControllerAnimated:YES];
+    
+    [checkinViewController hideNavBar];
+    
+}
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -416,6 +445,41 @@
 - (BOOL)locationManagerShouldDisplayHeadingCalibration:(CLLocationManager *)manager {
     NSLog(@"locationManagerShouldDisplayHeadingCalibration");
     return YES;
+}
+
+-(UIColor*)colorWithHexString:(NSString*)hex {
+    NSString *cString = [[hex stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
+    
+    // String should be 6 or 8 characters
+    if ([cString length] < 6) return [UIColor grayColor];
+    
+    // strip 0X if it appears
+    if ([cString hasPrefix:@"0X"]) cString = [cString substringFromIndex:2];
+    
+    if ([cString length] != 6) return  [UIColor grayColor];
+    
+    // Separate into r, g, b substrings
+    NSRange range;
+    range.location = 0;
+    range.length = 2;
+    NSString *rString = [cString substringWithRange:range];
+    
+    range.location = 2;
+    NSString *gString = [cString substringWithRange:range];
+    
+    range.location = 4;
+    NSString *bString = [cString substringWithRange:range];
+    
+    // Scan values
+    unsigned int r, g, b;
+    [[NSScanner scannerWithString:rString] scanHexInt:&r];
+    [[NSScanner scannerWithString:gString] scanHexInt:&g];
+    [[NSScanner scannerWithString:bString] scanHexInt:&b];
+    
+    return [UIColor colorWithRed:((float) r / 255.0f)
+                           green:((float) g / 255.0f)
+                            blue:((float) b / 255.0f)
+                           alpha:1.0f];
 }
 
 

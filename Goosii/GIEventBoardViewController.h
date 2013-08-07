@@ -13,7 +13,7 @@
 @interface GIEventBoardViewController : UITableViewController <MKMapViewDelegate, UITextViewDelegate> {
     BOOL isEvent;
 }
-
+@property (nonatomic, strong) MKMapView *mapView;
 @property (nonatomic, strong) GICompany * company;
 
 - (void)showNoEventsPopUp;

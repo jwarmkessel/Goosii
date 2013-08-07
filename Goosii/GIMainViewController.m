@@ -123,6 +123,10 @@ BOOL pageControlUsed;
 
 }
 
+- (void) hideNavBar {
+    NSLog(@"Hide the nav bar");
+    self.navigationController.navigationBarHidden = YES;
+}
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
 

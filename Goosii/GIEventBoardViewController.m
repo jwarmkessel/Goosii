@@ -32,11 +32,13 @@
 @property (nonatomic, strong) UIButton *participationBtn;
 
 @property (nonatomic, strong) UIView *noEventsPopUpView;
-@property (nonatomic, strong) MKMapView *mapView;
+@property (nonatomic, strong) UIView *companyInfoContainerView;
+
+@property (nonatomic, strong) UIBarButtonItem *backButton;
 @end
 
 @implementation GIEventBoardViewController
-@synthesize company, noEventsPopUpView, mapView;
+@synthesize company, noEventsPopUpView, mapView, companyInfoContainerView, backButton;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -67,7 +69,8 @@
     [self.tableView setBackgroundView:imgView];
     
     // change the back button to cancel and add an event handler
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"back"
+    
+    self.backButton = [[UIBarButtonItem alloc] initWithTitle:@"back"
                                                                    style:UIBarButtonItemStyleBordered
                                                                   target:self
                                                                   action:@selector(handleBack:)];
@@ -76,70 +79,101 @@
     //Set the color of the NavBar
     self.navigationController.navigationBar.tintColor = [self colorWithHexString:@"C63D0F"];
     self.wantsFullScreenLayout = YES;
-    [self.navigationController.navigationBar setAlpha:0.8];
+    self.navigationController.navigationBar.translucent = YES;
+    [self.navigationController.navigationBar setAlpha:0.9];
+    
+    //Set mapview delegate
+    [self.mapView setDelegate:self];
 }
 
 - (void)mapViewWillStartLoadingMap:(MKMapView *)mapView {
-    
+    NSLog(@"Mapview did started loading");    
 }
 
 - (void)mapViewDidFinishLoadingMap:(MKMapView *)mapView {
-    
+    NSLog(@"Mapview did finish loading");
 }
 
 - (void)showCompanyInfo {
+    
+    self.backButton.enabled = NO;
+    //Get the window object.
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+
     float xPos = [[UIScreen mainScreen] bounds].size.width;
-    //UIView *noEventsPopUpMask = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
     [self.tableView setAlpha:0.5];
-    xPos = xPos/2 - 150.0f;
-    float yPos = 30.0f;
-    CGRect noEventsPopUpRect = CGRectMake(xPos, yPos, 300.0f, [[UIScreen mainScreen] bounds].size.height - 60.0f);
+    xPos = xPos/2 - 125.0f;
+    float yPos = 75.0f;
+    float xWidth = 250;
+    float yHeightMargin = 100.0f;
+    float yHeight = [[UIScreen mainScreen] bounds].size.height - yHeightMargin;
+    
+    float layerCornerRadius = 5.0f;
+    
+    //Create the foundation layer for the company info screen.
+    CGRect companyInfoContainerViewRect = CGRectMake(xPos, yPos, xWidth, yHeight);
+    self.companyInfoContainerView = [[UIView alloc] initWithFrame:companyInfoContainerViewRect];
+    
+    //Add the foundation layer to the window.
+    [window addSubview:self.companyInfoContainerView];
+    
+    //Initialize the mapview and add it to the foundation layer.
+    CGRect noEventsPopUpRect = CGRectMake(0.0f, 0.0f, xWidth, yHeight);
     self.mapView = [[MKMapView alloc] initWithFrame:noEventsPopUpRect];
-    self.mapView.layer.borderColor = [UIColor blackColor].CGColor;
-    self.mapView.layer.borderWidth = 3.0f;
-    
-    [self.mapView.layer setBorderColor:[self colorWithHexString:@"C63D0F"].CGColor];
-    [self.mapView.layer setBorderWidth:1.5f];
-    
-    UITextView *noEventLbl = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 10.0f, 300.0f,150.0f)];
-    noEventLbl.text = self.company.name;
-    noEventLbl.textAlignment = NSTextAlignmentCenter;;
-    [noEventLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
-    noEventLbl.textColor = [UIColor whiteColor];
-    noEventLbl.backgroundColor = [UIColor clearColor];
-    noEventLbl.editable = NO;
-    
-    // border radius
-    [self.mapView.layer setCornerRadius:10.0f];
-    
-    // border
-    //    [self.noEventsPopUpView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
-    [self.mapView.layer setBorderWidth:1.5f];
-    
-    // drop shadow
+    [self.companyInfoContainerView addSubview:self.mapView];
+    [self.mapView.layer setCornerRadius:layerCornerRadius];
     [self.mapView.layer setShadowColor:[UIColor blackColor].CGColor];
     [self.mapView.layer setShadowOpacity:0.8];
     [self.mapView.layer setShadowRadius:3.0];
     [self.mapView.layer setShadowOffset:CGSizeMake(2.0, 2.0)];
     
-    [self.mapView setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
-    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-    [window addSubview:self.mapView];
-    
+    //MapView configurations
     MKCoordinateRegion newRegion;
-
-    NSLog(@"Latitude %f", [self.company.latitude doubleValue]);
     newRegion.center.latitude = [self.company.latitude doubleValue];
     newRegion.center.longitude = [self.company.longitude doubleValue];
     newRegion.span.latitudeDelta = 1.0;
     newRegion.span.longitudeDelta = 8.0;
     [self.mapView setRegion:newRegion animated:YES];
+
+    CGRect mapViewTintedLayerRect = CGRectMake(0.0f, 0.0f, xWidth, yHeight);
+    UIView *mapViewTintedLayer = [[UIView alloc] initWithFrame:mapViewTintedLayerRect];
+    [self.companyInfoContainerView addSubview:mapViewTintedLayer];
+
+    [mapViewTintedLayer setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
+    [mapViewTintedLayer setAlpha:0.6];
+    [mapViewTintedLayer.layer setBorderColor:[self colorWithHexString:@"C63D0F"].CGColor];
+    [mapViewTintedLayer.layer setBorderWidth:1.5f];
+    [mapViewTintedLayer.layer setCornerRadius:layerCornerRadius];
     
-    [self.mapView addSubview:noEventLbl];
+    UITextView *companyNameLbl = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 10.0f, xWidth,150.0f)];
+    companyNameLbl.text = self.company.name;
+    companyNameLbl.textAlignment = NSTextAlignmentCenter;;
+    [companyNameLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
+    companyNameLbl.textColor = [UIColor whiteColor];
+    companyNameLbl.backgroundColor = [UIColor clearColor];
+    companyNameLbl.editable = NO;
+    
+    UITextView *addressLbl = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 50.0f, xWidth,150.0f)];
+    addressLbl.text = self.company.address;
+    addressLbl.textAlignment = NSTextAlignmentCenter;;
+    [addressLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
+    addressLbl.textColor = [UIColor whiteColor];
+    addressLbl.backgroundColor = [UIColor clearColor];
+    addressLbl.editable = NO;
+    
+    UITextView *telLbl = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 100.0f, xWidth,150.0f)];
+    telLbl.text = [NSString stringWithFormat:@"%@", self.company.telephone];
+    telLbl.textAlignment = NSTextAlignmentCenter;;
+    [telLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
+    telLbl.textColor = [UIColor whiteColor];
+    telLbl.backgroundColor = [UIColor clearColor];
+    telLbl.editable = NO;
+    
+    [self.companyInfoContainerView addSubview:companyNameLbl];
+    [self.companyInfoContainerView addSubview:addressLbl];
+    [self.companyInfoContainerView addSubview:telLbl];
     
     [UIView animateWithDuration:2.0 animations:^{
-        [self.mapView setAlpha:0.6];
         MKCoordinateRegion newRegion;
         
         newRegion.center.latitude = [self.company.latitude doubleValue];
@@ -200,7 +234,7 @@
          [self.noEventsPopUpView setAlpha:1];
          CATransform3D rotationAndPerspectiveTransform = CATransform3DIdentity;
          rotationAndPerspectiveTransform.m34 = 1.0 / -500;
-         rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, -45.0 *M_PI / 180.0f, 0.0f, 1.0f, 0.0f);
+         rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, -45.0 * M_PI / 180.0f, 0.0f, 1.0f, 0.0f);
          noEventLbl.layer.transform = rotationAndPerspectiveTransform;
          
 
@@ -245,7 +279,7 @@
         }
         GICheckinViewController *checkinViewController = [self.navigationController.viewControllers objectAtIndex:(parentViewControllerIndex)];
 
-        [checkinViewController viewDidLoad];
+        [checkinViewController loadView];
         [self.navigationController popViewControllerAnimated:YES];
     } else {
         [self.navigationController popViewControllerAnimated:YES];

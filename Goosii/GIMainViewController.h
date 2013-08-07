@@ -15,4 +15,6 @@
 
 @property (nonatomic, retain) UIView *scrollView1;
 @property (nonatomic, retain) UIPageControl *pageControl;
+
+- (void) hideNavBar;
 @end
