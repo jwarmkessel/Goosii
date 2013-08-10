@@ -12,12 +12,13 @@
 
 @interface GIMainViewController ()
 @property (strong, nonatomic) IBOutlet UILabel *testLabel;
+@property (strong, nonatomic) UIImageView *animation;
+
 -(UIColor*)colorWithHexString:(NSString*)hex;
 @end
 
 @implementation GIMainViewController
-
-@synthesize scrollView1, pageControl;
+@synthesize scrollView1, pageControl, animation;
 
 const CGFloat kScrollObjHeight	= 199.0;
 const CGFloat kScrollObjWidth	= 280.0;
@@ -60,9 +61,7 @@ BOOL pageControlUsed;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    CGRect rect = [[UIScreen mainScreen] bounds];
-    NSLog(@"Main Screen Width %f and screen Height %f", rect.size.width, rect.size.height);
+
     //View configurations.
     self.tableView.scrollEnabled = NO;
     self.navigationController.navigationBarHidden = YES;
@@ -116,8 +115,9 @@ BOOL pageControlUsed;
 		[scrollView1 addSubview:imageView];
 	}
 	
-	[self layoutScrollImages];	// now place the photos in serial layout within the scrollview
+//	[self layoutScrollImages];	// now place the photos in serial layout within the scrollview
     
+
     //[self.tableView addSubview:scrollView1];
     //[self.tableView addSubview:pageControl];
 
@@ -142,40 +142,27 @@ BOOL pageControlUsed;
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    NSLog(@"Memory warning?");
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell
 forRowAtIndexPath:(NSIndexPath *)indexPath {
-    UIImageView *animation = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    animation.image = [UIImage imageNamed:@"Intro_00079.png"];
-    [cell addSubview:animation];
+    self.animation = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.animation.image = [UIImage imageNamed:@"Intro_00079.png"];
+    [cell addSubview:self.animation];
     
     [self runLogoAnimation];
-    
-//    cell.backgroundColor = [self colorWithHexString:@"C63D0F"];
-//    
-//    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(cell.bounds.size.width/2 - 100, 50, 200, 150)];
-//    imgView.image = [UIImage imageNamed:@"TransparentGoosiiLogo.png"];
-//    
-//    [cell addSubview:imgView];
-//    
-//    CGRect playBtnFrame = CGRectMake(cell.bounds.size.width/2 - 100, 360, 200, 100);
-//    
-//    UIButton *playBtn = [[UIButton alloc] initWithFrame:playBtnFrame];
-//    
-//    [playBtn setImage:[UIImage imageNamed:@"playBtn.png"] forState:UIControlStateNormal];
-//    [playBtn addTarget:self action:@selector(checkinHandler) forControlEvents:UIControlEventTouchUpInside];
-//    
-//    [cell addSubview:playBtn];
 }
 
 - (void)runLogoAnimation {
     
-    UIImageView *animation = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    /*animation not working on device*/
+    
+    NSLog(@"Run intro animation");
     
     NSMutableArray *animationArray = [[NSMutableArray alloc] init];
     
-    int i = 1;
+    int i = 50;
     while(i <= 80) {
         NSString *animationFileNameStr;
         
@@ -188,16 +175,20 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         }
         
         UIImage *image = (UIImage*)[UIImage imageNamed:animationFileNameStr];
-        [animationArray  addObject:image];
+        if(image != nil) {
+            [animationArray  addObject:image];
+        }
         
         i++;
     }
     
+    NSLog(@"Populated array count %lu", (unsigned long)[animationArray count]);
     animation.animationImages = animationArray;
     
     [self.tableView addSubview:animation];
-    animation.animationDuration = 3;
+    animation.animationDuration = 1;
     animation.animationRepeatCount = 1;
+    NSLog(@"Start animation");    
     [animation startAnimating];
 }
 

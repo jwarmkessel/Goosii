@@ -129,27 +129,45 @@
             </objects>
             <point key="canvasLocation" x="528" y="132"/>
         </scene>
+        <!--Home View Controller-->
+        <scene sceneID="VZ2-0B-Kfg">
+            <objects>
+                <viewController id="3qH-VN-dIu" customClass="GIHomeViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="7Uv-J2-8Ri">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="IdF-Vk-Vt3"/>
+                    <connections>
+                        <segue destination="P0o-uj-P0Z" kind="push" identifier="checkinDisplaySegue" id="p3S-bL-3ao"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="akP-Qp-pLc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1033" y="-1344"/>
+        </scene>
         <!--Main View Controller - Root View Controller-->
         <scene sceneID="maM-WJ-adz">
             <objects>
                 <tableViewController id="KC7-N9-2fp" customClass="GIMainViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" sectionIndexMinimumDisplayRowCount="1" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="VvN-zt-E7z">
-                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <sections>
                             <tableViewSection id="VDP-DE-HGM">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="505" id="jSg-cJ-fHB">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="505" id="jSg-cJ-fHB">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="505"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="300" height="504"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <connections>
-                                            <segue destination="P0o-uj-P0Z" kind="push" identifier="checkinDisplaySegue" id="glv-37-FwK"/>
+                                            <segue destination="P0o-uj-P0Z" kind="push" identifier="checkinDisplaySegue" id="cEq-lp-7du"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -160,7 +178,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rRj-x3-dRj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1042" y="-620"/>
+            <point key="canvasLocation" x="996" y="-620"/>
         </scene>
         <!--Checkin View Controller-->
         <scene sceneID="xug-O3-Euy">
@@ -175,6 +193,7 @@
                             <outlet property="delegate" destination="P0o-uj-P0Z" id="ZBv-QN-Mmu"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="hsm-hD-afZ"/>
                     <connections>
                         <outlet property="view" destination="VwC-dL-50g" id="e3U-Qy-0xT"/>
                         <segue destination="lRG-hr-8DZ" kind="push" identifier="eventDrillDownViewSegue" id="G0Z-Z4-O7V"/>
@@ -325,7 +344,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="KC7-N9-2fp" kind="relationship" relationship="rootViewController" id="k6t-Qs-thn"/>
+                        <segue destination="3qH-VN-dIu" kind="relationship" relationship="rootViewController" id="92j-oa-3pJ"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xPC-Lb-gHA" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -333,49 +352,6 @@
             <point key="canvasLocation" x="528" y="-620"/>
         </scene>
     </scenes>
-    <classes>
-        <class className="ECSlidingViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ECSlidingViewController.h"/>
-        </class>
-        <class className="GIActivityViewController" superclassName="UINavigationController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GIActivityViewController.h"/>
-        </class>
-        <class className="GICheckinViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GICheckinViewController.h"/>
-        </class>
-        <class className="GIEventBoardViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GIEventBoardViewController.h"/>
-        </class>
-        <class className="GIEventViewCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GIEventViewCell.h"/>
-        </class>
-        <class className="GIFulfillmentViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GIFulfillmentViewController.h"/>
-        </class>
-        <class className="GIInitViewController" superclassName="ECSlidingViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GIInitViewController.h"/>
-        </class>
-        <class className="GIMainNavViewController" superclassName="UINavigationController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GIMainNavViewController.h"/>
-        </class>
-        <class className="GIMainViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GIMainViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="pageControl" candidateClass="UIPageControl"/>
-                <relationship kind="outlet" name="scrollView1" candidateClass="UIScrollView"/>
-                <relationship kind="outlet" name="testLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="GIMenuViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GIMenuViewController.h"/>
-            <relationships>
-                <relationship kind="outletCollection" name="menu" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="GIParticipationViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GIParticipationViewController.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
@@ -383,6 +359,7 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="DLJ-A9-Tj2"/>
+        <segue reference="p3S-bL-3ao"/>
         <segue reference="G0Z-Z4-O7V"/>
     </inferredMetricsTieBreakers>
 </document>

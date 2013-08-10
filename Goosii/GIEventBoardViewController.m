@@ -169,9 +169,14 @@
     telLbl.backgroundColor = [UIColor clearColor];
     telLbl.editable = NO;
     
+    UIButton *closeCompanyInfoViewBtn = [[UIButton alloc] initWithFrame:CGRectMake(xWidth-25, -10.0, 45.0, 45.0)];
+    [closeCompanyInfoViewBtn setBackgroundColor:[UIColor blackColor]];
+    [closeCompanyInfoViewBtn.layer setCornerRadius:22.5];
+    
     [self.companyInfoContainerView addSubview:companyNameLbl];
     [self.companyInfoContainerView addSubview:addressLbl];
     [self.companyInfoContainerView addSubview:telLbl];
+    [self.companyInfoContainerView addSubview:closeCompanyInfoViewBtn];
     
     [UIView animateWithDuration:2.0 animations:^{
         MKCoordinateRegion newRegion;

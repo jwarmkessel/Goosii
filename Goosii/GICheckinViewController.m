@@ -13,6 +13,8 @@
 #import "GIEventBoardViewController.h"
 #import "GIPlist.h"
 #import "GIFulfillmentViewController.h"
+#import "GIHomeViewController.h"
+
 #import "GIMainViewController.h"
 
 #define METERS_PER_MILE 1609.344
@@ -99,7 +101,7 @@
     // pop to root view controller
     NSArray *viewControllerArray = [self.navigationController viewControllers];
     int parentViewControllerIndex = [viewControllerArray count] - 2;
-    GIMainViewController *checkinViewController = [self.navigationController.viewControllers objectAtIndex:(parentViewControllerIndex)];
+    GIHomeViewController *checkinViewController = [self.navigationController.viewControllers objectAtIndex:(parentViewControllerIndex)];
     [self.navigationController popViewControllerAnimated:YES];
     
     [checkinViewController hideNavBar];

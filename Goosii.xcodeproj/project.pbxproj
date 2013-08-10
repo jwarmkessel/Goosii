@@ -306,6 +306,7 @@
 		83F9245117AC937F00E97376 /* Winner_Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F9244817AC937F00E97376 /* Winner_Back.png */; };
 		83F9245217AC937F00E97376 /* Winner_Bar_Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F9244917AC937F00E97376 /* Winner_Bar_Back.png */; };
 		83F9245717B1CD6400E97376 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F9245617B1CD6300E97376 /* MapKit.framework */; };
+		83F9245A17B315D900E97376 /* GIHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F9245917B315D800E97376 /* GIHomeViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -627,6 +628,8 @@
 		83F9244817AC937F00E97376 /* Winner_Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Winner_Back.png; sourceTree = "<group>"; };
 		83F9244917AC937F00E97376 /* Winner_Bar_Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Winner_Bar_Back.png; sourceTree = "<group>"; };
 		83F9245617B1CD6300E97376 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		83F9245817B315D700E97376 /* GIHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIHomeViewController.h; sourceTree = "<group>"; };
+		83F9245917B315D800E97376 /* GIHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIHomeViewController.m; sourceTree = "<group>"; };
 		9FE17D0685D8428287E7C265 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -744,6 +747,8 @@
 				83196AEF17838A34008A6107 /* GIMainViewController.m */,
 				83196B061783AFED008A6107 /* GICheckinViewController.h */,
 				83196B071783AFED008A6107 /* GICheckinViewController.m */,
+				83F9245817B315D700E97376 /* GIHomeViewController.h */,
+				83F9245917B315D800E97376 /* GIHomeViewController.m */,
 			);
 			name = MainFlow;
 			sourceTree = "<group>";
@@ -1521,6 +1526,7 @@
 				83196B2517900437008A6107 /* GIEventViewCell.m in Sources */,
 				83196CB217914B36008A6107 /* GICountingLabel.m in Sources */,
 				83F923A017A2253500E97376 /* GIFulfillmentViewController.m in Sources */,
+				83F9245A17B315D900E97376 /* GIHomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
