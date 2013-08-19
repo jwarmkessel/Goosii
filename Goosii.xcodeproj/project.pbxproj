@@ -745,10 +745,10 @@
 				830974AE178381D400ABC1CF /* GIMainNavViewController.m */,
 				83196AEE17838A34008A6107 /* GIMainViewController.h */,
 				83196AEF17838A34008A6107 /* GIMainViewController.m */,
-				83196B061783AFED008A6107 /* GICheckinViewController.h */,
-				83196B071783AFED008A6107 /* GICheckinViewController.m */,
 				83F9245817B315D700E97376 /* GIHomeViewController.h */,
 				83F9245917B315D800E97376 /* GIHomeViewController.m */,
+				83196B061783AFED008A6107 /* GICheckinViewController.h */,
+				83196B071783AFED008A6107 /* GICheckinViewController.m */,
 			);
 			name = MainFlow;
 			sourceTree = "<group>";

@@ -28,6 +28,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    [self.navigationController.navigationBar setAlpha:0.0f];
+    
     self.animationImgView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.animationImgView.image = [UIImage imageNamed:@"Intro_00079.png"];
     [self.view addSubview:self.animationImgView];
@@ -103,7 +106,8 @@
 }
 
 - (void) hideNavBar {
-    
+    NSLog(@"Hide the nav bar");
+    [self.navigationController.navigationBar setAlpha:0.0f];
 }
 - (void)didReceiveMemoryWarning
 {

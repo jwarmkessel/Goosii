@@ -21,7 +21,9 @@
 #define METERS_TO_MILE_CONVERSION 0.00062137
 #define DISTANCE_ALLOWED_FROM_COMPANY 200.0f
 
-@interface GICheckinViewController ()
+@interface GICheckinViewController () {
+    BOOL isFromChild;
+}
 @property (strong, nonatomic) UIView *loadingMask;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) UIActivityIndicatorView *indicator;
@@ -29,6 +31,8 @@
 
 @implementation GICheckinViewController
 @synthesize loadingMask, nearbyLocationsAry, locationManager, indicator;
+
+
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -42,11 +46,31 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSLog(@"Check-in viewDidLoad");
     
+    //Start loading mask.
+    self.loadingMask = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.loadingMask.backgroundColor = [UIColor blackColor];
+    self.loadingMask.alpha = 0.5;
+    
+    self.indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicator.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
+    indicator.center = self.view.center;
+    [self.view addSubview:indicator];
+    [indicator bringSubviewToFront:self.view];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = TRUE;
+    
+    [self.view addSubview:self.loadingMask];
+    [self.view addSubview:indicator];
+    
+    [indicator startAnimating];
+    
+    //Set navigation controller variables.
     self.navigationController.navigationBarHidden = NO;
     self.navigationController.navigationBar.autoresizesSubviews = YES;
     [self.tableView setContentInset:UIEdgeInsetsMake(-20,0,0,0)];
 
+    //Start location services.
     self.locationManager = [[CLLocationManager alloc] init];
     [self.locationManager setDelegate:self];
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
@@ -67,27 +91,15 @@
     self.wantsFullScreenLayout = YES;
     self.navigationController.navigationBar.translucent = YES;
     [self.navigationController.navigationBar setAlpha:0.9];
+}
 
-    
+- (void)setInset {
+    NSLog(@"Check-in setInset");
+    [self.tableView setContentInset:UIEdgeInsetsMake(-20,0,0,0)];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    
-    self.loadingMask = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.loadingMask.backgroundColor = [UIColor blackColor];
-    self.loadingMask.alpha = 0.5;
-
-    self.indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    indicator.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
-    indicator.center = self.view.center;
-    [self.view addSubview:indicator];
-    [indicator bringSubviewToFront:self.view];
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = TRUE;
-    
-    [self.view addSubview:self.loadingMask];
-    [self.view addSubview:indicator];
-    
-    [indicator startAnimating];
+    NSLog(@"Check-in View Will Appear");
     [super viewWillAppear:YES];
 }
 
@@ -240,11 +252,12 @@
         
         NSTimeInterval timeInMilliseconds = [[NSDate date] timeIntervalSince1970];
         
-        timeInMilliseconds = timeInMilliseconds/1000;
+        NSLog(@"The time in Milliseconds %f", timeInMilliseconds);
         
         //NSLog(@"startDate %f v curDate %f", [[vc.company startDate] floatValue], floor(timeInMilliseconds));
-        
-        if([[vc.company startDate] floatValue] <= timeInMilliseconds) {
+        float endDateInSeconds = [[vc.company endDate] floatValue] / 1000;
+        NSLog(@"The time in endDateInSeconds %f", endDateInSeconds);
+        if(endDateInSeconds <= timeInMilliseconds) {
             NSLog(@"Currently no events");
             [vc showNoEventsPopUp];
             

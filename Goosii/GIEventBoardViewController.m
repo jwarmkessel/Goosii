@@ -283,8 +283,9 @@
             
         }
         GICheckinViewController *checkinViewController = [self.navigationController.viewControllers objectAtIndex:(parentViewControllerIndex)];
+        
+        [checkinViewController setInset];
 
-        [checkinViewController loadView];
         [self.navigationController popViewControllerAnimated:YES];
     } else {
         [self.navigationController popViewControllerAnimated:YES];
@@ -292,7 +293,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:YES];    
+    [super viewWillAppear:YES];
 }
 
 - (void)didReceiveMemoryWarning

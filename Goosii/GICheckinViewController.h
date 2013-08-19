@@ -12,4 +12,6 @@
 @interface GICheckinViewController : UITableViewController <CLLocationManagerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *nearbyLocationsAry;
+
+- (void)setInset;
 @end
