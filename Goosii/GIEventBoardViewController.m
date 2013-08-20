@@ -61,7 +61,15 @@
 
     //Set image for the tableview background
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    imgView.image = [UIImage imageNamed:@"vietSandwich.jpg"];
+    NSString *urlString = [NSString stringWithFormat:@"http://www.goosii.com/companyAssets/%@/rewardImage.jpg", self.company.companyId];
+    
+    NSLog(@"+============ %@", urlString);
+    
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSData *data = [NSData dataWithContentsOfURL:url];
+    UIImage *img = [[UIImage alloc] initWithData:data];
+    
+    imgView.image = img;
     
     //TODO Not sure this is necessary
     [self.tableView setDelegate:self];

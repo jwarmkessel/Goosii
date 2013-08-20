@@ -258,7 +258,10 @@
         //NSLog(@"startDate %f v curDate %f", [[vc.company startDate] floatValue], floor(timeInMilliseconds));
         float endDateInSeconds = [[vc.company endDate] floatValue] / 1000;
         NSLog(@"The time in endDateInSeconds %f", endDateInSeconds);
-        if(endDateInSeconds <= timeInMilliseconds) {
+        
+        
+        //TODO CHANGE THIS BACK TO <=
+        if(endDateInSeconds >= timeInMilliseconds) {
             NSLog(@"Currently no events");
             [vc showNoEventsPopUp];
             

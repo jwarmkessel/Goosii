@@ -33,7 +33,7 @@
     [self.navigationController.navigationBar setAlpha:0.0f];
     
     self.animationImgView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.animationImgView.image = [UIImage imageNamed:@"Intro_00079.png"];
+    self.animationImgView.image = [UIImage imageNamed:@"Intro_00078.png"];
     [self.view addSubview:self.animationImgView];
     
     /* This animate command is a recursive execution of animation block. Unusable */
@@ -94,17 +94,13 @@
     
     NSMutableArray *animationArray = [[NSMutableArray alloc] init];
     
-    int i = 50;
+    int i = 52;
     while(i <= 80) {
         NSString *animationFileNameStr;
         
-        if(i<10) {
-            animationFileNameStr = [NSString stringWithFormat:@"Intro_0000%d.png", i];
-            //NSLog(@"File names %@", animationFileNameStr);
-        } else {
-            animationFileNameStr = [NSString stringWithFormat:@"Intro_000%d.png", i];
-            //NSLog(@"File names %@", animationFileNameStr);
-        }
+        animationFileNameStr = [NSString stringWithFormat:@"Intro_00%d.png", i];
+        //NSLog(@"File names %@", animationFileNameStr);
+
         
         UIImage *image = (UIImage*)[UIImage imageNamed:animationFileNameStr];
         if(image != nil) {
