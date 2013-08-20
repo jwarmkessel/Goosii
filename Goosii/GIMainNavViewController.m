@@ -15,6 +15,7 @@
 @end
 
 @implementation GIMainNavViewController
+@synthesize slidingMenuButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -30,6 +31,20 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
+    
+    self.slidingMenuButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    slidingMenuButton.frame = CGRectMake(8, 10, 34, 24);
+    [slidingMenuButton setBackgroundImage:[UIImage imageNamed:@"slideMenBtn"] forState:UIControlStateNormal];
+    [slidingMenuButton addTarget:self action:@selector(revealMenu:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+-(IBAction)revealMenu:(id)sender {
+    [self.slidingViewController anchorTopViewTo:ECRight animations:^{
+        NSLog(@"Sliding");
+    } onComplete:^{
+        NSLog(@"complete");
+    }];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated

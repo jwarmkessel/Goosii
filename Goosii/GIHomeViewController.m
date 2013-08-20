@@ -7,13 +7,14 @@
 //
 
 #import "GIHomeViewController.h"
+#import <ECSlidingViewController.h>
 
 @interface GIHomeViewController ()
 @property (nonatomic, strong) UIImageView *animationImgView;
 @end
 
 @implementation GIHomeViewController
-@synthesize animationImgView;
+@synthesize animationImgView, slidingMenuButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -44,7 +45,24 @@
     [[UITapGestureRecognizer alloc] initWithTarget:self
                                             action:@selector(enterTapHandler:)];
     [self.view addGestureRecognizer:enterTapGesture];
+    
+    self.slidingMenuButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    slidingMenuButton.frame = CGRectMake(8, 10, 34, 24);
+    [slidingMenuButton setBackgroundImage:[UIImage imageNamed:@"Slide.png"] forState:UIControlStateNormal];
+    [slidingMenuButton addTarget:self action:@selector(revealMenu:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.view addSubview:self.slidingMenuButton];
 }
+
+-(IBAction)revealMenu:(id)sender {
+
+    [self.slidingViewController anchorTopViewTo:ECRight animations:^{
+        NSLog(@"Sliding");
+    } onComplete:^{
+        NSLog(@"complete");
+    }];
+}
+
 
 - (void)enterTapHandler:(UITapGestureRecognizer *)recognizer {
     [self performSegueWithIdentifier:@"checkinDisplaySegue" sender:self];    

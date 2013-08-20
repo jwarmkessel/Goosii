@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface GIMainNavViewController : UINavigationController
+@property (strong, nonatomic) UIButton *slidingMenuButton;
 
 @end

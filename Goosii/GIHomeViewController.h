@@ -10,6 +10,7 @@
 
 @interface GIHomeViewController : UIViewController
 
+@property (strong, nonatomic) UIButton *slidingMenuButton;
 - (void) hideNavBar;
 
 @end

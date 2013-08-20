@@ -148,7 +148,7 @@
     UITextView *companyNameLbl = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 10.0f, xWidth,150.0f)];
     companyNameLbl.text = self.company.name;
     companyNameLbl.textAlignment = NSTextAlignmentCenter;;
-    [companyNameLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
+    [companyNameLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:20.0f]];
     companyNameLbl.textColor = [UIColor whiteColor];
     companyNameLbl.backgroundColor = [UIColor clearColor];
     companyNameLbl.editable = NO;
@@ -156,7 +156,7 @@
     UITextView *addressLbl = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 50.0f, xWidth,150.0f)];
     addressLbl.text = self.company.address;
     addressLbl.textAlignment = NSTextAlignmentCenter;;
-    [addressLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
+    [addressLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:20.0f]];
     addressLbl.textColor = [UIColor whiteColor];
     addressLbl.backgroundColor = [UIColor clearColor];
     addressLbl.editable = NO;
@@ -164,7 +164,7 @@
     UITextView *telLbl = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 100.0f, xWidth,150.0f)];
     telLbl.text = [NSString stringWithFormat:@"%@", self.company.telephone];
     telLbl.textAlignment = NSTextAlignmentCenter;;
-    [telLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
+    [telLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:20.0f]];
     telLbl.textColor = [UIColor whiteColor];
     telLbl.backgroundColor = [UIColor clearColor];
     telLbl.editable = NO;
@@ -207,7 +207,7 @@
     UITextView *noEventLbl = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 10.0f, 200.0f,150.0f)];
     noEventLbl.text = @"Sorry! There aren't any events at the moment.";
     noEventLbl.textAlignment = NSTextAlignmentCenter;;
-    [noEventLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
+    [noEventLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:20.0f]];
     noEventLbl.textColor = [UIColor whiteColor];
     noEventLbl.backgroundColor = [UIColor clearColor];
     noEventLbl.editable = NO;
@@ -319,7 +319,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         //This is required because otherwise the alpha set on this element affects its child elements.
         UILabel *companyNameLbl = [[UILabel alloc] initWithFrame:CGRectMake((cell.layer.frame.size.width/2-160), (cell.layer.frame.size.height/2-25), 320.0, 50.0)];
         companyNameLbl.text = self.company.name;
-        [companyNameLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0]];
+        [companyNameLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:20.0]];
         companyNameLbl.textColor = [UIColor whiteColor];
         companyNameLbl.backgroundColor = [UIColor clearColor];
         companyNameLbl.textAlignment = NSTextAlignmentCenter;
@@ -364,14 +364,14 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         totalParticipantsLbl.format = @"%d";
         totalParticipantsLbl.method = UILabelCountingMethodLinear;
         [totalParticipantsLbl countFrom:0 to:[self.company.totalParticipants floatValue] withDuration:3.0f];
-        [totalParticipantsLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:60.0]];
+        [totalParticipantsLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:60.0]];
         totalParticipantsLbl.textColor = [UIColor whiteColor];
         totalParticipantsLbl.backgroundColor = [UIColor clearColor];
         totalParticipantsLbl.textAlignment = NSTextAlignmentCenter;
         
         UILabel *ttlPartLbl = [[UILabel alloc] initWithFrame:CGRectMake(cell.layer.frame.size.width/2-160, transparentTotalParticipantCell.layer.frame.size.height - 35, 320.0, 50.0)];
         ttlPartLbl.text = @"Participating";
-        [ttlPartLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0]];
+        [ttlPartLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:15.0]];
         ttlPartLbl.textColor = [UIColor whiteColor];
         ttlPartLbl.backgroundColor = [UIColor clearColor];
         ttlPartLbl.textAlignment = NSTextAlignmentCenter;
@@ -410,7 +410,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         
         UILabel *endDateLbl = [[UILabel alloc] initWithFrame:CGRectMake(10, 5.0f, 320.0,15.0)];
         endDateLbl.text = announceDateStr;
-        [endDateLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:13.0]];
+        [endDateLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:13.0]];
         endDateLbl.textColor = [UIColor whiteColor];
         endDateLbl.backgroundColor = [UIColor clearColor];
         
@@ -456,7 +456,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         
         UILabel *participationLbl = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 5.0f, 320.0f,15.0f)];
         participationLbl.text = @"Your Participation";
-        [participationLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:13.0f]];
+        [participationLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:13.0f]];
         participationLbl.textColor = [UIColor whiteColor];
         participationLbl.backgroundColor = [UIColor clearColor];
         
@@ -509,7 +509,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         
         UILabel *fbPartLbl = [[UILabel alloc] initWithFrame:CGRectMake((cell.frame.size.width/2-110), 10.0f, 220.0f,30.0f)];
         fbPartLbl.text = @"Post To Increase Participation";
-        [fbPartLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
+        [fbPartLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:15.0f]];
         fbPartLbl.textColor = [UIColor whiteColor];
         fbPartLbl.backgroundColor = [UIColor clearColor];
         fbPartLbl.textAlignment = NSTextAlignmentCenter;
