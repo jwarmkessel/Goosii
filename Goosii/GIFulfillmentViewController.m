@@ -2,7 +2,7 @@
 //  GIFulfillmentViewController.m
 //  Goosii
 //
-//  Created by Justin Warmkessel on 7/25/13.
+//  Created by Justin Warmkessel on 8/20/13.
 //  Copyright (c) 2013 Justin Warmkessel. All rights reserved.
 //
 
@@ -20,9 +20,9 @@
 @implementation GIFulfillmentViewController
 @synthesize participationBtn;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithStyle:(UITableViewStyle)style
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
     }
@@ -32,9 +32,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    [self.view setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
 
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+ 
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    [self.view setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
+    
     self.participationBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2 - (200/2), self.view.frame.origin.y, 200.0f, 50.0f)];
     [self.participationBtn setTitle:@"Post To Facebook" forState:UIControlStateNormal];
     [self.participationBtn setBackgroundColor:[self colorWithHexString:@"3B5998"]];
@@ -43,6 +49,7 @@
                               action:@selector(participationBtnHandler)
                     forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:self.participationBtn];
+
 }
 
 - (void)participationBtnHandler {
@@ -104,7 +111,7 @@
                         for (UIView *viewLayer3 in [viewLayer2 subviews]) {
                             if ([viewLayer3 isKindOfClass:[UITextView class]]) {
                                 [(UITextView *)viewLayer3 setDelegate:self];
-                                sharingTextView = (UITextView *)viewLayer3;                            
+                                sharingTextView = (UITextView *)viewLayer3;
                             }
                         }
                     }
@@ -124,15 +131,91 @@
     return @"http://yourcompanyname.Goosii.com/"; //The user will not be able to modify this text.
 }
 
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
--(UIColor*)colorWithHexString:(NSString*)hex
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+#warning Potentially incomplete method implementation.
+    // Return the number of sections.
+    return 0;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+#warning Incomplete method implementation.
+    // Return the number of rows in the section.
+    return 0;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    // Configure the cell...
+    
+    return cell;
+}
+
+/*
+// Override to support conditional editing of the table view.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the specified item to be editable.
+    return YES;
+}
+*/
+
+/*
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }   
+    else if (editingStyle == UITableViewCellEditingStyleInsert) {
+        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    }   
+}
+*/
+
+/*
+// Override to support rearranging the table view.
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+{
+}
+*/
+
+/*
+// Override to support conditional rearranging of the table view.
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the item to be re-orderable.
+    return YES;
+}
+*/
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Navigation logic may go here. Create and push another view controller.
+    /*
+     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
+     // ...
+     // Pass the selected object to the new view controller.
+     [self.navigationController pushViewController:detailViewController animated:YES];
+     */
+}
+
+-(UIColor*)colorWithHexString:(NSString*)hex {
     NSString *cString = [[hex stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
     
     // String should be 6 or 8 characters
@@ -167,5 +250,19 @@
                            alpha:1.0f];
 }
 
-
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

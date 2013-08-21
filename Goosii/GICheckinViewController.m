@@ -197,6 +197,8 @@
     
     NSString *segueName;
     
+    NSLog(@"===================> %@", selectedCompany.fulfillment);
+    
     if([selectedCompany.reward isEqualToString:@"YES"]) {
         segueName = @"rewardViewSegue";
     } else if([selectedCompany.fulfillment isEqualToString:@"YES"]) {
@@ -204,7 +206,9 @@
     } else {
         segueName = @"eventDrillDownViewSegue";
     }
-    segueName = @"eventDrillDownViewSegue";
+    
+    //TODO CHANGE THIS BY REMOVING IT!!!!!!!!!!!
+    segueName = @"fulfillmentViewSegue";
     NSLog(@"Segue path is %@", segueName);
     
     [self performSegueWithIdentifier:segueName sender:self];

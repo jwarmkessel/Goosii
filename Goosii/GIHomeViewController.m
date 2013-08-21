@@ -33,7 +33,7 @@
     [self.navigationController.navigationBar setAlpha:0.0f];
     
     self.animationImgView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.animationImgView.image = [UIImage imageNamed:@"Intro_00078.png"];
+    self.animationImgView.image = [UIImage imageNamed:@"Intro_0078.png"];
     [self.view addSubview:self.animationImgView];
     
     /* This animate command is a recursive execution of animation block. Unusable */

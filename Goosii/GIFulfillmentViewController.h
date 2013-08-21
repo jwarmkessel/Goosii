@@ -2,12 +2,12 @@
 //  GIFulfillmentViewController.h
 //  Goosii
 //
-//  Created by Justin Warmkessel on 7/25/13.
+//  Created by Justin Warmkessel on 8/20/13.
 //  Copyright (c) 2013 Justin Warmkessel. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface GIFulfillmentViewController : UIViewController <UITextViewDelegate>
+@interface GIFulfillmentViewController : UITableViewController <UITextFieldDelegate>
 
 @end
