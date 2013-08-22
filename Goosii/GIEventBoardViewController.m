@@ -222,7 +222,7 @@
     [self.noEventsPopUpView.layer setCornerRadius:30.0f];
     
     // border
-//    [self.noEventsPopUpView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
+    //[self.noEventsPopUpView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
     [self.noEventsPopUpView.layer setBorderWidth:1.5f];
     
     // drop shadow

@@ -9,6 +9,7 @@
 #import "GIFulfillmentViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import <Social/Social.h>
+#import "GICompany.h"
 
 @interface GIFulfillmentViewController ()
 {
@@ -18,7 +19,7 @@
 @end
 
 @implementation GIFulfillmentViewController
-@synthesize participationBtn;
+@synthesize participationBtn, company;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -39,17 +40,22 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    [self.view setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
+    //Set image for the tableview background
+    UIImageView *imgView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    NSString *urlString = [NSString stringWithFormat:@"http://www.goosii.com/companyAssets/%@/rewardImage.jpg", self.company.companyId];
     
-    self.participationBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2 - (200/2), self.view.frame.origin.y, 200.0f, 50.0f)];
-    [self.participationBtn setTitle:@"Post To Facebook" forState:UIControlStateNormal];
-    [self.participationBtn setBackgroundColor:[self colorWithHexString:@"3B5998"]];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSData *data = [NSData dataWithContentsOfURL:url];
+    UIImage *img = [[UIImage alloc] initWithData:data];
     
-    [self.participationBtn addTarget:self
-                              action:@selector(participationBtnHandler)
-                    forControlEvents:UIControlEventTouchDown];
-    [self.view addSubview:self.participationBtn];
-
+    imgView.image = img;
+    
+    //TODO Not sure this is necessary
+    [self.tableView setDelegate:self];
+    
+    [self.tableView setBackgroundView:imgView];
+    
+    self.tableView.separatorColor = [UIColor clearColor];
 }
 
 - (void)participationBtnHandler {
@@ -137,71 +143,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
-    return cell;
-}
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -213,6 +154,133 @@
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell
+forRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    //Create a transparent layer on top of the cell as a background to the elements on top of it.
+    //This is required because otherwise the alpha set on this element affects its child elements.
+    
+
+    //The Company name and Info Panel
+    UILabel *companyNameLbl = [[UILabel alloc] initWithFrame:CGRectMake((cell.layer.frame.size.width/2-160), (60/2-25), 320.0, 40.0)];
+    companyNameLbl.text = self.company.name;
+    [companyNameLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:20.0]];
+    companyNameLbl.textColor = [UIColor whiteColor];
+    companyNameLbl.backgroundColor = [UIColor clearColor];
+    companyNameLbl.textAlignment = NSTextAlignmentCenter;
+    
+    UIView *transparentCompanyNameCell = [[UIView alloc] initWithFrame:CGRectMake(0, 10, cell.frame.size.width, 40.0)];
+    [transparentCompanyNameCell setAlpha:1];
+    [transparentCompanyNameCell setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
+    transparentCompanyNameCell.layer.shadowColor = [UIColor blackColor].CGColor;
+    transparentCompanyNameCell.layer.shadowOpacity = 0.5;
+    transparentCompanyNameCell.layer.shadowRadius = 3;
+    transparentCompanyNameCell.layer.shadowOffset = CGSizeMake(.6f, .6f);
+    transparentCompanyNameCell.layer.cornerRadius = 4;
+    
+    [cell addSubview:transparentCompanyNameCell];
+    [cell addSubview:companyNameLbl];
+    
+    //The Reward Panel
+    UILabel *eventPrizeLbl = [[UILabel alloc] initWithFrame:CGRectMake((cell.layer.frame.size.width/2-160), 70, 320.0, 40.0)];
+    eventPrizeLbl.text = self.company.reward;
+    [eventPrizeLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:20.0]];
+    eventPrizeLbl.textColor = [UIColor whiteColor];
+    eventPrizeLbl.backgroundColor = [UIColor clearColor];
+    eventPrizeLbl.textAlignment = NSTextAlignmentCenter;
+    
+    UIView *transparenteventPrizeCell = [[UIView alloc] initWithFrame:CGRectMake(0, 70, cell.frame.size.width, 40.0)];
+    [transparenteventPrizeCell setAlpha:1];
+    [transparenteventPrizeCell setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
+    transparenteventPrizeCell.layer.shadowColor = [UIColor blackColor].CGColor;
+    transparenteventPrizeCell.layer.shadowOpacity = 0.5;
+    transparenteventPrizeCell.layer.shadowRadius = 3;
+    transparenteventPrizeCell.layer.shadowOffset = CGSizeMake(.6f, .6f);
+    transparenteventPrizeCell.layer.cornerRadius = 4;
+    
+    [cell addSubview:transparenteventPrizeCell];
+    [cell addSubview:eventPrizeLbl];
+    
+    //The Prize Image and Participation Panel
+//    UILabel *eventPrizeLbl = [[UILabel alloc] initWithFrame:CGRectMake((cell.layer.frame.size.width/2-160), 70, 320.0, 40.0)];
+//    eventPrizeLbl.text = self.company.reward;
+//    [eventPrizeLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:20.0]];
+//    eventPrizeLbl.textColor = [UIColor whiteColor];
+//    eventPrizeLbl.backgroundColor = [UIColor clearColor];
+//    eventPrizeLbl.textAlignment = NSTextAlignmentCenter;
+    
+    
+    UIView *transparenteventImgAndParticipationCell = [[UIView alloc] initWithFrame:CGRectMake((200/2-50), 130, 200, 100.0)];
+    [transparenteventImgAndParticipationCell setAlpha:1];
+    [transparenteventImgAndParticipationCell setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
+    transparenteventImgAndParticipationCell.layer.shadowColor = [UIColor blackColor].CGColor;
+    transparenteventImgAndParticipationCell.layer.shadowOpacity = 0.5;
+    transparenteventImgAndParticipationCell.layer.shadowRadius = 3;
+    transparenteventImgAndParticipationCell.layer.shadowOffset = CGSizeMake(.6f, .6f);
+    transparenteventImgAndParticipationCell.layer.cornerRadius = 4;
+    
+    [cell addSubview:transparenteventImgAndParticipationCell];
+//    [cell addSubview:eventPrizeLbl];
+    
+    //The Event Announcement Panel
+    UILabel *eventAnnouncementLbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 260, cell.frame.size.width, 20.0)];
+    eventAnnouncementLbl.text = @"Event has ended.";
+    [eventAnnouncementLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:15.0]];
+    eventAnnouncementLbl.textColor = [UIColor whiteColor];
+    eventAnnouncementLbl.backgroundColor = [UIColor clearColor];
+    eventAnnouncementLbl.textAlignment = NSTextAlignmentCenter;
+
+    UILabel *secondEventAnnouncementLbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 280, cell.frame.size.width, 20.0)];
+    secondEventAnnouncementLbl.text = @"Rewards have been announced.";
+    [secondEventAnnouncementLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:15.0]];
+    secondEventAnnouncementLbl.textColor = [UIColor whiteColor];
+    secondEventAnnouncementLbl.backgroundColor = [UIColor clearColor];
+    secondEventAnnouncementLbl.textAlignment = NSTextAlignmentCenter;
+    
+    UIView *eventAnnouncementCell = [[UIView alloc] initWithFrame:CGRectMake(0, 260, cell.frame.size.width, 50.0)];
+    [eventAnnouncementCell setAlpha:1];
+    [eventAnnouncementCell setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
+    eventAnnouncementCell.layer.shadowColor = [UIColor blackColor].CGColor;
+    eventAnnouncementCell.layer.shadowOpacity = 0.5;
+    eventAnnouncementCell.layer.shadowRadius = 3;
+    eventAnnouncementCell.layer.shadowOffset = CGSizeMake(.6f, .6f);
+    eventAnnouncementCell.layer.cornerRadius = 4;
+    
+    [cell addSubview:eventAnnouncementCell];
+    [cell addSubview:eventAnnouncementLbl];
+    [cell addSubview:secondEventAnnouncementLbl];
+    
+    //The Participation Button
+    CGRect backgroundImageView = CGRectMake((cell.frame.size.width/2-(cell.frame.size.width/2)), 340, cell.frame.size.width, 158);
+    
+    UIImage *participationBtnImage = [UIImage imageNamed:@"FB_Back.png"];
+    UIImage *fbParticipationBtnImage = [UIImage imageNamed:@"FB_Button.png"];
+    UIImageView *participationBackgroundImageView = [[UIImageView alloc] initWithFrame:backgroundImageView];
+    [participationBackgroundImageView setImage:participationBtnImage];
+    
+    CGRect fbBackgroundImageView = CGRectMake((cell.frame.size.width/2-44), 390.0f, 95.0, 95.0f);
+    
+    self.participationBtn = [[UIButton alloc] initWithFrame:fbBackgroundImageView];
+    [self.participationBtn setBackgroundImage:fbParticipationBtnImage forState:UIControlStateNormal];
+    
+    [self.participationBtn addTarget:self
+                              action:@selector(participationBtnHandler)
+                    forControlEvents:UIControlEventTouchDown];
+    
+    UILabel *fbPartLbl = [[UILabel alloc] initWithFrame:CGRectMake((cell.frame.size.width/2-110), 340.0f, 220.0f, 50.0f)];
+    fbPartLbl.text = @"Post To Increase Participation";
+    [fbPartLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:15.0f]];
+    fbPartLbl.textColor = [UIColor whiteColor];
+    fbPartLbl.backgroundColor = [UIColor clearColor];
+    fbPartLbl.textAlignment = NSTextAlignmentCenter;
+    
+    [cell addSubview:participationBackgroundImageView];
+    [cell addSubview:fbPartLbl];
+    [cell addSubview:self.participationBtn];
+    
+    
 }
 
 -(UIColor*)colorWithHexString:(NSString*)hex {
@@ -251,18 +319,3 @@
 }
 
 @end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

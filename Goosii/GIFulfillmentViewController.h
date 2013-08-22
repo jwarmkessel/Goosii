@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+@class GICompany;
 
 @interface GIFulfillmentViewController : UITableViewController <UITextFieldDelegate>
+
+@property (nonatomic, strong) GICompany * company;
 
 @end

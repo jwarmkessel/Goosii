@@ -248,8 +248,8 @@
         
         //[vc setCompany:[self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row]];
     } else if([[segue identifier] isEqualToString:@"fulfillmentViewSegue"]) {
-//        GIFulfillmentViewController *vc = [segue destinationViewController];
-        //vc.company = [self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+        GIFulfillmentViewController *vc = [segue destinationViewController];
+        [vc setCompany:[self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row]];
    
     } else if([[segue identifier] isEqualToString:@"eventDrillDownViewSegue"]) {
         GIEventBoardViewController *vc = [segue destinationViewController];
