@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <Social/Social.h>
 #import "GICompany.h"
+#import "GIPlist.h"
 
 @interface GIFulfillmentViewController ()
 {
@@ -164,7 +165,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     
 
     //The Company name and Info Panel
-    UILabel *companyNameLbl = [[UILabel alloc] initWithFrame:CGRectMake((cell.layer.frame.size.width/2-160), (60/2-25), 320.0, 40.0)];
+    UILabel *companyNameLbl = [[UILabel alloc] initWithFrame:CGRectMake((cell.layer.frame.size.width/2-160), 10 , 320.0, 40.0)];
     companyNameLbl.text = self.company.name;
     [companyNameLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:20.0]];
     companyNameLbl.textColor = [UIColor whiteColor];
@@ -185,7 +186,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     //The Reward Panel
     UILabel *eventPrizeLbl = [[UILabel alloc] initWithFrame:CGRectMake((cell.layer.frame.size.width/2-160), 70, 320.0, 40.0)];
-    eventPrizeLbl.text = self.company.reward;
+    eventPrizeLbl.text = @"Free Sandwich";
     [eventPrizeLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:20.0]];
     eventPrizeLbl.textColor = [UIColor whiteColor];
     eventPrizeLbl.backgroundColor = [UIColor clearColor];
@@ -221,7 +222,18 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     transparenteventImgAndParticipationCell.layer.shadowOffset = CGSizeMake(.6f, .6f);
     transparenteventImgAndParticipationCell.layer.cornerRadius = 4;
     
+    CGRect prizeImgView = CGRectMake((200/2-50), 130, 100, 100.0);
+    UIImageView *imgView = [[UIImageView alloc] initWithFrame:prizeImgView];
+    NSString *urlString = [NSString stringWithFormat:@"http://www.goosii.com/companyAssets/%@/rewardImage.jpg", self.company.companyId];
+    
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSData *data = [NSData dataWithContentsOfURL:url];
+    UIImage *img = [[UIImage alloc] initWithData:data];
+    
+    imgView.image = img;
+    
     [cell addSubview:transparenteventImgAndParticipationCell];
+    [cell addSubview:imgView];
 //    [cell addSubview:eventPrizeLbl];
     
     //The Event Announcement Panel
@@ -280,7 +292,50 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     [cell addSubview:fbPartLbl];
     [cell addSubview:self.participationBtn];
     
+    CGRect skipBtnRect = CGRectMake(0, 520, cell.frame.size.width, 50);
+    UIButton *skipBtn = [[UIButton alloc] initWithFrame:skipBtnRect];
     
+    [skipBtn setBackgroundColor:[self colorWithHexString:@"3b5999"]];
+    
+    [skipBtn setTitle:@"Skip This Time" forState:UIControlStateNormal];
+    [skipBtn.titleLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
+    [skipBtn.titleLabel setTextColor:[UIColor whiteColor]];
+    
+    [skipBtn.layer setBorderWidth:3.0];
+    [skipBtn.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    
+    [skipBtn.layer setShadowOffset:CGSizeMake(5, 5)];
+    [skipBtn.layer setShadowColor:[[UIColor blackColor] CGColor]];
+    [skipBtn.layer setShadowOpacity:0.5];
+    
+    [skipBtn addTarget:self
+                action:@selector(skipBtnHandler:)
+      forControlEvents:UIControlEventTouchDown];
+    
+    [cell addSubview:skipBtn];
+}
+
+-(void)skipBtnHandler:(id)sender {
+    
+    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
+    
+    NSString *urlParams = [NSString stringWithFormat:@"%@/%@", self.company.companyId, [plist objectForKey:@"userId"]];
+    NSString *urlPost = [@"http://www.Goosii.com:3001/removeFulfillmentObject/" stringByAppendingString:urlParams];
+    
+    NSLog(@"Remove fulfillment flag %@", urlPost);
+    
+    NSURL *url = [NSURL URLWithString:urlPost];
+    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+    [NSURLConnection sendAsynchronousRequest:urlRequest
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                               
+                               // your data or an error will be ready here
+                               NSString* newStr = [[NSString alloc] initWithData:data
+                                                                        encoding:NSUTF8StringEncoding];
+                               
+                               NSLog(@"ReceivedData %@", newStr);
+                           }];
 }
 
 -(UIColor*)colorWithHexString:(NSString*)hex {

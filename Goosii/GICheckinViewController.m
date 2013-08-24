@@ -365,6 +365,10 @@
                                    
                                    NSLog(@"PERCENTAGE OF TIME ----------> %f", percentage);
                                    
+                                   if(percentage > 1.0) {
+                                       percentage = 1;
+                                   }
+                                   
                                    NSString *timePercent = [NSString stringWithFormat:@"%f", percentage];
                                    
                                    //Calculate Participation Percentage.
