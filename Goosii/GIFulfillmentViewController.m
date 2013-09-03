@@ -297,7 +297,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     [skipBtn setBackgroundColor:[self colorWithHexString:@"3b5999"]];
     
-    [skipBtn setTitle:@"Skip This Time" forState:UIControlStateNormal];
+    [skipBtn setTitle:@"Skip This Chance" forState:UIControlStateNormal];
     [skipBtn.titleLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
     [skipBtn.titleLabel setTextColor:[UIColor whiteColor]];
     

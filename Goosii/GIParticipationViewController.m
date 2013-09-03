@@ -52,7 +52,7 @@
     }
     
     //    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-    
+
     //Initialize the dataSource
     self.eventList = [[NSMutableArray alloc] init];
     [self makeContestRequest];
@@ -106,25 +106,130 @@
                                
                                NSLog(@"ReceivedData %@", newStr);
                                
-//                               SBJsonParser *parser = [[SBJsonParser alloc] init];
+                               SBJsonParser *parser = [[SBJsonParser alloc] init];
 //                               
-//                               NSArray *jsonObject = [parser objectWithString:newStr];
+                               NSArray *jsonObject = [parser objectWithString:newStr];
                                
-//                               for (id company in jsonObject) {
-//                                   
-//                                   NSArray *participantsAry = [company objectForKey:@"participants"];
-//                                   
-//                                   NSString *totalParticipants = [NSString stringWithFormat:@"%lu", (unsigned long)[participantsAry count]];
-//                                   
-//                                   
-//                                   //GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"] numOfParticipants:totalParticipants];
-//
-//                                   [self.eventList addObject:companyObj];
-//                               }
+                               for (id company in jsonObject) {
+                                   
+                                   NSArray *participantsAry = [company objectForKey:@"participants"];
+                                   
+                                   NSString *totalParticipants = [NSString stringWithFormat:@"%lu", (unsigned long)[participantsAry count]];
+                                   
+                                   //NSLog(@"The Phone number %@", [company objectForKey:@"telephone"]);
+                                   
+                                   //Determine percentage of time
+                                   NSTimeInterval timeInMiliseconds = [[NSDate date] timeIntervalSince1970];
+                                   
+                                   //NSLog(@"The Current Date %f", timeInMiliseconds);
+                                   NSDictionary *event = [company objectForKey:@"contest"];
+                                   
+                                   double startDate = floor([[event objectForKey:@"startDate"] doubleValue]);
+                                   double endDate = floor([[event objectForKey:@"endDate"] doubleValue]);
+                                   startDate = startDate / 1000;
+                                   endDate = endDate / 1000;
+                                   NSLog(@"START DATE %f", startDate);
+                                   NSLog(@"END DATE %f", endDate);
+                                   
+                                   
+                                   double curTime = floor(timeInMiliseconds);
+                                   NSLog(@"CURRENT DATE %f", curTime);
+                                   
+                                   double totalDuration = endDate - startDate;
+                                   NSLog(@"TOTAL DURATION IN MIL %f", totalDuration);
+                                   
+                                   //Elapsed time in seconds equals the current time minus the startdate.
+
+                                   
+                                   
+                                   double elapsedTime = curTime - startDate;
+                                   
+                                   NSLog(@"ELAPSED TIME %f", elapsedTime);
+                                   
+                                   double percentage = elapsedTime / totalDuration;
+                                   
+                                   
+                                   
+                                   if(percentage > 1.0) {
+                                       percentage = 1;
+                                   }
+                                   
+                                   NSString *timePercent = [NSString stringWithFormat:@"%f", percentage];
+                                   
+                                   //Calculate Participation Percentage.
+                                   float partPercentage = 0;
+                                   
+                                   NSDictionary *userObj = [company objectForKey:@"user"];
+                                   NSArray *contests = [userObj objectForKey:@"contests"];
+                                   for (id contest in contests) {
+                                       partPercentage = 0;
+                                       
+                                       NSString *contestCompanyId =[contest objectForKey:@"companyId"];
+                                       NSString *companyId = [company objectForKey:@"_id"];
+                                       
+                                       if([contestCompanyId isEqualToString:companyId]) {
+                                           
+                                           float ttlParticipationCount = 0;
+                                           
+                                           if([contest objectForKey:@"participationCount"] == nil) {
+                                               NSLog(@"total participation is nil so we add one");
+                                               ttlParticipationCount = 1;
+                                           } else {
+                                               ttlParticipationCount = [[contest objectForKey:@"participationCount"] floatValue];
+                                           }
+                                           
+                                           NSLog(@"The participation count %f", ttlParticipationCount);
+                                           
+                                           if(totalDuration != 0.0) {
+                                               partPercentage = elapsedTime / 86400;
+                                               partPercentage = floor(partPercentage);
+                                               partPercentage =  ttlParticipationCount / partPercentage;
+                                               NSLog(@"PART PERCENTAGE %f", partPercentage);
+                                           }
+                                       }
+                                   }
+                                   
+                                   NSString *partPer = [NSString stringWithFormat:@"%f", partPercentage];
+                                   
+                                   //Check fulfillments
+                                   NSArray *fulfillments = [userObj objectForKey:@"fulfillments"];
+                                   
+                                   NSString *isFulfillment = @"NO";
+                                   for (id contest in fulfillments) {
+                                       NSString *contestCompanyId =[contest objectForKey:@"companyId"];
+                                       NSString *companyId = [company objectForKey:@"_id"];
+                                       
+                                       if([contestCompanyId isEqualToString:companyId]) {
+                                           NSLog(@"Setting fulfillment for %@", [company objectForKey:@"name"]);
+                                           isFulfillment = @"YES";
+                                       }
+                                   }
+                                   
+                                   NSString * isReward = @"NO";
+                                   
+                                   //Check rewards
+                                   NSArray *rewards = [userObj objectForKey:@"rewards"];
+                                   
+                                   for (id contest in rewards) {
+                                       NSString *contestCompanyId =[contest objectForKey:@"companyId"];
+                                       NSString *companyId = [company objectForKey:@"_id"];
+                                       
+                                       if([contestCompanyId isEqualToString:companyId]) {
+                                           
+                                           NSLog(@"Setting reward for %@", [company objectForKey:@"name"]);
+                                           isReward = @"YES";
+                                       }
+                                   }
+                                   
+                                   //Create company object and push to array.
+                                   GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"] numOfParticipants:totalParticipants time:timePercent participation:partPer startDate:[event objectForKey:@"startDate"] endDate:[event objectForKey:@"endDate"] fulfillment:isFulfillment reward:isReward longitude:[company objectForKey:@"longitude"] latitude:[company objectForKey:@"latitude"]];
+                                   
+                                   NSLog(@"Adding company object");
+                                   [self.eventList addObject:companyObj];
+
+                               }
                                
                                [self.tableView reloadData];
-                               //[self.loadingMask removeFromSuperview];
-                               
                            }];
 }
 
@@ -187,7 +292,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     GICompany *company = [self.eventList objectAtIndex:indexPath.row];
-    
+    NSLog(@"HELLO COMPANY NAME ==============================> %@", company.name);
     cell.textLabel.text = company.name;
     
     return cell;
