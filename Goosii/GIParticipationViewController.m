@@ -13,6 +13,7 @@
 #import "GICompany.h"
 #import "GIPlist.h"
 #import "GIEventBoardViewController.h"
+#import "GIFulfillmentViewController.h"
 
 @interface GIParticipationViewController ()
 @property (nonatomic, strong) GICompany *selCompany;
@@ -78,12 +79,45 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
-    if([[segue identifier] isEqualToString:@"tabViewControllerSegue"]) {
-//        GIEventBoardViewController *vc = [segue destinationViewController];
-//        vc.company = [self.eventList objectAtIndex:[self.tableView indexPathForSelectedRow].row];
-    } else if([[segue identifier] isEqualToString:@"fulfillmentViewSegue"]) {
+//    if([[segue identifier] isEqualToString:@"tabViewControllerSegue"]) {
+////        GIEventBoardViewController *vc = [segue destinationViewController];
+////        vc.company = [self.eventList objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+//    } else if([[segue identifier] isEqualToString:@"fulfillmentViewSegue"]) {
+//        
+//    }
+    
+    if ([[segue identifier] isEqualToString:@"rewardViewSegue"]) {
+        // Get reference to the destination view controller
+        //GIDashboardViewController *vc = [segue destinationViewController];
         
+        // Pass any objects to the view controller here, like...
+        
+        //[vc setCompany:[self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row]];
+    } else if([[segue identifier] isEqualToString:@"fulfillmentViewSegue"]) {
+        GIFulfillmentViewController *vc = [segue destinationViewController];
+        [vc setCompany:[self.eventList objectAtIndex:[self.tableView indexPathForSelectedRow].row]];
+        
+    } else if([[segue identifier] isEqualToString:@"eventDrillDownViewSegue"]) {
+        GIEventBoardViewController *vc = [segue destinationViewController];
+        vc.company = [self.eventList objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+        
+        NSTimeInterval timeInMilliseconds = [[NSDate date] timeIntervalSince1970];
+        
+        NSLog(@"The time in Milliseconds %f", timeInMilliseconds);
+        
+        //NSLog(@"startDate %f v curDate %f", [[vc.company startDate] floatValue], floor(timeInMilliseconds));
+        float endDateInSeconds = [[vc.company endDate] floatValue] / 1000;
+        NSLog(@"The time in endDateInSeconds %f", endDateInSeconds);
+        
+        
+        //TODO CHANGE THIS BACK TO <=
+        if(endDateInSeconds >= timeInMilliseconds) {
+            NSLog(@"Currently no events");
+            [vc showNoEventsPopUp];
+            
+        }
     }
+ 
 }
 
 - (void)makeContestRequest {
@@ -350,17 +384,63 @@
      */
     
     //Determine whether selected event has fulfillment requirements.
-    GICompany *company = [self.eventList objectAtIndex:indexPath.row];
-    NSLog(@"The company id to use %@", company.companyId);
+//    GICompany *company = [self.eventList objectAtIndex:indexPath.row];
+//    NSLog(@"The company id to use %@", company.companyId);
+//    
+//    BOOL fulfillment = [self determineFulfillment:company.companyId];
+//    
+//    if(fulfillment == YES) {
+//        [self performSegueWithIdentifier:@"fulfillmentViewSegue" sender:self];    
+//    } else {
+//        [self performSegueWithIdentifier:@"tabViewControllerSegue" sender:self];
+//    }
     
-    BOOL fulfillment = [self determineFulfillment:company.companyId];
+    GICompany *selectedCompany = [self.eventList objectAtIndex:[self.tableView indexPathForSelectedRow].row];
     
-    if(fulfillment == YES) {
-        [self performSegueWithIdentifier:@"fulfillmentViewSegue" sender:self];    
+    NSString *segueName;
+    
+    NSLog(@"===================> %@", selectedCompany.fulfillment);
+    
+    if([selectedCompany.reward isEqualToString:@"YES"]) {
+        segueName = @"rewardViewSegue";
+    } else if([selectedCompany.fulfillment isEqualToString:@"YES"]) {
+        segueName = @"fulfillmentViewSegue";
     } else {
-        [self performSegueWithIdentifier:@"tabViewControllerSegue" sender:self];
+        segueName = @"eventDrillDownViewSegue";
     }
+    
+    //TODO CHANGE THIS BY REMOVING IT!!!!!!!!!!!
+    segueName = @"fulfillmentViewSegue";
+    NSLog(@"Segue path is %@", segueName);
+    
+    [self performSegueWithIdentifier:segueName sender:self];
+    
+    GICompany *curCompany = [self.eventList objectAtIndex:indexPath.row];
+    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
+    
+    //Enter the user into the contest if they haven't already.
+    NSString *urlString = @"http://www.goosii.com:3001/enterContest";
+    urlString = [urlString stringByAppendingFormat:@"/%@", [plist objectForKey:@"userId"]];
+    urlString = [urlString stringByAppendingFormat:@"/%@", curCompany.companyId];
+    
+    NSLog(@"Requesting %@", urlString);
+    
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+    
+    [NSURLConnection sendAsynchronousRequest:urlRequest
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                               
+                               // your data or an error will be ready here
+                               NSString* newStr = [[NSString alloc] initWithData:data
+                                                                        encoding:NSUTF8StringEncoding];
+                               NSLog(@"enterContests response: %@", newStr);
+                               
+                           }];
 
+    
+    
 }
 
 - (void)viewDidUnload {
