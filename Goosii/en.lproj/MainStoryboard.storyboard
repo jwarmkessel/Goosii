@@ -40,7 +40,7 @@
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DnK-kK-P8L">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DnK-kK-P8L">
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -64,7 +64,7 @@
             </objects>
             <point key="canvasLocation" x="76" y="-193"/>
         </scene>
-        <!--Participation View Controller - Root View Controller-->
+        <!--Participation View Controller - Event Activity-->
         <scene sceneID="jng-vA-Zv2">
             <objects>
                 <tableViewController id="Sat-e5-BsP" customClass="GIParticipationViewController" sceneMemberID="viewController">
@@ -88,7 +88,7 @@
                             <outlet property="delegate" destination="Sat-e5-BsP" id="hHm-3K-gmC"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="CZH-93-W9V"/>
+                    <navigationItem key="navigationItem" title="Event Activity" id="CZH-93-W9V"/>
                     <connections>
                         <outletCollection property="eventList" destination="bKh-oM-cbO" id="ziI-t1-PxJ"/>
                         <segue destination="lRG-hr-8DZ" kind="push" identifier="eventDrillDownViewSegue" id="nhI-oA-tfl"/>
@@ -183,14 +183,18 @@
                         <sections>
                             <tableViewSection id="WzZ-vf-Uxb">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="597" id="2uF-iY-fKv" customClass="GIEventViewCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="detailDisclosureButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="597" id="2uF-iY-fKv" customClass="GIEventViewCell">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="597"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="596"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="596"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
+                                        <connections>
+                                            <segue destination="dL8-8f-K2r" kind="push" identifier="rewardStateViewSegue" id="0TL-CV-zYs"/>
+                                            <segue destination="mwn-UX-0kU" kind="push" identifier="rewardViewSegue" trigger="accessoryAction" id="7Iq-fr-5w3"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -204,7 +208,22 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Yr-xF-gSS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1663" y="748"/>
+            <point key="canvasLocation" x="2071" y="956"/>
+        </scene>
+        <!--Reward State View Controller-->
+        <scene sceneID="aDY-X6-leo">
+            <objects>
+                <viewController id="dL8-8f-K2r" customClass="GIRewardStateViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="pw1-pj-OTh">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="srX-Wd-quQ"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IzA-C5-UC3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2613" y="1556"/>
         </scene>
         <!--Event Board View Controller - Item-->
         <scene sceneID="5Mb-bB-4im">
@@ -322,6 +341,64 @@
             </objects>
             <point key="canvasLocation" x="2087" y="132"/>
         </scene>
+        <!--Reward View Controller-->
+        <scene sceneID="dvB-wM-CLr">
+            <objects>
+                <viewController id="mwn-UX-0kU" customClass="GIRewardViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8Jg-x5-vby">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Company Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AKH-Wg-0uY">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="sZB-Fr-Xbq"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" text="You're a winner! Have an employee enter the confirmation code to validate your prize." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="C29-vb-zEu">
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="70" id="5Yx-sD-Xor"/>
+                                    <constraint firstAttribute="width" constant="240" id="g5Z-Oc-5ED"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="15"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3p7-9F-e7g">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="TJj-Rs-ONK"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="mwn-UX-0kU" id="cy8-t3-XfQ"/>
+                                </connections>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="3p7-9F-e7g" firstAttribute="top" secondItem="8Jg-x5-vby" secondAttribute="top" constant="206" id="Gkf-3O-OYf"/>
+                            <constraint firstItem="AKH-Wg-0uY" firstAttribute="trailing" secondItem="8Jg-x5-vby" secondAttribute="trailing" type="default" id="J21-o0-pZQ"/>
+                            <constraint firstItem="3p7-9F-e7g" firstAttribute="centerX" secondItem="C29-vb-zEu" secondAttribute="centerX" type="default" id="TUY-sJ-VSM"/>
+                            <constraint firstItem="C29-vb-zEu" firstAttribute="top" secondItem="AKH-Wg-0uY" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="WzU-cP-teS"/>
+                            <constraint firstItem="C29-vb-zEu" firstAttribute="centerX" secondItem="AKH-Wg-0uY" secondAttribute="centerX" type="default" id="aJf-4q-rLS"/>
+                            <constraint firstItem="C29-vb-zEu" firstAttribute="top" secondItem="8Jg-x5-vby" secondAttribute="top" constant="107" id="dN4-Ec-Com"/>
+                            <constraint firstItem="AKH-Wg-0uY" firstAttribute="leading" secondItem="8Jg-x5-vby" secondAttribute="leading" type="default" id="jGS-zW-rdp"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="2Mt-6T-eJX"/>
+                    <connections>
+                        <outlet property="companyNameLbl" destination="AKH-Wg-0uY" id="g1k-Gd-354"/>
+                        <outlet property="textInputField" destination="3p7-9F-e7g" id="pzz-wn-Xko"/>
+                        <outlet property="userIntructTxtField" destination="C29-vb-zEu" id="pfe-eA-RHj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5oh-g4-Xgo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2613" y="834"/>
+        </scene>
         <!--Main Nav View Controller-->
         <scene sceneID="GSa-Ax-a7e">
             <objects>
@@ -380,6 +457,23 @@
         </class>
         <class className="GIParticipationViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GIParticipationViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="myAboutButtonClicked:"/>
+            </relationships>
+        </class>
+        <class className="GIRewardStateViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GIRewardStateViewController.h"/>
+        </class>
+        <class className="GIRewardViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GIRewardViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="companyNameLbl" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="textInputField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="userIntructTxtField" candidateClass="UITextView"/>
+            </relationships>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
         </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -388,7 +482,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="XGq-dg-sFL"/>
         <segue reference="nhI-oA-tfl"/>
-        <segue reference="V9X-fL-NRd"/>
     </inferredMetricsTieBreakers>
 </document>

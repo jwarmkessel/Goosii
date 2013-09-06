@@ -11,16 +11,20 @@
 #import <Social/Social.h>
 #import "GICompany.h"
 #import "GIPlist.h"
+#import "GIRewardStateViewController.h"
+#import "GICheckinViewController.h"
+#import "GIRewardViewController.h"
 
 @interface GIFulfillmentViewController ()
 {
     UITextView *sharingTextView;
 }
 @property (nonatomic, strong) UIButton *participationBtn;
+@property (nonatomic, strong) UIBarButtonItem *backButton;
 @end
 
 @implementation GIFulfillmentViewController
-@synthesize participationBtn, company;
+@synthesize participationBtn, company, backButton;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -51,12 +55,35 @@
     
     imgView.image = img;
     
+    // change the back button to cancel and add an event handler
+    self.backButton = [[UIBarButtonItem alloc] initWithTitle:@"back"
+                                                       style:UIBarButtonItemStyleBordered
+                                                      target:self
+                                                      action:@selector(handleBack:)];
+    self.navigationItem.leftBarButtonItem = backButton;
+
+    
     //TODO Not sure this is necessary
     [self.tableView setDelegate:self];
     
     [self.tableView setBackgroundView:imgView];
     
     self.tableView.separatorColor = [UIColor clearColor];
+}
+
+- (void)handleBack:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    if ([[segue identifier] isEqualToString:@"rewardStateViewSegue"]) {
+        GIRewardStateViewController *vc = [segue destinationViewController];
+        vc.company = self.company;
+    } else {
+        GIRewardViewController *vc = [segue destinationViewController];
+        vc.company = self.company;
+    }
 }
 
 - (void)participationBtnHandler {
@@ -94,16 +121,35 @@
                 NSLog(@"Posting to facebook.");
                 
                 NSLog(@"The result %d", result);
-                //
-                //                NSURL *url = [NSURL URLWithString:urlPost];
-                //                NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-                //                NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
-                //
-                //                if(!connection) {
-                //                    NSLog(@"connection failed");
-                //                }
-                //
-                //                [self performSegueWithIdentifier:@"sweepstakesDisplaySegue" sender:self];
+                GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
+                
+                NSString *urlParams = [NSString stringWithFormat:@"%@/%@", self.company.companyId, [plist objectForKey:@"userId"]];
+                NSString *urlPost = [@"http://www.Goosii.com:3001/removeFulfillmentObject/" stringByAppendingString:urlParams];
+                
+                NSLog(@"Remove fulfillment flag %@", urlPost);
+                
+                NSURL *url = [NSURL URLWithString:urlPost];
+                NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+                [NSURLConnection sendAsynchronousRequest:urlRequest
+                                                   queue:[NSOperationQueue mainQueue]
+                                       completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                                           
+                                           // your data or an error will be ready here
+                                           NSString* newStr = [[NSString alloc] initWithData:data
+                                                                                    encoding:NSUTF8StringEncoding];
+                                           
+                                           NSLog(@"ReceivedData %@", newStr);
+                                           
+                                           NSArray *viewControllerArray = [self.navigationController viewControllers];
+                                           NSLog(@"Nav controller array %lu", (unsigned long)[[self.navigationController viewControllers] count]);
+                                           int parentViewControllerIndex = [viewControllerArray count] - 2;
+                                           
+                                           if([[self.navigationController.viewControllers objectAtIndex:(parentViewControllerIndex)] isKindOfClass:[GICheckinViewController class]]) {
+                                               [self performSegueWithIdentifier:@"rewardViewSegue" sender:self];
+                                           } else {
+                                               [self performSegueWithIdentifier:@"rewardStateViewSegue" sender:self];
+                                           }    
+                                       }];
             }
             
             [sharingComposer dismissViewControllerAnimated:YES completion:nil];
@@ -130,12 +176,12 @@
 
 - (NSString *)editableText
 {
-    return @"I'm hanging at the Hot Spot Cafe!"; //This is the text the user will be able to edit
+    return self.company.post; //This is the text the user will be able to edit
 }
 
 - (NSString *)permanentText
 {
-    return @"http://yourcompanyname.Goosii.com/"; //The user will not be able to modify this text.
+    return @""; //The user will not be able to modify this text.
 }
 
 - (void)didReceiveMemoryWarning
@@ -167,7 +213,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     //The Company name and Info Panel
     UILabel *companyNameLbl = [[UILabel alloc] initWithFrame:CGRectMake((cell.layer.frame.size.width/2-160), 10 , 320.0, 40.0)];
     companyNameLbl.text = self.company.name;
-    [companyNameLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:20.0]];
+    [companyNameLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0]];
     companyNameLbl.textColor = [UIColor whiteColor];
     companyNameLbl.backgroundColor = [UIColor clearColor];
     companyNameLbl.textAlignment = NSTextAlignmentCenter;
@@ -187,7 +233,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     //The Reward Panel
     UILabel *eventPrizeLbl = [[UILabel alloc] initWithFrame:CGRectMake((cell.layer.frame.size.width/2-160), 70, 320.0, 40.0)];
     eventPrizeLbl.text = @"Free Sandwich";
-    [eventPrizeLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:20.0]];
+    [eventPrizeLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0]];
     eventPrizeLbl.textColor = [UIColor whiteColor];
     eventPrizeLbl.backgroundColor = [UIColor clearColor];
     eventPrizeLbl.textAlignment = NSTextAlignmentCenter;
@@ -207,7 +253,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     //The Prize Image and Participation Panel
 //    UILabel *eventPrizeLbl = [[UILabel alloc] initWithFrame:CGRectMake((cell.layer.frame.size.width/2-160), 70, 320.0, 40.0)];
 //    eventPrizeLbl.text = self.company.reward;
-//    [eventPrizeLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:20.0]];
+//    [eventPrizeLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0]];
 //    eventPrizeLbl.textColor = [UIColor whiteColor];
 //    eventPrizeLbl.backgroundColor = [UIColor clearColor];
 //    eventPrizeLbl.textAlignment = NSTextAlignmentCenter;
@@ -222,7 +268,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     transparenteventImgAndParticipationCell.layer.shadowOffset = CGSizeMake(.6f, .6f);
     transparenteventImgAndParticipationCell.layer.cornerRadius = 4;
     
-    CGRect prizeImgView = CGRectMake((200/2-50), 130, 100, 100.0);
+    CGRect prizeImgView = CGRectMake((200/2-45), 135, 95, 90.0);
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:prizeImgView];
     NSString *urlString = [NSString stringWithFormat:@"http://www.goosii.com/companyAssets/%@/rewardImage.jpg", self.company.companyId];
     
@@ -232,21 +278,32 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     imgView.image = img;
     
+    //Participation Label
+    CGRect participationLblRect = CGRectMake(((200/2-45) + 90), 135, 110, 90.0);
+    UITextView *participationLabel = [[UITextView alloc] initWithFrame:participationLblRect];
+
+    float participationNum = [company.participationPercentage floatValue] * 100;
+    participationLabel.text = [NSString stringWithFormat:@"%i%% Participation", (int) participationNum];
+    [participationLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0]];
+    participationLabel.textColor = [UIColor whiteColor];
+    participationLabel.backgroundColor = [UIColor clearColor];
+    participationLabel.textAlignment = NSTextAlignmentCenter;
+    
     [cell addSubview:transparenteventImgAndParticipationCell];
     [cell addSubview:imgView];
-//    [cell addSubview:eventPrizeLbl];
+    [cell addSubview:participationLabel];
     
     //The Event Announcement Panel
-    UILabel *eventAnnouncementLbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 260, cell.frame.size.width, 20.0)];
+    UILabel *eventAnnouncementLbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 265, cell.frame.size.width, 20.0)];
     eventAnnouncementLbl.text = @"Event has ended.";
-    [eventAnnouncementLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:15.0]];
+    [eventAnnouncementLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0]];
     eventAnnouncementLbl.textColor = [UIColor whiteColor];
     eventAnnouncementLbl.backgroundColor = [UIColor clearColor];
     eventAnnouncementLbl.textAlignment = NSTextAlignmentCenter;
 
-    UILabel *secondEventAnnouncementLbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 280, cell.frame.size.width, 20.0)];
+    UILabel *secondEventAnnouncementLbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 285, cell.frame.size.width, 20.0)];
     secondEventAnnouncementLbl.text = @"Rewards have been announced.";
-    [secondEventAnnouncementLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:15.0]];
+    [secondEventAnnouncementLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0]];
     secondEventAnnouncementLbl.textColor = [UIColor whiteColor];
     secondEventAnnouncementLbl.backgroundColor = [UIColor clearColor];
     secondEventAnnouncementLbl.textAlignment = NSTextAlignmentCenter;
@@ -282,8 +339,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                     forControlEvents:UIControlEventTouchDown];
     
     UILabel *fbPartLbl = [[UILabel alloc] initWithFrame:CGRectMake((cell.frame.size.width/2-110), 340.0f, 220.0f, 50.0f)];
-    fbPartLbl.text = @"Post To Increase Participation";
-    [fbPartLbl setFont:[UIFont fontWithName:@"Kailasa-Bold" size:15.0f]];
+    fbPartLbl.text = @"Must Post to be Rewarded";
+    [fbPartLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
     fbPartLbl.textColor = [UIColor whiteColor];
     fbPartLbl.backgroundColor = [UIColor clearColor];
     fbPartLbl.textAlignment = NSTextAlignmentCenter;
@@ -335,6 +392,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                                                                         encoding:NSUTF8StringEncoding];
                                
                                NSLog(@"ReceivedData %@", newStr);
+                               [self.navigationController popViewControllerAnimated:YES];                               
                            }];
 }
 

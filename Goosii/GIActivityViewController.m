@@ -30,6 +30,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
+    self.navigationController.navigationItem.title = @"Event Activity";
 }
 
 - (void)viewWillAppear:(BOOL)animated

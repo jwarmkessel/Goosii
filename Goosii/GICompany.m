@@ -9,9 +9,9 @@
 #import "GICompany.h"
 
 @implementation GICompany
-@synthesize name, companyId, address, telephone, totalParticipants, timePercentage, participationPercentage, startDate, endDate, fulfillment, reward, responseStr, longitude, latitude;
+@synthesize name, companyId, address, telephone, totalParticipants, timePercentage, participationPercentage, startDate, endDate, fulfillment, reward, responseStr, longitude, latitude, post, prize;
 
--(id) initWithName:(NSString*)companyName companyId:(NSString*)identifier address:(NSString*)companyAddress telephone:(NSString*)companyTelephone numOfParticipants:(NSString*)ttlParticipants time:(NSString*)timePercent participation:(NSString*)partPercent startDate:(NSString*)start endDate:(NSString*)end fulfillment:(NSString*)isFulfillment reward:(NSString*)isReward longitude:(NSString *)lngitude latitude:(NSString *)ltitude {
+-(id) initWithName:(NSString*)companyName companyId:(NSString*)identifier address:(NSString*)companyAddress telephone:(NSString*)companyTelephone numOfParticipants:(NSString*)ttlParticipants time:(NSString*)timePercent participation:(NSString*)partPercent startDate:(NSString*)start endDate:(NSString*)end fulfillment:(NSString*)isFulfillment reward:(NSString*)isReward longitude:(NSString *)lngitude latitude:(NSString *)ltitude post:(NSString *)wallPost eventReward:(NSString *)eventPrize {
     
     self = [super init];
     if( !self ) return nil;
@@ -29,6 +29,8 @@
     self.reward = isReward;
     self.longitude = lngitude;
     self.latitude = ltitude;
+    self.post = wallPost;
+    self.prize = eventPrize;
     
     return self;
 }

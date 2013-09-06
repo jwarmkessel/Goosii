@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		6D5FDD6B6A384234800A9569 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FE17D0685D8428287E7C265 /* libPods.a */; };
+		8300C01A17D6D46A00D9FC4C /* GIRewardStateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8300C01917D6D46A00D9FC4C /* GIRewardStateViewController.m */; };
+		8300C01D17D94A1900D9FC4C /* GIRewardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8300C01C17D94A1900D9FC4C /* GIRewardViewController.m */; };
 		8309748217837C0900ABC1CF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8309748117837C0900ABC1CF /* UIKit.framework */; };
 		8309748417837C0900ABC1CF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8309748317837C0900ABC1CF /* Foundation.framework */; };
 		8309748617837C0900ABC1CF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8309748517837C0900ABC1CF /* CoreGraphics.framework */; };
@@ -155,6 +157,10 @@
 
 /* Begin PBXFileReference section */
 		74FD184883D948B3BC8A4AB3 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		8300C01817D6D46A00D9FC4C /* GIRewardStateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIRewardStateViewController.h; sourceTree = "<group>"; };
+		8300C01917D6D46A00D9FC4C /* GIRewardStateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIRewardStateViewController.m; sourceTree = "<group>"; };
+		8300C01B17D94A1700D9FC4C /* GIRewardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIRewardViewController.h; sourceTree = "<group>"; };
+		8300C01C17D94A1900D9FC4C /* GIRewardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIRewardViewController.m; sourceTree = "<group>"; };
 		8309747E17837C0900ABC1CF /* Goosii.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Goosii.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8309748117837C0900ABC1CF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		8309748317837C0900ABC1CF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -466,7 +472,6 @@
 				836BC28D17C4661D00EF3007 /* iPhone4 */,
 				836BC2DD17C4661E00EF3007 /* iPhone4S */,
 				836BC32D17C4661E00EF3007 /* iPhone5 */,
-				836BC28C17C4658500EF3007 /* asdf */,
 				83196AFA17839261008A6107 /* GoosiiLogoTransparent200x140.png */,
 				83196AFB17839261008A6107 /* playBtn.png */,
 				83196AFC17839261008A6107 /* playBtn@2x.png */,
@@ -500,6 +505,10 @@
 				83196B1E17900272008A6107 /* GIEventBoardViewController.m */,
 				836BC25317C3786E00EF3007 /* GIFulfillmentViewController.h */,
 				836BC25417C3786E00EF3007 /* GIFulfillmentViewController.m */,
+				8300C01817D6D46A00D9FC4C /* GIRewardStateViewController.h */,
+				8300C01917D6D46A00D9FC4C /* GIRewardStateViewController.m */,
+				8300C01B17D94A1700D9FC4C /* GIRewardViewController.h */,
+				8300C01C17D94A1900D9FC4C /* GIRewardViewController.m */,
 			);
 			name = Dashboard;
 			sourceTree = "<group>";
@@ -560,13 +569,6 @@
 				836BC1A717C3190300EF3007 /* Slide2@x2.png */,
 			);
 			name = HomeScreenAssets;
-			sourceTree = "<group>";
-		};
-		836BC28C17C4658500EF3007 /* asdf */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = asdf;
 			sourceTree = "<group>";
 		};
 		836BC28D17C4661D00EF3007 /* iPhone4 */ = {
@@ -918,6 +920,8 @@
 				83196CB217914B36008A6107 /* GICountingLabel.m in Sources */,
 				83F9245A17B315D900E97376 /* GIHomeViewController.m in Sources */,
 				836BC25517C3786E00EF3007 /* GIFulfillmentViewController.m in Sources */,
+				8300C01A17D6D46A00D9FC4C /* GIRewardStateViewController.m in Sources */,
+				8300C01D17D94A1900D9FC4C /* GIRewardViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

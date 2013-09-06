@@ -63,6 +63,13 @@
     }];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+
+    [super viewDidAppear:YES];
+    
+    [self hideNavBar];
+}
+
 
 - (void)enterTapHandler:(UITapGestureRecognizer *)recognizer {
     [self performSegueWithIdentifier:@"checkinDisplaySegue" sender:self];    

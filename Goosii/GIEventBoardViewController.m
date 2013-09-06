@@ -74,8 +74,7 @@
 
     [self.tableView setBackgroundView:imgView];
     
-    // change the back button to cancel and add an event handler
-    
+    // change the back button to cancel and add an event handler    
     self.backButton = [[UIBarButtonItem alloc] initWithTitle:@"back"
                                                                    style:UIBarButtonItemStyleBordered
                                                                   target:self
@@ -632,12 +631,12 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (NSString *)editableText
 {
-    return @"I'm hanging at the Hot Spot Cafe!"; //This is the text the user will be able to edit
+    return self.company.post; //This is the text the user will be able to edit
 }
 
 - (NSString *)permanentText
 {
-    return @"http://yourcompanyname.Goosii.com/"; //The user will not be able to modify this text.
+    return @""; //The user will not be able to modify this text.
 }
 
 #pragma mark - Table view data source

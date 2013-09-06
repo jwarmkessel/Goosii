@@ -14,6 +14,7 @@
 #import "GIPlist.h"
 #import "GIEventBoardViewController.h"
 #import "GIFulfillmentViewController.h"
+#import <ECSlidingViewController.h>
 
 @interface GIParticipationViewController ()
 @property (nonatomic, strong) GICompany *selCompany;
@@ -48,6 +49,13 @@
     self.view.layer.shadowRadius = 10.0f;
     self.view.layer.shadowColor = [UIColor blackColor].CGColor;
     
+    //Configure Navigation Bar
+    self.navigationController.navigationItem.title = @"Event Activity";
+    self.navigationController.navigationBar.tintColor = [self colorWithHexString:@"C63D0F"];
+    self.wantsFullScreenLayout = YES;
+    self.navigationController.navigationBar.translucent = YES;
+    [self.navigationController.navigationBar setAlpha:0.9];
+    
     if(![self.slidingViewController.underLeftViewController isKindOfClass:[GIMenuViewController class]]) {
         self.slidingViewController.underLeftViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Menu"];
     }
@@ -57,6 +65,22 @@
     //Initialize the dataSource
     self.eventList = [[NSMutableArray alloc] init];
     [self makeContestRequest];
+    
+    //Add the back button to cancel and add an event handler
+    
+    UIImage *image = [UIImage imageNamed:@"Slide.png"];
+    UIBarButtonItem *button2 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(myAboutButtonClicked:)];
+    
+    self.navigationItem.leftBarButtonItem = button2;
+}
+
+-(IBAction)myAboutButtonClicked:(id)sender {
+    [self.slidingViewController anchorTopViewTo:ECRight animations:^{
+        NSLog(@"Sliding");
+    } onComplete:^{
+        NSLog(@"complete");
+    }];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -256,7 +280,7 @@
                                    }
                                    
                                    //Create company object and push to array.
-                                   GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"] numOfParticipants:totalParticipants time:timePercent participation:partPer startDate:[event objectForKey:@"startDate"] endDate:[event objectForKey:@"endDate"] fulfillment:isFulfillment reward:isReward longitude:[company objectForKey:@"longitude"] latitude:[company objectForKey:@"latitude"]];
+                                   GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"] numOfParticipants:totalParticipants time:timePercent participation:partPer startDate:[event objectForKey:@"startDate"] endDate:[event objectForKey:@"endDate"] fulfillment:isFulfillment reward:isReward longitude:[company objectForKey:@"longitude"] latitude:[company objectForKey:@"latitude"] post:[event objectForKey:@"post"] eventReward:[event objectForKey:@"prize"]];
                                    
                                    NSLog(@"Adding company object");
                                    [self.eventList addObject:companyObj];
@@ -447,4 +471,40 @@
     [self setEventList:nil];
     [super viewDidUnload];
 }
+
+-(UIColor*)colorWithHexString:(NSString*)hex {
+    NSString *cString = [[hex stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
+    
+    // String should be 6 or 8 characters
+    if ([cString length] < 6) return [UIColor grayColor];
+    
+    // strip 0X if it appears
+    if ([cString hasPrefix:@"0X"]) cString = [cString substringFromIndex:2];
+    
+    if ([cString length] != 6) return  [UIColor grayColor];
+    
+    // Separate into r, g, b substrings
+    NSRange range;
+    range.location = 0;
+    range.length = 2;
+    NSString *rString = [cString substringWithRange:range];
+    
+    range.location = 2;
+    NSString *gString = [cString substringWithRange:range];
+    
+    range.location = 4;
+    NSString *bString = [cString substringWithRange:range];
+    
+    // Scan values
+    unsigned int r, g, b;
+    [[NSScanner scannerWithString:rString] scanHexInt:&r];
+    [[NSScanner scannerWithString:gString] scanHexInt:&g];
+    [[NSScanner scannerWithString:bString] scanHexInt:&b];
+    
+    return [UIColor colorWithRed:((float) r / 255.0f)
+                           green:((float) g / 255.0f)
+                            blue:((float) b / 255.0f)
+                           alpha:1.0f];
+}
+
 @end
