@@ -357,7 +357,7 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" text="You're a winner! Have an employee enter the confirmation code to validate your prize." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="C29-vb-zEu">
+                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" text="You've been rewarded! Have an employee enter the confirmation code to validate the reward." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="C29-vb-zEu">
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="70" id="5Yx-sD-Xor"/>

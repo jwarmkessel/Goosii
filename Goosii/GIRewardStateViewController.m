@@ -104,7 +104,7 @@
     UITextView *rewardInstructions = [[UITextView alloc] initWithFrame:CGRectMake(0, 150, 320, 200)];
     
     if([newStr isEqual: @"NO"]) {
-        rewardInstructions.text = @"Hey, don't worry about not winning. You're automatically entered into every event, so you have plenty of chances of winning.";
+        rewardInstructions.text = @"Hey, don't worry too much about not being rewarded this time. You're automatically entered into every event, so you have plenty of chances.";
     } else {
         rewardInstructions.text = @"To collect your reward return to this establishment, check-in, and allow an employee to validate your reward.";
     }
