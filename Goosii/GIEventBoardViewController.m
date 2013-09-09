@@ -631,7 +631,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (NSString *)editableText
 {
-    return self.company.post; //This is the text the user will be able to edit
+    return self.company.participationPost; //This is the text the user will be able to edit
 }
 
 - (NSString *)permanentText
