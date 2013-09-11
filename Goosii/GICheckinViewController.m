@@ -208,7 +208,7 @@
     }
     
     //TODO CHANGE THIS BY REMOVING IT!!!!!!!!!!!
-    segueName = @"fulfillmentViewSegue";
+//    segueName = @"fulfillmentViewSegue";
     NSLog(@"Segue path is %@", segueName);
     
     [self performSegueWithIdentifier:segueName sender:self];

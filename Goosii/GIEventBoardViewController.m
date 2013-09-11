@@ -36,10 +36,12 @@
 @property (nonatomic, strong) UIView *companyInfoContainerView;
 
 @property (nonatomic, strong) UIBarButtonItem *backButton;
+
+@property (nonatomic, strong) UIImageView *prizeImg;
 @end
 
 @implementation GIEventBoardViewController
-@synthesize company, noEventsPopUpView, mapView, companyInfoContainerView, backButton, participationLbl;
+@synthesize company, noEventsPopUpView, mapView, companyInfoContainerView, backButton, participationLbl, prizeImg;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -69,6 +71,9 @@
     UIImage *img = [[UIImage alloc] initWithData:data];
     
     imgView.image = img;
+    
+    self.prizeImg = [[UIImageView alloc] init];
+    self.prizeImg.image = img;
     
     //TODO Not sure this is necessary
     [self.tableView setDelegate:self];
@@ -175,13 +180,33 @@
     telLbl.backgroundColor = [UIColor clearColor];
     telLbl.editable = NO;
     
+    UIImageView *companyInfoPrizeImage = [[UIImageView alloc] initWithFrame:CGRectMake(((xWidth/2)-50), 150.0f, 100.0,100.0f)];
+    companyInfoPrizeImage.image = self.prizeImg.image;
+    
+    UITextView *prizeLbl = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 250.0f, xWidth,200.0f)];
+    prizeLbl.text = [NSString stringWithFormat:@"Reward: %@", self.company.prize];
+    prizeLbl.textAlignment = NSTextAlignmentCenter;;
+    [prizeLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
+    prizeLbl.textColor = [UIColor whiteColor];
+    prizeLbl.backgroundColor = [UIColor clearColor];
+    prizeLbl.editable = NO;
+    
     UIButton *closeCompanyInfoViewBtn = [[UIButton alloc] initWithFrame:CGRectMake(xWidth-25, -10.0, 45.0, 45.0)];
     [closeCompanyInfoViewBtn setBackgroundColor:[UIColor blackColor]];
     [closeCompanyInfoViewBtn.layer setCornerRadius:22.5];
+    [closeCompanyInfoViewBtn setTitle:@"X" forState:UIControlStateNormal];
+    [closeCompanyInfoViewBtn.titleLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
+    [closeCompanyInfoViewBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    [closeCompanyInfoViewBtn addTarget:self
+                                action:@selector(closeCompanyInfoView:)
+                      forControlEvents:UIControlEventTouchDown];
     
     [self.companyInfoContainerView addSubview:companyNameLbl];
     [self.companyInfoContainerView addSubview:addressLbl];
     [self.companyInfoContainerView addSubview:telLbl];
+    [self.companyInfoContainerView addSubview:prizeLbl];
+    [self.companyInfoContainerView addSubview:companyInfoPrizeImage];
     [self.companyInfoContainerView addSubview:closeCompanyInfoViewBtn];
     
     [UIView animateWithDuration:2.0 animations:^{
@@ -196,6 +221,12 @@
     } completion:^(BOOL finished) {
         NSLog(@"Done");
     }];
+}
+
+- (void)closeCompanyInfoView:(id)sender {
+    [self.companyInfoContainerView removeFromSuperview];
+    self.backButton.enabled = YES;
+    [self.tableView setAlpha:1];
 }
 
 - (void)showNoEventsPopUp {
