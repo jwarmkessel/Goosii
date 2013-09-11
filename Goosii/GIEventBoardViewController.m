@@ -24,6 +24,7 @@
 @property (nonatomic, strong) UIView *loadingMask;
 @property (nonatomic, strong) UIView *enteredPopUpView;
 
+@property (nonatomic, strong) UILabel *participationLbl;
 @property (nonatomic, strong) GIProgressBar *participationBar;
 @property (nonatomic, strong) GIProgressBar *timeDurationBar;
 
@@ -38,7 +39,7 @@
 @end
 
 @implementation GIEventBoardViewController
-@synthesize company, noEventsPopUpView, mapView, companyInfoContainerView, backButton;
+@synthesize company, noEventsPopUpView, mapView, companyInfoContainerView, backButton, participationLbl;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -459,11 +460,14 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         transparentEngCell.layer.shadowOffset = CGSizeMake(.6f, .6f);
         transparentEngCell.layer.cornerRadius = 4;
         
-        UILabel *participationLbl = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 5.0f, 320.0f,15.0f)];
-        participationLbl.text = @"Your Participation";
-        [participationLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:13.0f]];
-        participationLbl.textColor = [UIColor whiteColor];
-        participationLbl.backgroundColor = [UIColor clearColor];
+        self.participationLbl = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 5.0f, 320.0f,15.0f)];
+        
+        float participationNum = [company.participationPercentage floatValue] * 100;
+        
+        self.participationLbl.text = [NSString stringWithFormat:@"%i%% Participation", (int) participationNum];
+        [self.participationLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:13.0f]];
+        self.participationLbl.textColor = [UIColor whiteColor];
+        self.participationLbl.backgroundColor = [UIColor clearColor];
         
         //Progress bar elements for participation rate and the duration of the contest.
         float progressBarWidth = 280.0f;
@@ -481,7 +485,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         [cell addSubview:transparentEngCell];
         [cell addSubview:participationBarBackground];
         [cell addSubview:self.participationBar];
-        [cell addSubview:participationLbl];
+        [cell addSubview:self.participationLbl];
         
         //Animate the progress bars to juic-ify this app!
         [UIView animateWithDuration:1 animations:^{
@@ -581,6 +585,10 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
             } else {
                 NSLog(@"Posting to facebook.");
                 
+                //Update participation percentage
+                
+                
+                //request update user participation 
                 NSLog(@"The result %d", result);
                 GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
                 NSString *urlString = @"http://www.goosii.com:3001/addUserParticipation/";
@@ -629,13 +637,50 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     }
 }
 
-- (NSString *)editableText
-{
+- (void) updateParticipationPercentage {
+
+    NSTimeInterval timeInMiliseconds = [[NSDate date] timeIntervalSince1970];
+    double startDate = floor([self.company.startDate doubleValue]);
+    double endDate = floor([self.company.endDate doubleValue]);
+    startDate = startDate / 1000;
+    endDate = endDate / 1000;
+    NSLog(@"START DATE %f", startDate);
+    NSLog(@"END DATE %f", endDate);
+    
+    
+    double curTime = floor(timeInMiliseconds);
+    NSLog(@"CURRENT DATE %f", curTime);
+    
+    double totalDuration = endDate - startDate;
+    NSLog(@"TOTAL DURATION IN MIL %f", totalDuration);
+    
+    double elapsedTime = curTime - startDate;
+    //Participation percentage is calculated by number of number of participation counts divided by number of days.
+    float partPercentage = 0;
+    
+    partPercentage = 0;
+
+    float ttlParticipationCount = [self.company.participationPoints floatValue] + 1;
+
+    NSLog(@"The participation count %f", ttlParticipationCount);
+
+    if(totalDuration != 0.0) {
+        partPercentage = elapsedTime / 86400;
+        partPercentage = floor(partPercentage);
+        partPercentage =  ttlParticipationCount / partPercentage;
+        NSLog(@"PART PERCENTAGE %f", partPercentage);
+    }
+    
+    self.company.participationPercentage = [NSString stringWithFormat:@"%f", partPercentage];
+    float participationNum = [self.company.participationPercentage floatValue] * 100;
+    self.participationLbl.text = [NSString stringWithFormat:@"%i%% Participation", (int) participationNum];
+}
+
+- (NSString *)editableText {
     return self.company.participationPost; //This is the text the user will be able to edit
 }
 
-- (NSString *)permanentText
-{
+- (NSString *)permanentText {
     return @""; //The user will not be able to modify this text.
 }
 
@@ -657,7 +702,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
+    }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   

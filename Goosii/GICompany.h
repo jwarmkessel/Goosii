@@ -26,6 +26,7 @@
 
 @property (strong, nonatomic) NSString *timePercentage;
 @property (strong, nonatomic) NSString *participationPercentage;
+@property (strong, nonatomic) NSString *participationPoints;
 
 @property (strong, nonatomic) NSString *fulfillment;
 @property (strong, nonatomic) NSString *reward;
@@ -35,6 +36,6 @@
 
 @property (strong, nonatomic) NSString *responseStr;
 
--(id) initWithName:(NSString*)companyName companyId:(NSString*)identifier address:(NSString*)companyAddress telephone:(NSString*)companyTelephone numOfParticipants:(NSString*)ttlParticipants time:(NSString*)timePercent participation:(NSString*)partPercent startDate:(NSString*)start endDate:(NSString*)end fulfillment:(NSString*)isFulfillment reward:(NSString*)isReward longitude:(NSString *)lngitude latitude:(NSString *)ltitude post:(NSString *)wallPost eventReward:(NSString *)eventPrize participationPost:(NSString *)partPost;
+-(id) initWithName:(NSString*)companyName companyId:(NSString*)identifier address:(NSString*)companyAddress telephone:(NSString*)companyTelephone numOfParticipants:(NSString*)ttlParticipants time:(NSString*)timePercent participation:(NSString*)partPercent startDate:(NSString*)start endDate:(NSString*)end fulfillment:(NSString*)isFulfillment reward:(NSString*)isReward longitude:(NSString *)lngitude latitude:(NSString *)ltitude post:(NSString *)wallPost eventReward:(NSString *)eventPrize participationPost:(NSString *)partPost participationPoints:(NSString *)partPoints;
 
 @end

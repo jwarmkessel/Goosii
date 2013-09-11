@@ -373,9 +373,11 @@
                                    
                                    //Calculate Participation Percentage.
                                    float partPercentage = 0;
+                                   float ttlParticipationCount = 0;
                                    
                                    NSDictionary *userObj = [company objectForKey:@"user"];
                                    NSArray *contests = [userObj objectForKey:@"contests"];
+                                   
                                    for (id contest in contests) {
                                        partPercentage = 0;
                                        
@@ -384,7 +386,7 @@
                                        
                                        if([contestCompanyId isEqualToString:companyId]) {
                                            
-                                           float ttlParticipationCount = 0;
+                                           ttlParticipationCount = 0;
                                            
                                            if([contest objectForKey:@"participationCount"] == nil) {
                                                NSLog(@"total participation is nil so we add one");
@@ -437,7 +439,24 @@
                                    }
                                    
                                    //Create company object and push to array.
-                                   GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"] companyId:[company objectForKey:@"_id"] address:[company objectForKey:@"address"] telephone:[company objectForKey:@"telephone"] numOfParticipants:totalParticipants time:timePercent participation:partPer startDate:[event objectForKey:@"startDate"] endDate:[event objectForKey:@"endDate"] fulfillment:isFulfillment reward:isReward longitude:[company objectForKey:@"longitude"] latitude:[company objectForKey:@"latitude"] post:[event objectForKey:@"post"] eventReward:[event objectForKey:@"prize"] participationPost:[event objectForKey:@"participationPost"]];
+                                   //Create company object and push to array.
+                                   GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"]
+                                                                                 companyId:[company objectForKey:@"_id"]
+                                                                                   address:[company objectForKey:@"address"]
+                                                                                 telephone:[company objectForKey:@"telephone"]
+                                                                         numOfParticipants:totalParticipants
+                                                                                      time:timePercent
+                                                                             participation:partPer
+                                                                                 startDate:[event objectForKey:@"startDate"]
+                                                                                   endDate:[event objectForKey:@"endDate"]
+                                                                               fulfillment:isFulfillment
+                                                                                    reward:isReward
+                                                                                 longitude:[company objectForKey:@"longitude"]
+                                                                                  latitude:[company objectForKey:@"latitude"]
+                                                                                      post:[event objectForKey:@"post"]
+                                                                               eventReward:[event objectForKey:@"prize"]
+                                                                         participationPost:[event objectForKey:@"participationPost"]
+                                                                       participationPoints:[NSString stringWithFormat:@"%f", ttlParticipationCount]];
                                    
 
                                    //Determine whether company is near enough

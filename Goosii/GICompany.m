@@ -9,9 +9,9 @@
 #import "GICompany.h"
 
 @implementation GICompany
-@synthesize name, companyId, address, telephone, totalParticipants, timePercentage, participationPercentage, startDate, endDate, fulfillment, reward, responseStr, longitude, latitude, post, prize, participationPost;
+@synthesize name, companyId, address, telephone, totalParticipants, timePercentage, participationPercentage, startDate, endDate, fulfillment, reward, responseStr, longitude, latitude, post, prize, participationPost, participationPoints;
 
--(id) initWithName:(NSString*)companyName companyId:(NSString*)identifier address:(NSString*)companyAddress telephone:(NSString*)companyTelephone numOfParticipants:(NSString*)ttlParticipants time:(NSString*)timePercent participation:(NSString*)partPercent startDate:(NSString*)start endDate:(NSString*)end fulfillment:(NSString*)isFulfillment reward:(NSString*)isReward longitude:(NSString *)lngitude latitude:(NSString *)ltitude post:(NSString *)wallPost eventReward:(NSString *)eventPrize participationPost:(NSString *)partPost{
+-(id) initWithName:(NSString*)companyName companyId:(NSString*)identifier address:(NSString*)companyAddress telephone:(NSString*)companyTelephone numOfParticipants:(NSString*)ttlParticipants time:(NSString*)timePercent participation:(NSString*)partPercent startDate:(NSString*)start endDate:(NSString*)end fulfillment:(NSString*)isFulfillment reward:(NSString*)isReward longitude:(NSString *)lngitude latitude:(NSString *)ltitude post:(NSString *)wallPost eventReward:(NSString *)eventPrize participationPost:(NSString *)partPost participationPoints:(NSString *)partPoints{
     
     self = [super init];
     if( !self ) return nil;
@@ -32,6 +32,7 @@
     self.post = wallPost;
     self.prize = eventPrize;
     self.participationPost = partPost;
+    self.participationPoints = partPoints;
     
     return self;
 }
