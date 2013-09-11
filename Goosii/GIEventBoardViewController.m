@@ -586,7 +586,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                 NSLog(@"Posting to facebook.");
                 
                 //Update participation percentage
-                
+                [self updateParticipationPercentage];
                 
                 //request update user participation 
                 NSLog(@"The result %d", result);
