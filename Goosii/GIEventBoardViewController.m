@@ -156,12 +156,12 @@
     [mapViewTintedLayer.layer setBorderWidth:1.5f];
     [mapViewTintedLayer.layer setCornerRadius:layerCornerRadius];
     
-    UITextView *companyNameLbl = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 10.0f, xWidth,150.0f)];
+    UITextView *companyNameLbl = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 10.0f, xWidth,44.0f)];
     companyNameLbl.text = self.company.name;
+    [companyNameLbl setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
     companyNameLbl.textAlignment = NSTextAlignmentCenter;;
     [companyNameLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
     companyNameLbl.textColor = [UIColor whiteColor];
-    companyNameLbl.backgroundColor = [UIColor clearColor];
     companyNameLbl.editable = NO;
     
     UITextView *addressLbl = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 50.0f, xWidth,150.0f)];
@@ -172,22 +172,24 @@
     addressLbl.backgroundColor = [UIColor clearColor];
     addressLbl.editable = NO;
     
-    UITextView *telLbl = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 100.0f, xWidth,150.0f)];
-    telLbl.text = [NSString stringWithFormat:@"%@", self.company.telephone];
-    telLbl.textAlignment = NSTextAlignmentCenter;;
-    [telLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
-    telLbl.textColor = [UIColor whiteColor];
-    telLbl.backgroundColor = [UIColor clearColor];
-    telLbl.editable = NO;
+    UIButton *telephoneBtn = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 105.0, xWidth, 44.0f)];
+    [telephoneBtn setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
+    [telephoneBtn setTitle:[NSString stringWithFormat:@"%@", self.company.telephone] forState:UIControlStateNormal];
+    [telephoneBtn.titleLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
+    [telephoneBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
-    UIImageView *companyInfoPrizeImage = [[UIImageView alloc] initWithFrame:CGRectMake(((xWidth/2)-50), 150.0f, 100.0,100.0f)];
+    [telephoneBtn addTarget:self
+                     action:@selector(telephoneBtnHandler:)
+           forControlEvents:UIControlEventTouchUpInside];
+    
+    UIImageView *companyInfoPrizeImage = [[UIImageView alloc] initWithFrame:CGRectMake(((xWidth/2)-50), 155.0f, 100.0,100.0f)];
     companyInfoPrizeImage.image = self.prizeImg.image;
     
     UITextView *prizeLbl = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 250.0f, xWidth,200.0f)];
     prizeLbl.text = [NSString stringWithFormat:@"Reward: %@", self.company.prize];
     prizeLbl.textAlignment = NSTextAlignmentCenter;;
     [prizeLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
-    prizeLbl.textColor = [UIColor whiteColor];
+    prizeLbl.textColor = [UIColor blackColor];
     prizeLbl.backgroundColor = [UIColor clearColor];
     prizeLbl.editable = NO;
     
@@ -204,7 +206,7 @@
     
     [self.companyInfoContainerView addSubview:companyNameLbl];
     [self.companyInfoContainerView addSubview:addressLbl];
-    [self.companyInfoContainerView addSubview:telLbl];
+    [self.companyInfoContainerView addSubview:telephoneBtn];
     [self.companyInfoContainerView addSubview:prizeLbl];
     [self.companyInfoContainerView addSubview:companyInfoPrizeImage];
     [self.companyInfoContainerView addSubview:closeCompanyInfoViewBtn];
@@ -221,6 +223,11 @@
     } completion:^(BOOL finished) {
         NSLog(@"Done");
     }];
+}
+
+- (IBAction)telephoneBtnHandler:sender {
+    NSLog(@"telephoneBtnHandler");
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", self.company.telephone]]];
 }
 
 - (void)closeCompanyInfoView:(id)sender {

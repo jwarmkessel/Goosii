@@ -141,7 +141,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     GICompany *company = [self.nearbyLocationsAry objectAtIndex:indexPath.row];
-    [cell.textLabel setFont:[UIFont fontWithName:@"Kailasa-Bold" size:15.0f]];
+    [cell.textLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
     cell.textLabel.text = company.name;
     return cell;
 }

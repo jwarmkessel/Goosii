@@ -366,7 +366,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     GICompany *company = [self.eventList objectAtIndex:indexPath.row];
-    NSLog(@"HELLO COMPANY NAME ==============================> %@", company.name);
+    [cell.textLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
     cell.textLabel.text = company.name;
     
     return cell;
