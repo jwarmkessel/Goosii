@@ -64,7 +64,8 @@
 
     //Set image for the tableview background
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    NSString *urlString = [NSString stringWithFormat:@"http://www.goosii.com/companyAssets/%@/rewardImage.jpg", self.company.companyId];
+
+    NSString *urlString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, self.company.companyId];
     
     NSURL *url = [NSURL URLWithString:urlString];
     NSData *data = [NSData dataWithContentsOfURL:url];
@@ -629,10 +630,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                 //request update user participation 
                 NSLog(@"The result %d", result);
                 GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
-                NSString *urlString = @"http://www.goosii.com:3001/addUserParticipation/";
-                urlString = [urlString stringByAppendingString:[plist objectForKey:@"userId"]];
-                urlString = [urlString stringByAppendingString:@"/"];
-                urlString = [urlString stringByAppendingString:self.company.companyId];
+                NSString *urlString = [NSString stringWithFormat:@"%@addUserParticipation/%@/%@", GOOSIIAPI, [plist objectForKey:@"userId"], self.company.companyId];        
                 
                 NSLog(@"getUserContests %@", urlString);
                 NSURL *url = [NSURL URLWithString:urlString];

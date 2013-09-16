@@ -33,7 +33,7 @@
 	// Do any additional setup after loading the view.
     //Set image for the tableview background
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    NSString *urlString = [NSString stringWithFormat:@"http://www.goosii.com/companyAssets/%@/rewardImage.jpg", self.company.companyId];
+    NSString *urlString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, self.company.companyId];
     
     NSURL *url = [NSURL URLWithString:urlString];
     NSData *data = [NSData dataWithContentsOfURL:url];
@@ -42,12 +42,11 @@
     imgView.image = img;
     
     GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
-    NSString *requestStr = @"http://www.goosii.com:3001/getReward";
     
-    NSString *getRewardUrlString = [NSString stringWithFormat:@"%@/%@/%@", requestStr, self.company.companyId,[plist objectForKey:@"userId"]];
+    NSString *urlRewardString = [NSString stringWithFormat:@"%@getReward/%@/%@", GOOSIIAPI, self.company.companyId, [plist objectForKey:@"userId"]];
     
-    NSLog(@"getUserContests %@", getRewardUrlString);
-    NSURL *getRewardUrl = [NSURL URLWithString:getRewardUrlString];
+    NSLog(@"getUserContests %@", urlRewardString);
+    NSURL *getRewardUrl = [NSURL URLWithString:urlRewardString];
     
     NSURLRequest *urlRequest = [NSURLRequest requestWithURL:getRewardUrl cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
     

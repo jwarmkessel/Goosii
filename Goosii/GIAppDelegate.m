@@ -45,10 +45,7 @@
         NSLog(@"The saved uniqueId %@", uniqueId);
         
         NSString *filterStr = [uniqueId stringByReplacingOccurrencesOfString:@"\"" withString:@""];
-        
-        NSString *urlPost = [@"http://www.Goosii.com:3001/loginUser/" stringByAppendingString:filterStr];
-        urlPost = [urlPost stringByAppendingString:@"/"];
-        urlPost = [urlPost stringByAppendingString:deviceTokenStr];
+        NSString *urlPost = [NSString stringWithFormat:@"%@loginUser/%@/%@", GOOSIIAPI, filterStr, deviceTokenStr];
         
         NSURL *url = [NSURL URLWithString:urlPost];
         NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
@@ -61,10 +58,7 @@
         NSUUID *uid = [UIDevice currentDevice].identifierForVendor;
         
         NSLog(@"IdentifierForVendor %@",[uid UUIDString]);
-        NSString *urlPost = [@"http://www.Goosii.com:3001/createUser/" stringByAppendingString:[uid UUIDString]];
-        
-        urlPost = [urlPost stringByAppendingString:@"/"];
-        urlPost = [urlPost stringByAppendingString:deviceTokenStr];
+        NSString *urlPost = [NSString stringWithFormat:@"%@createUser/%@/%@", GOOSIIAPI, [uid UUIDString], deviceTokenStr];
                 
         NSURL *url = [NSURL URLWithString:urlPost];
         NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
@@ -97,13 +91,13 @@
         
         NSString *filterStr = [uniqueId stringByReplacingOccurrencesOfString:@"\"" withString:@""];
         
-        NSString *urlPost = [@"http://www.Goosii.com:3001/loginUser/" stringByAppendingString:filterStr];
+        NSString *urlPost = [NSString stringWithFormat:@"%@loginUser/%@/", GOOSIIAPI, filterStr];
         
         if([plist objectForKey:@"userDevicePushToken"]) {
-            urlPost = [urlPost stringByAppendingString:@"/"];
+
             urlPost = [urlPost stringByAppendingString:[plist objectForKey:@"userDevicePushToken"]];
         } else {
-            urlPost = [urlPost stringByAppendingString:@"/"];
+
             urlPost = [urlPost stringByAppendingString:@"empty"];
         }
         
@@ -118,9 +112,8 @@
         NSUUID *uid = [UIDevice currentDevice].identifierForVendor;
         
         NSLog(@"IdentifierForVendor %@",[uid UUIDString]);
-        NSString *urlPost = [@"http://www.Goosii.com:3001/createUser/" stringByAppendingString:[uid UUIDString]];
-        
-        urlPost = [urlPost stringByAppendingString:@"/"];
+
+        NSString *urlPost = [NSString stringWithFormat:@"%@createUser/%@/", GOOSIIAPI, [uid UUIDString]];
         urlPost = [urlPost stringByAppendingString:@"empty"];
         
         NSURL *url = [NSURL URLWithString:urlPost];

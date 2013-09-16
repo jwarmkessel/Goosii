@@ -146,8 +146,7 @@
 
 - (void)makeContestRequest {
     GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
-    NSString *urlString = @"http://www.goosii.com:3001/getUserContests/";
-    urlString = [urlString stringByAppendingString:[plist objectForKey:@"userId"]];
+    NSString *urlString = [NSString stringWithFormat:@"%@getUserContests/%@", GOOSIIAPI, [plist objectForKey:@"userId"]];
     
     NSLog(@"getUserContests %@", urlString);
     NSURL *url = [NSURL URLWithString:urlString];
@@ -309,10 +308,7 @@
 
 - (BOOL)determineFulfillment: (NSString*)companyId {
     GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
-    NSString *urlString = @"http://www.goosii.com:3001/getUserFulfillments/";
-    urlString = [urlString stringByAppendingString:[plist objectForKey:@"userId"]];
-    urlString = [urlString stringByAppendingString:@"/"];
-    urlString = [urlString stringByAppendingString:companyId];
+    NSString *urlString = [NSString stringWithFormat:@"%@getUserFulfillments/%@/%@", GOOSIIAPI, [plist objectForKey:@"userId"], companyId];
     
     NSLog(@"getUserContests %@", urlString);
     NSURL *url = [NSURL URLWithString:urlString];
@@ -459,9 +455,7 @@
     GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
     
     //Enter the user into the contest if they haven't already.
-    NSString *urlString = @"http://www.goosii.com:3001/enterContest";
-    urlString = [urlString stringByAppendingFormat:@"/%@", [plist objectForKey:@"userId"]];
-    urlString = [urlString stringByAppendingFormat:@"/%@", curCompany.companyId];
+    NSString *urlString = [NSString stringWithFormat:@"%@enterContest/%@/%@", GOOSIIAPI, [plist objectForKey:@"userId"], curCompany.companyId];
     
     NSLog(@"Requesting %@", urlString);
     

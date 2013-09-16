@@ -47,7 +47,7 @@
     
     //Set image for the tableview background
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    NSString *urlString = [NSString stringWithFormat:@"http://www.goosii.com/companyAssets/%@/rewardImage.jpg", self.company.companyId];
+    NSString *urlString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, self.company.companyId];
     
     NSURL *url = [NSURL URLWithString:urlString];
     NSData *data = [NSData dataWithContentsOfURL:url];
@@ -123,12 +123,11 @@
                 NSLog(@"The result %d", result);
                 GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
                 
-                NSString *urlParams = [NSString stringWithFormat:@"%@/%@", self.company.companyId, [plist objectForKey:@"userId"]];
-                NSString *urlPost = [@"http://www.Goosii.com:3001/removeFulfillmentObject/" stringByAppendingString:urlParams];
+                NSString *urlString = [NSString stringWithFormat:@"%@removeFulfillmentObject/%@/%@", GOOSIIAPI, self.company.companyId, [plist objectForKey:@"userId"]];
                 
-                NSLog(@"Remove fulfillment flag %@", urlPost);
+                NSLog(@"Remove fulfillment flag %@", urlString);
                 
-                NSURL *url = [NSURL URLWithString:urlPost];
+                NSURL *url = [NSURL URLWithString:urlString];
                 NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
                 [NSURLConnection sendAsynchronousRequest:urlRequest
                                                    queue:[NSOperationQueue mainQueue]
@@ -270,7 +269,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     CGRect prizeImgView = CGRectMake((200/2-45), 135, 95, 90.0);
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:prizeImgView];
-    NSString *urlString = [NSString stringWithFormat:@"http://www.goosii.com/companyAssets/%@/rewardImage.jpg", self.company.companyId];
+
+    NSString *urlString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, self.company.companyId];
     
     NSURL *url = [NSURL URLWithString:urlString];
     NSData *data = [NSData dataWithContentsOfURL:url];
@@ -376,9 +376,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
     
-    NSString *urlParams = [NSString stringWithFormat:@"%@/%@", self.company.companyId, [plist objectForKey:@"userId"]];
-    NSString *urlPost = [@"http://www.Goosii.com:3001/removeFulfillmentObject/" stringByAppendingString:urlParams];
-    
+    NSString *urlPost = [NSString stringWithFormat:@"%@removeFulfillmentObject/%@/%@", GOOSIIAPI, self.company.companyId,[plist objectForKey:@"userId"]];
+
     NSLog(@"Remove fulfillment flag %@", urlPost);
     
     NSURL *url = [NSURL URLWithString:urlPost];

@@ -217,9 +217,7 @@
     GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
     
     //Enter the user into the contest if they haven't already.
-    NSString *urlString = @"http://www.goosii.com:3001/enterContest";
-    urlString = [urlString stringByAppendingFormat:@"/%@", [plist objectForKey:@"userId"]];
-    urlString = [urlString stringByAppendingFormat:@"/%@", curCompany.companyId];
+    NSString *urlString = [NSString stringWithFormat:@"%@enterContest/%@/%@", GOOSIIAPI,[plist objectForKey:@"userId"], curCompany.companyId];
     
     NSLog(@"Requesting %@", urlString);
 
@@ -302,8 +300,7 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
     NSLog(@"The manager.location %@", manager.location);
-    NSString *urlString = @"http://www.goosii.com:3001/nearbyCompanies";
-    urlString = [urlString stringByAppendingFormat:@"/%@", [plist objectForKey:@"userId"]];    
+    NSString *urlString = [NSString stringWithFormat:@"%@nearbyCompanies/%@", GOOSIIAPI, [plist objectForKey:@"userId"]];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
     

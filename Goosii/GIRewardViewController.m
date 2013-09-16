@@ -65,7 +65,7 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField{
     NSLog(@"textFieldDidEndEditing");
     
-    NSString *validatePasswordUrlString = [NSString stringWithFormat:@"http://www.goosii.com:3001/checkPassword/%@/%@", self.company.companyId, textField.text];
+    NSString *validatePasswordUrlString = [NSString stringWithFormat:@"%@checkPassword/%@/%@", GOOSIIAPI, self.company.companyId, textField.text];
     
     NSURL *url = [NSURL URLWithString:validatePasswordUrlString];
     
