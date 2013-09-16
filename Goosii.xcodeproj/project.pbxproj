@@ -230,6 +230,7 @@
 		83196CAD17900D86008A6107 /* vietSandwich.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 83196CAC17900D86008A6107 /* vietSandwich.jpg */; };
 		83196CAF1790A2C7008A6107 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83196CAE1790A2C7008A6107 /* QuartzCore.framework */; };
 		83196CB217914B36008A6107 /* GICountingLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83196CB117914B35008A6107 /* GICountingLabel.m */; };
+		8319FAAA17E7B47700661B91 /* GIGlobalVariables.m in Sources */ = {isa = PBXBuildFile; fileRef = 8319FAA917E7B47700661B91 /* GIGlobalVariables.m */; };
 		836BC1A817C3190300EF3007 /* Bubble.png in Resources */ = {isa = PBXBuildFile; fileRef = 836BC19C17C3190300EF3007 /* Bubble.png */; };
 		836BC1A917C3190300EF3007 /* Bubble@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = 836BC19D17C3190300EF3007 /* Bubble@x2.png */; };
 		836BC1AA17C3190300EF3007 /* Bubble1.png in Resources */ = {isa = PBXBuildFile; fileRef = 836BC19E17C3190300EF3007 /* Bubble1.png */; };
@@ -581,6 +582,9 @@
 		83196CAE1790A2C7008A6107 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		83196CB017914B35008A6107 /* GICountingLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GICountingLabel.h; sourceTree = "<group>"; };
 		83196CB117914B35008A6107 /* GICountingLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GICountingLabel.m; sourceTree = "<group>"; };
+		8319FAA517E3DFC400661B91 /* GIGoosiiConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIGoosiiConstants.h; sourceTree = "<group>"; };
+		8319FAA817E7B47700661B91 /* GIGlobalVariables.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIGlobalVariables.h; sourceTree = "<group>"; };
+		8319FAA917E7B47700661B91 /* GIGlobalVariables.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIGlobalVariables.m; sourceTree = "<group>"; };
 		836BC19C17C3190300EF3007 /* Bubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bubble.png; sourceTree = "<group>"; };
 		836BC19D17C3190300EF3007 /* Bubble@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bubble@x2.png"; sourceTree = "<group>"; };
 		836BC19E17C3190300EF3007 /* Bubble1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bubble1.png; sourceTree = "<group>"; };
@@ -961,6 +965,9 @@
 			children = (
 				83196B11178DE48C008A6107 /* Resources */,
 				8309749917837C0900ABC1CF /* MainStoryboard.storyboard */,
+				8319FAA517E3DFC400661B91 /* GIGoosiiConstants.h */,
+				8319FAA817E7B47700661B91 /* GIGlobalVariables.h */,
+				8319FAA917E7B47700661B91 /* GIGlobalVariables.m */,
 				8309749017837C0900ABC1CF /* GIAppDelegate.h */,
 				8309749117837C0900ABC1CF /* GIAppDelegate.m */,
 				830974A7178380E300ABC1CF /* GIInitViewController.h */,
@@ -1682,6 +1689,7 @@
 				836BC25517C3786E00EF3007 /* GIFulfillmentViewController.m in Sources */,
 				8300C01A17D6D46A00D9FC4C /* GIRewardStateViewController.m in Sources */,
 				8300C01D17D94A1900D9FC4C /* GIRewardViewController.m in Sources */,
+				8319FAAA17E7B47700661B91 /* GIGlobalVariables.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,7 +13,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    //Set up API environment variables
+    NSObject *goosiiAPI = [[GIGlobalVariables alloc] init];
+    
+    NSLog(@"THE CURRENT API REQUEST %@", GOOSIIAPI);
     
     // Let the device know we want to receive push notifications
 	[[UIApplication sharedApplication] registerForRemoteNotificationTypes:

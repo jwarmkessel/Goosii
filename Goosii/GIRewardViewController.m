@@ -44,7 +44,7 @@
     self.textInputField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     self.textInputField.tag = 2;
     self.textInputField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    
+
     [self.view setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
     self.companyNameLbl.text = self.company.name;
     [self.userIntructTxtField setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
