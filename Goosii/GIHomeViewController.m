@@ -32,8 +32,8 @@
     
     [self.navigationController.navigationBar setAlpha:0.0f];
     
-    self.animationImgView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.animationImgView.image = [UIImage imageNamed:@"Intro_0078.png"];
+    self.animationImgView = [[UIImageView alloc] initWithFrame:CGRectMake(74, 100, 172, 117)];
+    self.animationImgView.image = [UIImage imageNamed:@"BrokenEggAnim_017.png"];
     [self.view addSubview:self.animationImgView];
     
     /* This animate command is a recursive execution of animation block. Unusable */
@@ -52,6 +52,8 @@
     [slidingMenuButton addTarget:self action:@selector(revealMenu:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:self.slidingMenuButton];
+    
+    [self.view setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
 }
 
 -(IBAction)revealMenu:(id)sender {
@@ -77,13 +79,13 @@
 
 -(void) animate:(UIView*) b withState: (int) state andLastState:(int) last_state {
     if (state < last_state) {
-        float duration = 10/80;
+        float duration = 2;
         NSLog(@"Start animation %f", duration);
 
         [UIView animateWithDuration: duration
                     animations: ^{
                         
-                        UIImage * image = [UIImage imageNamed:[NSString stringWithFormat:@"Intro_000%d.png", state]];
+                        UIImage * image = [UIImage imageNamed:[NSString stringWithFormat:@"BrokenEggAnim_0%d.png", state]];
                         [self.animationImgView setImage:image];
                     }
                     completion:^(BOOL finished) {
@@ -101,13 +103,19 @@
     
     NSMutableArray *animationArray = [[NSMutableArray alloc] init];
     
-    int i = 52;
-    while(i <= 80) {
+    int i = 0;
+    while(i <= 17) {
         NSString *animationFileNameStr;
         
-        animationFileNameStr = [NSString stringWithFormat:@"Intro_00%d.png", i];
-        //NSLog(@"File names %@", animationFileNameStr);
-
+        if(i < 10) {
+            animationFileNameStr = [NSString stringWithFormat:@"BrokenEggAnim_00%d.png", i];
+            //NSLog(@"File names %@", animationFileNameStr);
+        } else {
+            animationFileNameStr = [NSString stringWithFormat:@"BrokenEggAnim_0%d.png", i];
+            //NSLog(@"File names %@", animationFileNameStr);
+        }
+        
+        
         
         UIImage *image = (UIImage*)[UIImage imageNamed:animationFileNameStr];
         if(image != nil) {
@@ -120,7 +128,7 @@
     NSLog(@"Populated array count %lu", (unsigned long)[animationArray count]);
     self.animationImgView.animationImages = animationArray;
     
-    self.animationImgView.animationDuration = 1;
+    self.animationImgView.animationDuration = 2;
     self.animationImgView.animationRepeatCount = 1;
     NSLog(@"Start animation");
     [self.animationImgView startAnimating];
@@ -134,6 +142,41 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(UIColor*)colorWithHexString:(NSString*)hex {
+    NSString *cString = [[hex stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
+    
+    // String should be 6 or 8 characters
+    if ([cString length] < 6) return [UIColor grayColor];
+    
+    // strip 0X if it appears
+    if ([cString hasPrefix:@"0X"]) cString = [cString substringFromIndex:2];
+    
+    if ([cString length] != 6) return  [UIColor grayColor];
+    
+    // Separate into r, g, b substrings
+    NSRange range;
+    range.location = 0;
+    range.length = 2;
+    NSString *rString = [cString substringWithRange:range];
+    
+    range.location = 2;
+    NSString *gString = [cString substringWithRange:range];
+    
+    range.location = 4;
+    NSString *bString = [cString substringWithRange:range];
+    
+    // Scan values
+    unsigned int r, g, b;
+    [[NSScanner scannerWithString:rString] scanHexInt:&r];
+    [[NSScanner scannerWithString:gString] scanHexInt:&g];
+    [[NSScanner scannerWithString:bString] scanHexInt:&b];
+    
+    return [UIColor colorWithRed:((float) r / 255.0f)
+                           green:((float) g / 255.0f)
+                            blue:((float) b / 255.0f)
+                           alpha:1.0f];
 }
 
 @end

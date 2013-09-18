@@ -9,7 +9,6 @@
 #import "GICheckinViewController.h"
 #import <SBJson.h>
 #import "GICompany.h"
-#import "GIDashboardViewController.h"
 #import "GIEventBoardViewController.h"
 #import "GIPlist.h"
 #import "GIFulfillmentViewController.h"
@@ -25,7 +24,6 @@
     BOOL isFromChild;
 }
 @property (strong, nonatomic) UIView *loadingMask;
-@property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) UIActivityIndicatorView *indicator;
 @end
 
@@ -47,23 +45,6 @@
 {
     [super viewDidLoad];
     NSLog(@"Check-in viewDidLoad");
-    
-    //Start loading mask.
-    self.loadingMask = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.loadingMask.backgroundColor = [UIColor blackColor];
-    self.loadingMask.alpha = 0.5;
-    
-    self.indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    indicator.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
-    indicator.center = self.view.center;
-    [self.view addSubview:indicator];
-    [indicator bringSubviewToFront:self.view];
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = TRUE;
-    
-    [self.view addSubview:self.loadingMask];
-    [self.view addSubview:indicator];
-    
-    [indicator startAnimating];
     
     //Set navigation controller variables.
     self.navigationController.navigationBarHidden = NO;
@@ -101,6 +82,23 @@
 - (void)viewWillAppear:(BOOL)animated {
     NSLog(@"Check-in View Will Appear");
     [super viewWillAppear:YES];
+    [self.nearbyLocationsAry removeAllObjects];
+    //Start loading mask.
+    self.loadingMask = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.loadingMask.backgroundColor = [UIColor blackColor];
+    self.loadingMask.alpha = 0.5;
+    
+    self.indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicator.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
+    indicator.center = self.view.center;
+    [self.view addSubview:indicator];
+    [indicator bringSubviewToFront:self.view];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = TRUE;
+    
+    [self.view addSubview:self.loadingMask];
+    [self.view addSubview:indicator];
+    
+    [indicator startAnimating];
 }
 
 - (void)didReceiveMemoryWarning
@@ -208,7 +206,7 @@
     }
     
     //TODO CHANGE THIS BY REMOVING IT!!!!!!!!!!!
-//    segueName = @"fulfillmentViewSegue";
+    segueName = @"eventDrillDownViewSegue";
     NSLog(@"Segue path is %@", segueName);
     
     [self performSegueWithIdentifier:segueName sender:self];
@@ -376,7 +374,7 @@
                                    NSArray *contests = [userObj objectForKey:@"contests"];
                                    
                                    for (id contest in contests) {
-                                       partPercentage = 0;
+
                                        
                                        NSString *contestCompanyId =[contest objectForKey:@"companyId"];
                                        NSString *companyId = [company objectForKey:@"_id"];
@@ -396,14 +394,27 @@
                                            
                                            if(totalDuration != 0.0) {
                                                partPercentage = elapsedTime / 86400;
+                                               
+                                               if(elapsedTime < 86400) {
+                                                   partPercentage = 1;
+                                               }
+                                               
                                                partPercentage = floor(partPercentage);
-                                               partPercentage =  ttlParticipationCount / partPercentage;
+
+                                               if(ttlParticipationCount > 0) {
+                                                   partPercentage =  ttlParticipationCount / partPercentage;
+                                               } else {
+                                                   partPercentage = 0;
+                                               }
+                                               
+                                               if(partPercentage > 1) {
+                                                   partPercentage = 1;
+                                               }
+                                               
                                                NSLog(@"PART PERCENTAGE %f", partPercentage);
                                            }
                                        }
-                                   }
-                                   
-                                   NSString *partPer = [NSString stringWithFormat:@"%f", partPercentage];
+                                   }                                
                                    
                                    //Check fulfillments
                                    NSArray *fulfillments = [userObj objectForKey:@"fulfillments"];
@@ -435,6 +446,7 @@
                                        }
                                    }
                                    
+                                   NSLog(@"FINALLY THE PARTICIPATION PERCENTAGE %@", [NSString stringWithFormat:@"%f", partPercentage]);
                                    //Create company object and push to array.
                                    //Create company object and push to array.
                                    GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"]
@@ -443,7 +455,7 @@
                                                                                  telephone:[company objectForKey:@"telephone"]
                                                                          numOfParticipants:totalParticipants
                                                                                       time:timePercent
-                                                                             participation:partPer
+                                                                             participation:[NSString stringWithFormat:@"%f", partPercentage]
                                                                                  startDate:[event objectForKey:@"startDate"]
                                                                                    endDate:[event objectForKey:@"endDate"]
                                                                                fulfillment:isFulfillment
@@ -466,6 +478,7 @@
                                        [self.nearbyLocationsAry addObject:companyObj];
                                    }
                                }
+                               
                                [self.tableView reloadData];
                                [self.loadingMask removeFromSuperview];
                                [indicator stopAnimating];

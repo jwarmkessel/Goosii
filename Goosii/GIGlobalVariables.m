@@ -23,11 +23,11 @@ NSString * GOOSIIAPI;
 
 - (void)setEnvironmentVariables:(NSString *)environment {
     if([environment isEqualToString:@"SANDBOX"]){
-        GOOSIIAPI = [NSString stringWithFormat:@"%@%@/", kBASE_URL, kSANDBOX_PORT];
+        GOOSIIAPI = [NSString stringWithFormat:@"%@:%@/", kBASE_URL, kSANDBOX_PORT];
     } else if([environment isEqualToString:@"DEMO"]){
-        GOOSIIAPI = [NSString stringWithFormat:@"%@%@/", kBASE_URL, kDEMO_PORT];
+        GOOSIIAPI = [NSString stringWithFormat:@"%@:%@/", kBASE_URL, kDEMO_PORT];
     } else if([environment isEqualToString:@"PRODUCTION"]){
-        GOOSIIAPI = [NSString stringWithFormat:@"%@%@/", kBASE_URL, kPRODUCTION_PORT];
+        GOOSIIAPI = [NSString stringWithFormat:@"%@:%@/", kBASE_URL, kPRODUCTION_PORT];
     }
 }
 

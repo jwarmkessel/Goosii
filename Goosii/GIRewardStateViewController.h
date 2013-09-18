@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 @class GICompany;
 
-@interface GIRewardStateViewController : UIViewController
+@interface GIRewardStateViewController : UIViewController {
+
+}
+@property (assign) BOOL isRewarded;
 @property (nonatomic, strong) GICompany * company;
 @end

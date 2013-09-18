@@ -13,6 +13,7 @@
     
 }
 
+@property (assign) BOOL isRewarded;
 @property (strong, nonatomic) GICompany *company;
 @property (strong, nonatomic) IBOutlet UITextView *userIntructTxtField;
 @property (strong, nonatomic) IBOutlet UILabel *companyNameLbl;

@@ -8,16 +8,28 @@
 
 #import "GIAppDelegate.h"
 #import "GIPlist.h"
+#import "TestFlight.h"
+#import <Flurry.h>
 
 @implementation GIAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    //Set up API environment variables
-    NSObject *goosiiAPI = [[GIGlobalVariables alloc] init];
-    
+    //Set up API environment variables.
+    NSObject *goosiiAPI __unused = [[GIGlobalVariables alloc] init];
+
+
     NSLog(@"THE CURRENT API REQUEST %@", GOOSIIAPI);
+
+    //Set testflight device token.
+    [TestFlight takeOff:@"bc01fdd6-8f88-4d53-927a-43a17ff87eee"];
     
+    //Flurry analytics
+
+    [Flurry setCrashReportingEnabled:YES];
+    [Flurry startSession:@"TG9C2BZ4V4KX78GXYD4K"];
+    
+
     // Let the device know we want to receive push notifications
 	[[UIApplication sharedApplication] registerForRemoteNotificationTypes:
      (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
@@ -72,8 +84,13 @@
                                    
                                    NSLog(@"ReceivedData %@", newStr);
                                    newStr = [newStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+                                   
+                                   //Set the user's ID for flurry to track.
+                                   [Flurry setUserID:newStr];
+                                   [Flurry setPushToken:deviceTokenStr];
+                                   
                                    [loginName setObject:newStr forKey:@"userId"];
-                                   [loginName setObject:deviceToken forKey:@"userDevicePushToken"];
+                                   [loginName setObject:deviceTokenStr forKey:@"userDevicePushToken"];
                                }];
     }
 
@@ -127,6 +144,9 @@
                                                                             encoding:NSUTF8StringEncoding];
                                    
                                    NSLog(@"ReceivedData %@", newStr);
+                                   //Set Flurry user's ID.
+                                  [Flurry setUserID:newStr];
+                                   
                                    newStr = [newStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
                                    [plist setObject:newStr forKey:@"userId"];
                                }];

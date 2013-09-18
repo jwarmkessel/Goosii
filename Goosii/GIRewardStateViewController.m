@@ -16,7 +16,7 @@
 @end
 
 @implementation GIRewardStateViewController
-@synthesize company;
+@synthesize company, isRewarded;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -66,8 +66,6 @@
     } else {
         rewardStateLbl.text = @"You've WON";   
     }
-    
-    
     
     [rewardStateLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0]];
     rewardStateLbl.textColor = [UIColor whiteColor];

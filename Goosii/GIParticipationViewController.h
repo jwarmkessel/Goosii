@@ -10,4 +10,6 @@
 
 @interface GIParticipationViewController : UITableViewController <UITableViewDataSource, NSURLConnectionDelegate>
 @property (strong, nonatomic) NSMutableArray *eventList;
+
+- (void)makeContestRequest;
 @end

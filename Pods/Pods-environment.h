@@ -12,6 +12,12 @@
 #define COCOAPODS_VERSION_MINOR_ECSlidingViewController 10
 #define COCOAPODS_VERSION_PATCH_ECSlidingViewController 0
 
+// FlurrySDK
+#define COCOAPODS_POD_AVAILABLE_FlurrySDK
+#define COCOAPODS_VERSION_MAJOR_FlurrySDK 4
+#define COCOAPODS_VERSION_MINOR_FlurrySDK 2
+#define COCOAPODS_VERSION_PATCH_FlurrySDK 3
+
 // PunchScrollView
 #define COCOAPODS_POD_AVAILABLE_PunchScrollView
 #define COCOAPODS_VERSION_MAJOR_PunchScrollView 1

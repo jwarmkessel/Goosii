@@ -330,6 +330,7 @@
         GICheckinViewController *checkinViewController = [self.navigationController.viewControllers objectAtIndex:(parentViewControllerIndex)];
         
         [checkinViewController setInset];
+        [checkinViewController.locationManager startUpdatingLocation];
 
         [self.navigationController popViewControllerAnimated:YES];
     } else {
@@ -363,6 +364,9 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         //Create a transparent layer on top of the cell as a background to the elements on top of it.
         //This is required because otherwise the alpha set on this element affects its child elements.
         UILabel *companyNameLbl = [[UILabel alloc] initWithFrame:CGRectMake((cell.layer.frame.size.width/2-160), (cell.layer.frame.size.height/2-25), 320.0, 50.0)];
+        
+        NSLog(@"---------------------blah blah-cell width %f", cell.layer.frame.size.width);
+        
         companyNameLbl.text = self.company.name;
         [companyNameLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0]];
         companyNameLbl.textColor = [UIColor whiteColor];
@@ -451,7 +455,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         dateFormatter.dateFormat = @"MM/dd/yyyy HH:mm";
         NSString *timeStamp = [dateFormatter stringFromDate:epochNSDate];
-        NSString *announceDateStr = [NSString stringWithFormat:@"Winner to be announced %@", timeStamp];
+        NSString *announceDateStr = [NSString stringWithFormat:@"Reward to be announced %@", timeStamp];
         
         UILabel *endDateLbl = [[UILabel alloc] initWithFrame:CGRectMake(10, 5.0f, 320.0,15.0)];
         endDateLbl.text = announceDateStr;
@@ -525,13 +529,13 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         [cell addSubview:participationBarBackground];
         [cell addSubview:self.participationBar];
         [cell addSubview:self.participationLbl];
-        
+        NSLog(@"CAN YOU BELIEVE %@", self.company.participationPercentage);
         //Animate the progress bars to juic-ify this app!
         [UIView animateWithDuration:1 animations:^{
             
             float partWidth = [self.company.participationPercentage floatValue] * progressBarWidth;
             NSLog(@"The percentage %f and cell width %f", [self.company.participationPercentage floatValue], cell.frame.size.width);
-            NSLog(@"The caluc %f", partWidth);
+            NSLog(@"The calculation %f", partWidth);
             self.participationBar.frame = CGRectMake(xPos, 20, partWidth, progressBarThickness);
             
         } completion:^(BOOL finished) {
@@ -698,18 +702,35 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
     float ttlParticipationCount = [self.company.participationPoints floatValue] + 1;
 
-    NSLog(@"The participation count %f", ttlParticipationCount);
-
     if(totalDuration != 0.0) {
         partPercentage = elapsedTime / 86400;
+        
+        if(elapsedTime < 86400) {
+            partPercentage = 1;
+        }
         partPercentage = floor(partPercentage);
         partPercentage =  ttlParticipationCount / partPercentage;
-        NSLog(@"PART PERCENTAGE %f", partPercentage);
+        
+        if(partPercentage > 1) {
+            partPercentage = 1;
+        }
     }
     
     self.company.participationPercentage = [NSString stringWithFormat:@"%f", partPercentage];
     float participationNum = [self.company.participationPercentage floatValue] * 100;
     self.participationLbl.text = [NSString stringWithFormat:@"%i%% Participation", (int) participationNum];
+    
+    //Animate the progress bars to juic-ify this app!
+    [UIView animateWithDuration:1 animations:^{
+
+        float partWidth = [self.company.participationPercentage floatValue] * 280.0;
+        NSLog(@"The percentage %f and cell width %f", [self.company.participationPercentage floatValue], 300.0f);
+        NSLog(@"The calculation %f", partWidth);
+        self.participationBar.frame = CGRectMake(10, 20, partWidth, 20);
+        
+    } completion:^(BOOL finished) {
+        NSLog(@"done");
+    }];
 }
 
 - (NSString *)editableText {

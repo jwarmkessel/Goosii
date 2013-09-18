@@ -183,11 +183,11 @@
                         <sections>
                             <tableViewSection id="WzZ-vf-Uxb">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="detailDisclosureButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="597" id="2uF-iY-fKv" customClass="GIEventViewCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="597" id="2uF-iY-fKv" customClass="GIEventViewCell">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="597"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="287" height="596"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="596"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
@@ -379,12 +379,12 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="3p7-9F-e7g" firstAttribute="top" secondItem="8Jg-x5-vby" secondAttribute="top" constant="206" id="Gkf-3O-OYf"/>
                             <constraint firstItem="AKH-Wg-0uY" firstAttribute="trailing" secondItem="8Jg-x5-vby" secondAttribute="trailing" type="default" id="J21-o0-pZQ"/>
                             <constraint firstItem="3p7-9F-e7g" firstAttribute="centerX" secondItem="C29-vb-zEu" secondAttribute="centerX" type="default" id="TUY-sJ-VSM"/>
                             <constraint firstItem="C29-vb-zEu" firstAttribute="top" secondItem="AKH-Wg-0uY" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="WzU-cP-teS"/>
                             <constraint firstItem="C29-vb-zEu" firstAttribute="centerX" secondItem="AKH-Wg-0uY" secondAttribute="centerX" type="default" id="aJf-4q-rLS"/>
                             <constraint firstItem="C29-vb-zEu" firstAttribute="top" secondItem="8Jg-x5-vby" secondAttribute="top" constant="107" id="dN4-Ec-Com"/>
+                            <constraint firstItem="3p7-9F-e7g" firstAttribute="top" secondItem="8Jg-x5-vby" secondAttribute="top" constant="205" id="eXe-Xo-oeg"/>
                             <constraint firstItem="AKH-Wg-0uY" firstAttribute="leading" secondItem="8Jg-x5-vby" secondAttribute="leading" type="default" id="jGS-zW-rdp"/>
                         </constraints>
                     </view>

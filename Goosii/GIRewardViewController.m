@@ -15,7 +15,7 @@
 @end
 
 @implementation GIRewardViewController
-@synthesize company, textInputField, companyNameLbl, userIntructTxtField;
+@synthesize company, textInputField, companyNameLbl, userIntructTxtField, isRewarded;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -29,26 +29,67 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-
-    self.textInputField.delegate = self; // ADD THIS LINE
     
-    self.textInputField.placeholder = @"Password";
-    self.textInputField.backgroundColor = [UIColor whiteColor];
-    self.textInputField.textColor = [UIColor blackColor];
-    self.textInputField.font = [UIFont systemFontOfSize:14.0f];
-    self.textInputField.borderStyle = UITextBorderStyleRoundedRect;
-    self.textInputField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    self.textInputField.returnKeyType = UIReturnKeyDone;
-    self.textInputField.textAlignment = UITextAlignmentLeft;
-    self.textInputField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    self.textInputField.tag = 2;
-    self.textInputField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.navigationController.navigationBarHidden = YES;
 
-    [self.view setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
-    self.companyNameLbl.text = self.company.name;
-    [self.userIntructTxtField setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
-    self.userIntructTxtField.textColor = [UIColor whiteColor];
+    if([self.company.reward isEqualToString:@"YES"]) {
+        self.textInputField.delegate = self; // ADD THIS LINE
+        self.textInputField.placeholder = @"Password";
+        self.textInputField.backgroundColor = [UIColor whiteColor];
+        self.textInputField.textColor = [UIColor blackColor];
+        self.textInputField.font = [UIFont systemFontOfSize:14.0f];
+        self.textInputField.borderStyle = UITextBorderStyleRoundedRect;
+        self.textInputField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        self.textInputField.returnKeyType = UIReturnKeyDone;
+        self.textInputField.textAlignment = UITextAlignmentLeft;
+        self.textInputField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+        self.textInputField.tag = 2;
+        self.textInputField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        [self.view setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
+        self.companyNameLbl.text = self.company.name;
+        [self.userIntructTxtField setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
+        self.userIntructTxtField.textColor = [UIColor whiteColor];
+    } else {
+        UIView *notRewardedView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        [notRewardedView setBackgroundColor:[self colorWithHexString:@"C63D0F"]];        
+
+        CGRect noRewardLblRect = CGRectMake(10,100,300,100);
+        UITextView *notRewardedLbl = [[UITextView alloc] initWithFrame:noRewardLblRect];
+        notRewardedLbl.text = @"Sorry, you're not rewarded this time. No worries though, you're already entered into the next event.";
+        [notRewardedLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0]];
+        notRewardedLbl.textColor = [UIColor whiteColor];
+        notRewardedLbl.backgroundColor = [UIColor clearColor];
+        notRewardedLbl.textAlignment = NSTextAlignmentCenter;
+        
+        CGRect skipBtnRect = CGRectMake(10, 250, 300, 50);
+        UIButton *skipBtn = [[UIButton alloc] initWithFrame:skipBtnRect];
+        
+        [skipBtn setBackgroundColor:[self colorWithHexString:@"3b5999"]];
+        
+        [skipBtn setTitle:@"OK, I got it." forState:UIControlStateNormal];
+        [skipBtn.titleLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
+        [skipBtn.titleLabel setTextColor:[UIColor whiteColor]];
+        
+        [skipBtn.layer setBorderWidth:3.0];
+        [skipBtn.layer setBorderColor:[[UIColor blackColor] CGColor]];
+        
+        [skipBtn.layer setShadowOffset:CGSizeMake(5, 5)];
+        [skipBtn.layer setShadowColor:[[UIColor blackColor] CGColor]];
+        [skipBtn.layer setShadowOpacity:0.5];
+        
+        [skipBtn addTarget:self
+                    action:@selector(okayBtnHandler:)
+          forControlEvents:UIControlEventTouchDown];
+        
+        [self.view addSubview:notRewardedView];
+        [notRewardedView addSubview:notRewardedLbl];
+        [notRewardedView addSubview:skipBtn];
+    }
+
+}
+
+- (void)okayBtnHandler:sender {
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{

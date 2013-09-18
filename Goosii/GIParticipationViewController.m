@@ -18,6 +18,8 @@
 
 @interface GIParticipationViewController ()
 @property (nonatomic, strong) GICompany *selCompany;
+@property (strong, nonatomic) UIView *loadingMask;
+@property (strong, nonatomic) UIActivityIndicatorView *indicator;
 
 - (void)makeContestRequest;
 - (BOOL)determineFulfillment: (NSString*)companyId;
@@ -25,7 +27,7 @@
 @end
 
 @implementation GIParticipationViewController
-@synthesize eventList;
+@synthesize eventList, loadingMask, indicator;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -64,7 +66,6 @@
 
     //Initialize the dataSource
     self.eventList = [[NSMutableArray alloc] init];
-    [self makeContestRequest];
     
     //Add the back button to cancel and add an event handler
     
@@ -87,6 +88,28 @@
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+
+    [super viewWillAppear:YES];
+    [self.eventList removeAllObjects];
+
+    [self makeContestRequest];
+    
+    //Start loading mask.
+    self.loadingMask = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.loadingMask.backgroundColor = [UIColor blackColor];
+    self.loadingMask.alpha = 0.5;
+    
+    self.indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicator.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
+    indicator.center = self.view.center;
+    [self.view addSubview:indicator];
+    [indicator bringSubviewToFront:self.view];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = TRUE;
+    
+    [self.view addSubview:self.loadingMask];
+    [self.view addSubview:indicator];
+    
+    [indicator startAnimating];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -239,8 +262,23 @@
                                            
                                            if(totalDuration != 0.0) {
                                                partPercentage = elapsedTime / 86400;
+                                               
+                                               if(elapsedTime < 86400) {
+                                                   partPercentage = 1;
+                                               }
+                                               
                                                partPercentage = floor(partPercentage);
-                                               partPercentage =  ttlParticipationCount / partPercentage;
+                                               
+                                               if(ttlParticipationCount > 0) {
+                                                   partPercentage =  ttlParticipationCount / partPercentage;
+                                               } else {
+                                                   partPercentage = 0;
+                                               }
+                                               
+                                               if(partPercentage > 1) {
+                                                   partPercentage = 1;
+                                               }
+                                               
                                                NSLog(@"PART PERCENTAGE %f", partPercentage);
                                            }
                                        }
@@ -303,6 +341,8 @@
                                }
                                
                                [self.tableView reloadData];
+                               [self.loadingMask removeFromSuperview];
+                               [indicator stopAnimating];
                            }];
 }
 
@@ -446,7 +486,7 @@
     }
     
     //TODO CHANGE THIS BY REMOVING IT!!!!!!!!!!!
-    //segueName = @"fulfillmentViewSegue";
+    segueName = @"eventDrillDownViewSegue";
     NSLog(@"Segue path is %@", segueName);
     
     [self performSegueWithIdentifier:segueName sender:self];
