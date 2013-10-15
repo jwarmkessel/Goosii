@@ -47,7 +47,7 @@
     
     //Set image for the tableview background
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    NSString *urlString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, self.company.companyId];
+    NSString *urlString = [NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, self.company.companyId];
     
     NSURL *url = [NSURL URLWithString:urlString];
     NSData *data = [NSData dataWithContentsOfURL:url];
@@ -155,6 +155,7 @@
         };
         [sharingComposer setCompletionHandler:completionHandler];
         [sharingComposer setInitialText:[NSString stringWithFormat:@"%@ %@",[self editableText],[self permanentText]]];
+        [sharingComposer addURL:[NSURL URLWithString:company.website]];        
         
         [self presentViewController:sharingComposer animated:YES completion:^{
             for (UIView *viewLayer1 in [[sharingComposer view] subviews]) {
@@ -231,7 +232,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     //The Reward Panel
     UILabel *eventPrizeLbl = [[UILabel alloc] initWithFrame:CGRectMake((cell.layer.frame.size.width/2-160), 70, 320.0, 40.0)];
-    eventPrizeLbl.text = @"Free Sandwich";
+    eventPrizeLbl.text = company.prize;
     [eventPrizeLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0]];
     eventPrizeLbl.textColor = [UIColor whiteColor];
     eventPrizeLbl.backgroundColor = [UIColor clearColor];
@@ -282,6 +283,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     CGRect participationLblRect = CGRectMake(((200/2-45) + 90), 135, 110, 90.0);
     UITextView *participationLabel = [[UITextView alloc] initWithFrame:participationLblRect];
 
+    NSLog(@"The Participation Number %f", [company.participationPercentage floatValue]);
     float participationNum = [company.participationPercentage floatValue] * 100;
     participationLabel.text = [NSString stringWithFormat:@"%i%% Participation", (int) participationNum];
     [participationLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0]];

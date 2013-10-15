@@ -32,6 +32,9 @@
     
     self.navigationController.navigationBarHidden = YES;
 
+    //TODO Remove this shim
+    self.company.reward = @"YES";
+    
     if([self.company.reward isEqualToString:@"YES"]) {
         self.textInputField.delegate = self; // ADD THIS LINE
         self.textInputField.placeholder = @"Password";
@@ -41,7 +44,7 @@
         self.textInputField.borderStyle = UITextBorderStyleRoundedRect;
         self.textInputField.clearButtonMode = UITextFieldViewModeWhileEditing;
         self.textInputField.returnKeyType = UIReturnKeyDone;
-        self.textInputField.textAlignment = UITextAlignmentLeft;
+        self.textInputField.textAlignment = NSTextAlignmentLeft;
         self.textInputField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         self.textInputField.tag = 2;
         self.textInputField.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -49,6 +52,7 @@
         self.companyNameLbl.text = self.company.name;
         [self.userIntructTxtField setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
         self.userIntructTxtField.textColor = [UIColor whiteColor];
+        
     } else {
         UIView *notRewardedView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
         [notRewardedView setBackgroundColor:[self colorWithHexString:@"C63D0F"]];        
@@ -137,9 +141,9 @@
     
     CGRect instructionRect = CGRectMake(10, 20, 280, 200);
     UITextView *instructions = [[UITextView alloc] initWithFrame:instructionRect];
-    NSString *instructText = [NSString stringWithFormat:@"Give this customer %@", self.company.prize];
+    NSString *instructText = [NSString stringWithFormat:@"Give this customer: %@", self.company.prize];
     [instructions setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
-    instructions.textAlignment = UITextAlignmentCenter;
+    instructions.textAlignment = NSTextAlignmentCenter;
     instructions.text = instructText;
     
     CGRect validateBtnRect = CGRectMake(10, 220, 280, 50);

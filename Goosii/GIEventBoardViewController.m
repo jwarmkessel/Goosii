@@ -15,7 +15,7 @@
 #import "GIPlist.h"
 #import "GICheckinViewController.h"
 #import <MapKit/MapKit.h>
-
+#import <ECSlidingViewController.h>
 
 @interface GIEventBoardViewController ()
 {
@@ -41,7 +41,7 @@
 @end
 
 @implementation GIEventBoardViewController
-@synthesize company, noEventsPopUpView, mapView, companyInfoContainerView, backButton, participationLbl, prizeImg;
+@synthesize company, noEventsPopUpView, mapView, companyInfoContainerView, backButton, participationLbl, prizeImg, toggle, blinkTimer, fbPartLbl;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -56,6 +56,8 @@
 {
     [super viewDidLoad];
 
+    blinkTimer=[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(toggleButtonImage:) userInfo:nil repeats: YES];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -65,7 +67,7 @@
     //Set image for the tableview background
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
-    NSString *urlString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, self.company.companyId];
+    NSString *urlString = [NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, self.company.companyId];
     
     NSURL *url = [NSURL URLWithString:urlString];
     NSData *data = [NSData dataWithContentsOfURL:url];
@@ -73,8 +75,14 @@
     
     imgView.image = img;
     
+    NSString *urlRewardString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, self.company.companyId];
+    
+    NSURL *urlReward = [NSURL URLWithString:urlRewardString];
+    NSData *dataReward = [NSData dataWithContentsOfURL:urlReward];
+    UIImage *rewardImg = [[UIImage alloc] initWithData:dataReward];
+    
     self.prizeImg = [[UIImageView alloc] init];
-    self.prizeImg.image = img;
+    self.prizeImg.image = rewardImg;
     
     //TODO Not sure this is necessary
     [self.tableView setDelegate:self];
@@ -83,19 +91,40 @@
     
     // change the back button to cancel and add an event handler    
     self.backButton = [[UIBarButtonItem alloc] initWithTitle:@"back"
-                                                                   style:UIBarButtonItemStyleBordered
-                                                                  target:self
-                                                                  action:@selector(handleBack:)];
+                                                       style:UIBarButtonItemStyleBordered
+                                                      target:self
+                                                      action:@selector(handleBack:)];
+
     self.navigationItem.leftBarButtonItem = backButton;
 
     //Set the color of the NavBar
-    self.navigationController.navigationBar.tintColor = [self colorWithHexString:@"C63D0F"];
-    self.wantsFullScreenLayout = YES;
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+        self.navigationController.navigationBar.tintColor = [self colorWithHexString:@"C63D0F"];
+
+        #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+        self.wantsFullScreenLayout = YES;
+        #pragma GCC diagnostic warning "-Wdeprecated-declarations"
+    } else {
+        self.navigationController.navigationBar.barTintColor = [self colorWithHexString:@"C63D0F"];
+        
+    }
+    
     self.navigationController.navigationBar.translucent = YES;
     [self.navigationController.navigationBar setAlpha:0.9];
     
     //Set mapview delegate
     [self.mapView setDelegate:self];
+}
+
+- (void)toggleButtonImage:(NSTimer*)timer {
+    
+if(toggle) {
+        fbPartLbl.textColor = [UIColor yellowColor];
+    } else {
+        fbPartLbl.textColor = [UIColor whiteColor];
+    }
+
+    toggle = !toggle;
 }
 
 - (void)mapViewWillStartLoadingMap:(MKMapView *)mapView {
@@ -194,16 +223,22 @@
     prizeLbl.backgroundColor = [UIColor clearColor];
     prizeLbl.editable = NO;
     
-    UIButton *closeCompanyInfoViewBtn = [[UIButton alloc] initWithFrame:CGRectMake(xWidth-25, -10.0, 45.0, 45.0)];
-    [closeCompanyInfoViewBtn setBackgroundColor:[UIColor blackColor]];
-    [closeCompanyInfoViewBtn.layer setCornerRadius:22.5];
-    [closeCompanyInfoViewBtn setTitle:@"X" forState:UIControlStateNormal];
+    UIButton *closeCompanyInfoViewBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, 300.0, 230.0, 45.0)];
+    [closeCompanyInfoViewBtn setBackgroundColor:[self colorWithHexString:@"3b5999"]];
+
+    [closeCompanyInfoViewBtn.layer setCornerRadius:3];
+    [closeCompanyInfoViewBtn setTitle:@"Done" forState:UIControlStateNormal];
     [closeCompanyInfoViewBtn.titleLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
     [closeCompanyInfoViewBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [closeCompanyInfoViewBtn setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+    
+    [closeCompanyInfoViewBtn.layer setShadowColor:[UIColor blackColor].CGColor];
+    [closeCompanyInfoViewBtn.layer setShadowOpacity:0.8];
+    [closeCompanyInfoViewBtn.layer setShadowRadius:3.0];
     
     [closeCompanyInfoViewBtn addTarget:self
                                 action:@selector(closeCompanyInfoView:)
-                      forControlEvents:UIControlEventTouchDown];
+                      forControlEvents:UIControlEventTouchUpInside];
     
     [self.companyInfoContainerView addSubview:companyNameLbl];
     [self.companyInfoContainerView addSubview:addressLbl];
@@ -211,6 +246,14 @@
     [self.companyInfoContainerView addSubview:prizeLbl];
     [self.companyInfoContainerView addSubview:companyInfoPrizeImage];
     [self.companyInfoContainerView addSubview:closeCompanyInfoViewBtn];
+    [self.companyInfoContainerView setAlpha:0];
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        [self.companyInfoContainerView setAlpha:1];
+        
+    } completion:^(BOOL finished) {
+        NSLog(@"finished");
+    }];
     
     [UIView animateWithDuration:2.0 animations:^{
         MKCoordinateRegion newRegion;
@@ -232,31 +275,47 @@
 }
 
 - (void)closeCompanyInfoView:(id)sender {
-    [self.companyInfoContainerView removeFromSuperview];
+    
+    [UIView animateWithDuration:0.8 animations:^{
+        self.companyInfoContainerView.frame = CGRectMake(self.companyInfoContainerView.frame.origin.x, -500, self.companyInfoContainerView.frame.size.width, self.companyInfoContainerView.frame.size.height);
+        
+        [self.companyInfoContainerView setAlpha:0];
+        
+    } completion:^(BOOL finished) {
+        [self.companyInfoContainerView removeFromSuperview];
+    }];
+    
     self.backButton.enabled = YES;
     [self.tableView setAlpha:1];
 }
 
 - (void)showNoEventsPopUp {
+
+    
     float xPos = [[UIScreen mainScreen] bounds].size.width;
     //UIView *noEventsPopUpMask = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
     [self.tableView setAlpha:0.5];
     xPos = xPos/2 - 100.0f;
     float yPos = 75.0f;
+    
+    
+
     CGRect noEventsPopUpRect = CGRectMake(xPos, yPos, 200.0f, 200.0f);
     self.noEventsPopUpView = [[UIView alloc] initWithFrame:noEventsPopUpRect];
     self.noEventsPopUpView.layer.borderColor = [UIColor blackColor].CGColor;
     self.noEventsPopUpView.layer.borderWidth = 3.0f;
     
-    UITextView *noEventLbl = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 10.0f, 200.0f,150.0f)];
-    noEventLbl.text = @"Sorry! There aren't any events at the moment.";
-    noEventLbl.textAlignment = NSTextAlignmentCenter;;
+    NSString *infoString = @"Sorry, no events.";
+    
+    UILabel *noEventLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 10.0f, 190.0f,50)];
+    noEventLbl.text = infoString;
+    noEventLbl.textAlignment = NSTextAlignmentCenter;
     [noEventLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
     noEventLbl.textColor = [UIColor whiteColor];
     noEventLbl.backgroundColor = [UIColor clearColor];
-    noEventLbl.editable = NO;
-    
+
+
     // border radius
     [self.noEventsPopUpView.layer setCornerRadius:30.0f];
     
@@ -334,12 +393,27 @@
 
         [self.navigationController popViewControllerAnimated:YES];
     } else {
+        if(!isEvent) {
+            [UIView
+             animateWithDuration:0.1
+             animations:^ {
+                 [self.noEventsPopUpView setAlpha:0];
+             }
+             completion:^(BOOL finished) {
+                 [self.noEventsPopUpView removeFromSuperview];
+             }];
+            
+            
+        }
+        
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
+    
+    self.slidingViewController.panGesture.enabled = NO;
 }
 
 - (void)didReceiveMemoryWarning
@@ -559,7 +633,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                                   action:@selector(participationBtnHandler)
                         forControlEvents:UIControlEventTouchDown];
         
-        UILabel *fbPartLbl = [[UILabel alloc] initWithFrame:CGRectMake((cell.frame.size.width/2-110), 10.0f, 220.0f,30.0f)];
+        self.fbPartLbl = [[UILabel alloc] initWithFrame:CGRectMake((cell.frame.size.width/2-110), 10.0f, 220.0f,30.0f)];
         fbPartLbl.text = @"Post To Increase Participation";
         [fbPartLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
         fbPartLbl.textColor = [UIColor whiteColor];
@@ -570,51 +644,10 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         [cell addSubview:fbPartLbl];
         [cell addSubview:self.participationBtn];
     }
-    //            //disable touch gestures while loading mask is in place
-    //            [self.tableView setUserInteractionEnabled:NO];
-    //
-    //            //Create and add a loading mask behind the pop up view.
-    //            self.loadingMask = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    //            [self.loadingMask setBackgroundColor:[UIColor blackColor]];
-    //            [self.loadingMask setAlpha:0.5];
-    //
-    //            //Add a pop up view to indicate to the user that an event has been entered into.
-    //            float width = 240.0f;
-    //            float height = 240.0f;
-    //
-    //            CGRect popUpRect = CGRectMake(320/2-120, 100.0f, width, height);
-    //            self.enteredPopUpView = [[UIView alloc] initWithFrame:popUpRect];
-    //            [self.enteredPopUpView setBackgroundColor:[self colorWithHexString:@"994747"]];
-    //            self.enteredPopUpView.layer.shadowColor = [UIColor blackColor].CGColor;
-    //            self.enteredPopUpView.layer.shadowOpacity = 0.5;
-    //            self.enteredPopUpView.layer.shadowRadius = 3;
-    //            self.enteredPopUpView.layer.shadowOffset = CGSizeMake(.6f, .6f);
-    //            self.enteredPopUpView.layer.cornerRadius = 4;
-    //
-    //            CGRect textViewRect = CGRectMake(5.0f, 5.0f, 230.0f, 200.0f);
-    //            UITextView *textView = [[UITextView alloc] initWithFrame:textViewRect];
-    //            textView.text = @"You're Entered Into the Event.";
-    //            textView.textAlignment = UITextAlignmentLeft;
-    //            [textView setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0]];
-    //            [textView setBackgroundColor:[self colorWithHexString:@"EBDCDC"]];
-    //
-    //            [self.enteredPopUpView addSubview:textView];
-    //
-    //            [self.view addSubview:self.loadingMask];
-    //            [self.view addSubview:self.enteredPopUpView];
-    //
-    //            CABasicAnimation *theAnimation;
-    //
-    //            theAnimation=[CABasicAnimation animationWithKeyPath:@"opacity"];
-    //            theAnimation.duration=0.2;
-    //            theAnimation.repeatCount=2;
-    //            theAnimation.autoreverses=YES;
-    //            theAnimation.fromValue=[NSNumber numberWithFloat:1.0];
-    //            theAnimation.toValue=[NSNumber numberWithFloat:0.0];
-    //            [self.enteredPopUpView.layer addAnimation:theAnimation forKey:@"animateOpacity"];
 }
 
 - (void)participationBtnHandler {
+    
     
     if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
     {
@@ -659,6 +692,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         };
         [sharingComposer setCompletionHandler:completionHandler];
         [sharingComposer setInitialText:[NSString stringWithFormat:@"%@ %@",[self editableText],[self permanentText]]];
+        
+        [sharingComposer addURL:[NSURL URLWithString:company.website]];
         
         [self presentViewController:sharingComposer animated:YES completion:^{
             for (UIView *viewLayer1 in [[sharingComposer view] subviews]) {
@@ -741,47 +776,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     return @""; //The user will not be able to modify this text.
 }
 
-#pragma mark - Table view data source
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -804,23 +798,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 //    }
     
 }
-
-//- (void)moreInfoCellHandler {
-//    NSLog(@"more info button clicked");
-//    NSInteger animatedCellIndex = 1;
-//    NSMutableArray *indexPathsArray = [[NSMutableArray alloc] init];
-//    NSNumber *number = [NSNumber numberWithInt:animatedCellIndex];
-//    [indexPathsArray addObject:number];
-//    
-//    [self.tableView reloadRowsAtIndexPaths:indexPathsArray withRowAnimation:UITableViewRowAnimationFade];
-//    [UIView animateWithDuration:0.3 animations:^{
-//        self.currentSelectedCell.frame = CGRectMake(0.0, 0.0, self.currentSelectedCell.layer.frame.size.width, 400.0f);
-//
-//    } completion:^(BOOL finished) {
-//        NSLog(@"Expansion complete");
-//    }];
-//}
-
 
 -(UIColor*)colorWithHexString:(NSString*)hex {
     NSString *cString = [[hex stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];

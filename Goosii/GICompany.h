@@ -14,8 +14,11 @@
 
 @property (strong, nonatomic) NSString *name;
 @property (strong, nonatomic) NSString *companyId;
+
 @property (strong, nonatomic) NSString *startDate;
 @property (strong, nonatomic) NSString *endDate;
+
+@property (strong, nonatomic) NSString *website;
 @property (strong, nonatomic) NSString *post;
 @property (strong, nonatomic) NSString *participationPost;
 @property (strong, nonatomic) NSString *prize;
@@ -35,7 +38,10 @@
 @property (strong, nonatomic) NSString *latitude;
 
 @property (strong, nonatomic) NSString *responseStr;
+@property (strong, nonatomic) NSString *distanceStr;
 
--(id) initWithName:(NSString*)companyName companyId:(NSString*)identifier address:(NSString*)companyAddress telephone:(NSString*)companyTelephone numOfParticipants:(NSString*)ttlParticipants time:(NSString*)timePercent participation:(NSString*)partPercent startDate:(NSString*)start endDate:(NSString*)end fulfillment:(NSString*)isFulfillment reward:(NSString*)isReward longitude:(NSString *)lngitude latitude:(NSString *)ltitude post:(NSString *)wallPost eventReward:(NSString *)eventPrize participationPost:(NSString *)partPost participationPoints:(NSString *)partPoints;
+-(id) initWithName:(NSString*)companyName companyId:(NSString*)identifier address:(NSString*)companyAddress telephone:(NSString*)companyTelephone numOfParticipants:(NSString*)ttlParticipants time:(NSString*)timePercent participation:(NSString*)partPercent startDate:(NSString*)start endDate:(NSString*)end fulfillment:(NSString*)isFulfillment reward:(NSString*)isReward longitude:(NSString *)lngitude latitude:(NSString *)ltitude post:(NSString *)wallPost eventReward:(NSString *)eventPrize participationPost:(NSString *)partPost participationPoints:(NSString *)partPoints website:(NSString *)companyWebsite;
+
+-(id) initWithName:(NSString*)companyName companyId:(NSString*)identifier address:(NSString*)companyAddress telephone:(NSString*)companyTelephone numOfParticipants:(NSString*)ttlParticipants time:(NSString*)timePercent participation:(NSString*)partPercent startDate:(NSString*)start endDate:(NSString*)end fulfillment:(NSString*)isFulfillment reward:(NSString*)isReward longitude:(NSString *)lngitude latitude:(NSString *)ltitude post:(NSString *)wallPost eventReward:(NSString *)eventPrize participationPost:(NSString *)partPost participationPoints:(NSString *)partPoints distance:(NSString *)curDistance website:(NSString *)companyWebsite;
 
 @end

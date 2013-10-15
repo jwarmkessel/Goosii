@@ -13,12 +13,12 @@
 #import "GIPlist.h"
 #import "GIFulfillmentViewController.h"
 #import "GIHomeViewController.h"
-
 #import "GIMainViewController.h"
+#import <ECSlidingViewController.h>
 
 #define METERS_PER_MILE 1609.344
 #define METERS_TO_MILE_CONVERSION 0.00062137
-#define DISTANCE_ALLOWED_FROM_COMPANY 200.0f
+#define DISTANCE_ALLOWED_FROM_COMPANY 4000.0f
 
 @interface GICheckinViewController () {
     BOOL isFromChild;
@@ -45,11 +45,21 @@
 {
     [super viewDidLoad];
     NSLog(@"Check-in viewDidLoad");
-    
+    self.slidingViewController.panGesture.enabled = NO;
     //Set navigation controller variables.
     self.navigationController.navigationBarHidden = NO;
     self.navigationController.navigationBar.autoresizesSubviews = YES;
-    [self.tableView setContentInset:UIEdgeInsetsMake(-20,0,0,0)];
+
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+        [self.tableView setContentInset:UIEdgeInsetsMake(-20,0,0,0)];
+        self.navigationController.navigationBar.tintColor = [self colorWithHexString:@"C63D0F"];
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+        self.wantsFullScreenLayout = YES;
+#pragma GCC diagnostic warning "-Wdeprecated-declarations"
+    } else {
+        self.navigationController.navigationBar.barTintColor = [self colorWithHexString:@"C63D0F"];
+
+    }
 
     //Start location services.
     self.locationManager = [[CLLocationManager alloc] init];
@@ -68,15 +78,15 @@
     self.navigationItem.leftBarButtonItem = backButton;
     
     //Set the color of the NavBar
-    self.navigationController.navigationBar.tintColor = [self colorWithHexString:@"C63D0F"];
-    self.wantsFullScreenLayout = YES;
     self.navigationController.navigationBar.translucent = YES;
     [self.navigationController.navigationBar setAlpha:0.9];
 }
 
 - (void)setInset {
     NSLog(@"Check-in setInset");
-    [self.tableView setContentInset:UIEdgeInsetsMake(-20,0,0,0)];
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+        [self.tableView setContentInset:UIEdgeInsetsMake(-20,0,0,0)];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -141,6 +151,10 @@
     GICompany *company = [self.nearbyLocationsAry objectAtIndex:indexPath.row];
     [cell.textLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
     cell.textLabel.text = company.name;
+
+    UILabel *milesLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 80, cell.frame.size.height)];
+    milesLbl.text = company.distanceStr;
+    cell.accessoryView =milesLbl;
     return cell;
 }
 
@@ -206,7 +220,7 @@
     }
     
     //TODO CHANGE THIS BY REMOVING IT!!!!!!!!!!!
-    segueName = @"eventDrillDownViewSegue";
+    //segueName = @"eventDrillDownViewSegue";
     NSLog(@"Segue path is %@", segueName);
     
     [self performSegueWithIdentifier:segueName sender:self];
@@ -261,7 +275,7 @@
         
         
         //TODO CHANGE THIS BACK TO <=
-        if(endDateInSeconds >= timeInMilliseconds) {
+        if(endDateInSeconds <= timeInMilliseconds) {
             NSLog(@"Currently no events");
             [vc showNoEventsPopUp];
             
@@ -298,7 +312,9 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
     NSLog(@"The manager.location %@", manager.location);
-    NSString *urlString = [NSString stringWithFormat:@"%@nearbyCompanies/%@", GOOSIIAPI, [plist objectForKey:@"userId"]];
+    NSString *urlString = [NSString stringWithFormat:@"%@testGeoSpatialQuery/%@/%f/%f", GOOSIIAPI, [plist objectForKey:@"userId"], manager.location.coordinate.longitude, manager.location.coordinate.latitude];
+    
+    NSLog(@"THE URL STRING FOR CHECKING IN %@", urlString);
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
     
@@ -306,25 +322,49 @@
                                        queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
                                
+
                                // your data or an error will be ready here
                                NSString* newStr = [[NSString alloc] initWithData:data
                                                                         encoding:NSUTF8StringEncoding];
                                
+                               NSLog(@"%@", newStr);
+                               
                                SBJsonParser *parser = [[SBJsonParser alloc] init];
                                
-                               NSArray *jsonObject = [parser objectWithString:newStr];
+                               NSDictionary *superObject = [parser objectWithString:newStr];
+                               NSDictionary *userObj = [superObject objectForKey:@"userObject"];
+                               NSArray *results = [superObject objectForKey:@"results"];
                                
-                               for (id company in jsonObject) {
-                                   //NSDictionary *company = [jsonObject objectAtIndex:0];
-                                   
-                                   NSString *latitudeStr = [company objectForKey:@"latitude"];
-                                   NSString *longitudeStr = [company objectForKey:@"longitude"];
-                                   
-                                   NSArray *participantsAry = [company objectForKey:@"participants"];
-                                                                      
-                                   NSString *totalParticipants = [NSString stringWithFormat:@"%lu", (unsigned long)[participantsAry count]];
+                               
+                               for (id result in results) {
+                                   //This is the company object.
+                                   NSDictionary *company = [result objectForKey:@"obj"];
 
-                                   //NSLog(@"The Phone number %@", [company objectForKey:@"telephone"]);
+                                   //Set longitude and latitude
+                                   NSDictionary *location = [company objectForKey:@"location"];
+                                   NSArray *coordinateArray = [location objectForKey:@"coordinates"];
+                                   NSString *longitudeStr = [NSString stringWithFormat:@"%@", [coordinateArray objectAtIndex:0]];
+                                   NSString *latitudeStr = [NSString stringWithFormat:@"%@", [coordinateArray objectAtIndex:1]];
+
+                                   NSArray *participantsAry = [company objectForKey:@"participants"];
+                                   
+                                   BOOL isParticipating = NO;
+                                   int totalParticipantsNum = [participantsAry count];
+                                   
+                                   //Check if user is participating in this event and temporarily add 1 if not
+                                   for (id participantsId in participantsAry) {
+                                       NSString *partObj = [participantsId objectForKey:@"userId"];
+                                       
+                                       if(![[plist objectForKey:@"userId"] isEqualToString:partObj]){
+                                           isParticipating = YES;
+                                       }
+                                   }
+                                   
+                                   if(!isParticipating){
+                                       totalParticipantsNum++;
+                                   }
+                                   
+                                   NSString *totalParticipants = [NSString stringWithFormat:@"%d", totalParticipantsNum];
                                    
                                    //Determine percentage of time
                                    NSTimeInterval timeInMiliseconds = [[NSDate date] timeIntervalSince1970];
@@ -336,29 +376,19 @@
                                    double endDate = floor([[event objectForKey:@"endDate"] doubleValue]);
                                    startDate = startDate / 1000;
                                    endDate = endDate / 1000;
-                                   NSLog(@"START DATE %f", startDate);
-                                   NSLog(@"END DATE %f", endDate);
                                    
                                    
                                    double curTime = floor(timeInMiliseconds);
-                                   NSLog(@"CURRENT DATE %f", curTime);
-
-                                   NSLog(@"----------------------------------------");
 
                                    double totalDuration = endDate - startDate;
-                                   NSLog(@"TOTAL DURATION IN MIL %f", totalDuration);
+
                                    
                                    //Elapsed time in seconds equals the current time minus the startdate.
-                                   NSLog(@"START DATE AGAIN ----------> %f", startDate);
-                                   
-                                   
                                    double elapsedTime = curTime - startDate;
-                                   
-                                   NSLog(@"ELAPSED TIME %f", elapsedTime);
                                    
                                    double percentage = elapsedTime / totalDuration;
                                    
-                                   NSLog(@"PERCENTAGE OF TIME ----------> %f", percentage);
+                                   
                                    
                                    if(percentage > 1.0) {
                                        percentage = 1;
@@ -370,11 +400,10 @@
                                    float partPercentage = 0;
                                    float ttlParticipationCount = 0;
                                    
-                                   NSDictionary *userObj = [company objectForKey:@"user"];
                                    NSArray *contests = [userObj objectForKey:@"contests"];
                                    
                                    for (id contest in contests) {
-
+                                       NSLog(@"The PARITICPATION Count %f", [[contest objectForKey:@"participationCount"] floatValue]);
                                        
                                        NSString *contestCompanyId =[contest objectForKey:@"companyId"];
                                        NSString *companyId = [company objectForKey:@"_id"];
@@ -447,7 +476,13 @@
                                    }
                                    
                                    NSLog(@"FINALLY THE PARTICIPATION PERCENTAGE %@", [NSString stringWithFormat:@"%f", partPercentage]);
-                                   //Create company object and push to array.
+                                   
+                                   //Determine whether company is near enough
+                                   NSLog(@"The longitude %@ AND the latitude %@", longitudeStr, latitudeStr);
+                                   CLLocation *companyLocation = [[CLLocation alloc] initWithLatitude:[latitudeStr floatValue] longitude:[longitudeStr floatValue]];
+
+                                   float distanceInMiles = METERS_TO_MILE_CONVERSION * [manager.location distanceFromLocation:companyLocation];
+                                   
                                    //Create company object and push to array.
                                    GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"]
                                                                                  companyId:[company objectForKey:@"_id"]
@@ -460,21 +495,18 @@
                                                                                    endDate:[event objectForKey:@"endDate"]
                                                                                fulfillment:isFulfillment
                                                                                     reward:isReward
-                                                                                 longitude:[company objectForKey:@"longitude"]
-                                                                                  latitude:[company objectForKey:@"latitude"]
+                                                                                 longitude:longitudeStr
+                                                                                  latitude:latitudeStr
                                                                                       post:[event objectForKey:@"post"]
                                                                                eventReward:[event objectForKey:@"prize"]
                                                                          participationPost:[event objectForKey:@"participationPost"]
-                                                                       participationPoints:[NSString stringWithFormat:@"%f", ttlParticipationCount]];
+                                                                       participationPoints:[NSString stringWithFormat:@"%f", ttlParticipationCount]
+                                                                                  distance:[NSString stringWithFormat:@"%.2f mi", distanceInMiles]
+                                                                                   website:[event objectForKey:@"website"]];
                                    
 
-                                   //Determine whether company is near enough
-                                   CLLocation *companyLocation = [[CLLocation alloc] initWithLatitude:[latitudeStr floatValue] longitude:[longitudeStr floatValue]];
-                                   float distanceInMiles = METERS_TO_MILE_CONVERSION * [manager.location distanceFromLocation:companyLocation];
-                                   //NSLog(@"%f miles", distanceInMiles);
-                                   
                                    if(distanceInMiles < DISTANCE_ALLOWED_FROM_COMPANY) {
-                                       //NSLog(@"Include the %@", [company objectForKey:@"name"]);
+                                       NSLog(@"Include the %@", [company objectForKey:@"name"]);
                                        [self.nearbyLocationsAry addObject:companyObj];
                                    }
                                }

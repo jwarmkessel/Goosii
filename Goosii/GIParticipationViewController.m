@@ -53,10 +53,23 @@
     
     //Configure Navigation Bar
     self.navigationController.navigationItem.title = @"Event Activity";
-    self.navigationController.navigationBar.tintColor = [self colorWithHexString:@"C63D0F"];
-    self.wantsFullScreenLayout = YES;
+
     self.navigationController.navigationBar.translucent = YES;
     [self.navigationController.navigationBar setAlpha:0.9];
+    
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+        [self.tableView setContentInset:UIEdgeInsetsMake(-20,0,0,0)];
+        self.navigationController.navigationBar.tintColor = [self colorWithHexString:@"C63D0F"];
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+        self.wantsFullScreenLayout = YES;
+#pragma GCC diagnostic warning "-Wdeprecated-declarations"
+        
+    } else {
+        self.navigationController.navigationBar.barTintColor = [self colorWithHexString:@"C63D0F"];
+        
+    }
+    
+    
     
     if(![self.slidingViewController.underLeftViewController isKindOfClass:[GIMenuViewController class]]) {
         self.slidingViewController.underLeftViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Menu"];
@@ -86,6 +99,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    self.slidingViewController.panGesture.enabled = YES;
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 
@@ -158,7 +172,7 @@
         
         
         //TODO CHANGE THIS BACK TO <=
-        if(endDateInSeconds >= timeInMilliseconds) {
+        if(endDateInSeconds <= timeInMilliseconds) {
             NSLog(@"Currently no events");
             [vc showNoEventsPopUp];
             
@@ -333,7 +347,8 @@
                                                                                       post:[event objectForKey:@"post"]
                                                                                eventReward:[event objectForKey:@"prize"]
                                                                          participationPost:[event objectForKey:@"participationPost"]
-                                                                       participationPoints:[NSString stringWithFormat:@"%f", ttlParticipationCount]];
+                                                                       participationPoints:[NSString stringWithFormat:@"%f", ttlParticipationCount]
+                                                                                   website:[event objectForKey:@"website"]];
                                    
                                    NSLog(@"Adding company object");
                                    [self.eventList addObject:companyObj];
@@ -486,7 +501,7 @@
     }
     
     //TODO CHANGE THIS BY REMOVING IT!!!!!!!!!!!
-    segueName = @"eventDrillDownViewSegue";
+    //segueName = @"eventDrillDownViewSegue";
     NSLog(@"Segue path is %@", segueName);
     
     [self performSegueWithIdentifier:segueName sender:self];

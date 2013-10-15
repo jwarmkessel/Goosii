@@ -47,15 +47,40 @@
     [self.view addGestureRecognizer:enterTapGesture];
     
     self.slidingMenuButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    slidingMenuButton.frame = CGRectMake(8, 10, 34, 24);
+    
+    
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+        slidingMenuButton.frame = CGRectMake(8, 10, 34, 24);
+    }else {
+        slidingMenuButton.frame = CGRectMake(8, 20, 34, 24);
+    }
+    
     [slidingMenuButton setBackgroundImage:[UIImage imageNamed:@"Slide.png"] forState:UIControlStateNormal];
     [slidingMenuButton addTarget:self action:@selector(revealMenu:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:self.slidingMenuButton];
     
+    UIButton *enterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    enterBtn.frame = CGRectMake(20, 300, 280, 50);
+    //[enterBtn setBackgroundColor:[self colorWithHexString:@"3b5999"]];
+    [enterBtn addTarget:self action:@selector(enterBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [enterBtn setTitle:@"Tap anywhere to begin." forState:UIControlStateNormal];
+    enterBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [enterBtn.titleLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
+    [enterBtn.titleLabel setTextColor:[UIColor whiteColor]];
+    [self.view addSubview:enterBtn];
+    
     [self.view setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
 }
 
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:YES];
+    self.slidingViewController.panGesture.enabled = YES;
+}
+
+-(IBAction)enterBtn:(id)sender {
+    [self performSegueWithIdentifier:@"checkinDisplaySegue" sender:self];       
+}
 -(IBAction)revealMenu:(id)sender {
 
     [self.slidingViewController anchorTopViewTo:ECRight animations:^{

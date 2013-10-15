@@ -490,6 +490,7 @@
 			isa = PBXGroup;
 			children = (
 				83196B11178DE48C008A6107 /* Resources */,
+				839C8F5D17F783F100A75F6E /* iPad */,
 				8309749917837C0900ABC1CF /* MainStoryboard.storyboard */,
 				8319FAA517E3DFC400661B91 /* GIGoosiiConstants.h */,
 				8319FAA817E7B47700661B91 /* GIGlobalVariables.h */,
@@ -841,6 +842,13 @@
 				836BC1A717C3190300EF3007 /* Slide2@x2.png */,
 			);
 			name = HomeScreenAssets;
+			sourceTree = "<group>";
+		};
+		839C8F5D17F783F100A75F6E /* iPad */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = iPad;
 			sourceTree = "<group>";
 		};
 		83F9244017AC935E00E97376 /* EventDrillDownAssets */ = {
@@ -1195,7 +1203,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -1219,7 +1227,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -1233,8 +1241,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Goosii/Goosii-Prefix.pch";
 				INFOPLIST_FILE = "Goosii/Goosii-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1246,8 +1255,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Goosii/Goosii-Prefix.pch";
 				INFOPLIST_FILE = "Goosii/Goosii-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

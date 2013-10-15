@@ -69,7 +69,7 @@
     } else {
         NSUUID *uid = [UIDevice currentDevice].identifierForVendor;
         
-        NSLog(@"IdentifierForVendor %@",[uid UUIDString]);
+        NSLog(@"IdentifierForVendor %@ STOP",[uid UUIDString]);
         NSString *urlPost = [NSString stringWithFormat:@"%@createUser/%@/%@", GOOSIIAPI, [uid UUIDString], deviceTokenStr];
                 
         NSURL *url = [NSURL URLWithString:urlPost];

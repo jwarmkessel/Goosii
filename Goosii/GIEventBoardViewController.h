@@ -16,5 +16,9 @@
 @property (nonatomic, strong) MKMapView *mapView;
 @property (nonatomic, strong) GICompany * company;
 
+@property (nonatomic, strong) NSTimer *blinkTimer;
+@property (nonatomic, strong) UILabel *fbPartLbl;
+@property (assign) BOOL toggle;
+
 - (void)showNoEventsPopUp;
 @end
