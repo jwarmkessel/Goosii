@@ -249,7 +249,10 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 
+    NSLog(@"Calling rewardViewSegue");
     if ([[segue identifier] isEqualToString:@"rewardViewSegue"]) {
+        
+        NSLog(@"setting up rewardViewSegue");
         // Get reference to the destination view controllers
         GIRewardViewController *vc = [segue destinationViewController];
         [vc setCompany:[self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row]];

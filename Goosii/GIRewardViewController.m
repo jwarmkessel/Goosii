@@ -55,6 +55,28 @@
         [self.userIntructTxtField setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
         self.userIntructTxtField.textColor = [UIColor whiteColor];
         
+        CGRect saveForLaterRect = CGRectMake(10, 300, 300, 50);
+        UIButton *saveForLaterBtn = [[UIButton alloc] initWithFrame:saveForLaterRect];
+        
+        [saveForLaterBtn setBackgroundColor:[self colorWithHexString:@"3b5999"]];
+        
+        [saveForLaterBtn setTitle:@"Save For Later" forState:UIControlStateNormal];
+        [saveForLaterBtn.titleLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
+        [saveForLaterBtn.titleLabel setTextColor:[UIColor whiteColor]];
+        
+        [saveForLaterBtn.layer setBorderWidth:3.0];
+        [saveForLaterBtn.layer setBorderColor:[[UIColor blackColor] CGColor]];
+        
+        [saveForLaterBtn.layer setShadowOffset:CGSizeMake(5, 5)];
+        [saveForLaterBtn.layer setShadowColor:[[UIColor blackColor] CGColor]];
+        [saveForLaterBtn.layer setShadowOpacity:0.5];
+        
+        [saveForLaterBtn addTarget:self
+                    action:@selector(saveForLaterBtnHandler:)
+          forControlEvents:UIControlEventTouchDown];
+        
+        [self.view addSubview:saveForLaterBtn];
+        
     } else {
         NSLog(@"There is NOT a company reward");
         UIView *notRewardedView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -97,6 +119,10 @@
 
 - (void)okayBtnHandler:sender {
     [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+- (void)saveForLaterBtnHandler:sender {
+    [self.navigationController popToRootViewControllerAnimated:YES];    
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
