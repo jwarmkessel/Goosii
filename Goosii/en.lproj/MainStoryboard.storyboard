@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" variant="6xAndEarlier" propertyAccessControl="none" initialViewController="cnR-0Z-MUt">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" variant="6xAndEarlier" propertyAccessControl="none" initialViewController="cnR-0Z-MUt">
     <dependencies>
-        <deployment defaultVersion="1296" identifier="iOS"/>
+        <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
     <scenes>
@@ -93,6 +93,7 @@
                         <outletCollection property="eventList" destination="bKh-oM-cbO" id="ziI-t1-PxJ"/>
                         <segue destination="lRG-hr-8DZ" kind="push" identifier="eventDrillDownViewSegue" id="nhI-oA-tfl"/>
                         <segue destination="68Q-h0-bku" kind="push" identifier="fulfillmentViewSegue" id="XGq-dg-sFL"/>
+                        <segue destination="dL8-8f-K2r" kind="push" identifier="rewardStateViewSegue" id="D0o-4r-Ssu"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ACI-f9-veL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -157,13 +158,35 @@
             </objects>
             <point key="canvasLocation" x="1550" y="-620"/>
         </scene>
-        <!--View Controller-->
+        <!--Reward View Controller-->
         <scene sceneID="c7B-rH-mio">
             <objects>
-                <viewController id="mfL-8Q-OuG" sceneMemberID="viewController">
+                <viewController id="mfL-8Q-OuG" customClass="GIRewardViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4ow-OL-HWe">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Company Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TGb-JE-Aw5">
+                                <rect key="frame" x="0.0" y="92" width="320" height="50"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" text="You've been rewarded! Have an employee enter the confirmation code to validate the reward." textAlignment="center" id="nYn-nT-N4c">
+                                <rect key="frame" x="40" y="150" width="240" height="70"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="15"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="6FO-NN-Acf">
+                                <rect key="frame" x="10" y="248" width="300" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="mwn-UX-0kU" id="dYv-8i-Dcs"/>
+                                </connections>
+                            </textField>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="H9H-Jb-pgP"/>
@@ -222,7 +245,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IzA-C5-UC3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2613" y="1556"/>
+            <point key="canvasLocation" x="2801" y="124"/>
         </scene>
         <!--Event Board View Controller - Item-->
         <scene sceneID="5Mb-bB-4im">
@@ -307,11 +330,11 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell alpha="0.80000001192092896" tag="13" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="158" id="CDy-az-bQN" customClass="GIEventViewCell">
+                                    <tableViewCell alpha="0.80000001192092896" tag="13" contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="158" id="CDy-az-bQN" customClass="GIEventViewCell">
                                         <rect key="frame" x="0.0" y="317" width="320" height="158"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CDy-az-bQN" id="wcY-iC-D3M">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="158"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="300" height="158"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -328,7 +351,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qBS-vn-ZCw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2087" y="132"/>
+            <point key="canvasLocation" x="2283" y="56"/>
         </scene>
         <!--Reward View Controller-->
         <scene sceneID="dvB-wM-CLr">
@@ -339,19 +362,19 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Company Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="AKH-Wg-0uY">
-                                <rect key="frame" x="0.0" y="49" width="320" height="50"/>
+                                <rect key="frame" x="-1" y="47" width="320" height="50"/>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" text="You've been rewarded! Have an employee enter the confirmation code to validate the reward." textAlignment="center" id="C29-vb-zEu">
-                                <rect key="frame" x="40" y="107" width="240" height="70"/>
+                                <rect key="frame" x="39" y="105" width="240" height="70"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="15"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="3p7-9F-e7g">
-                                <rect key="frame" x="10" y="205" width="300" height="30"/>
+                                <rect key="frame" x="9" y="203" width="300" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -370,7 +393,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5oh-g4-Xgo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2613" y="834"/>
+            <point key="canvasLocation" x="2801" y="1334"/>
         </scene>
         <!--Main Nav View Controller-->
         <scene sceneID="GSa-Ax-a7e">
@@ -394,7 +417,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="V9X-fL-NRd"/>
-        <segue reference="G0Z-Z4-O7V"/>
+        <segue reference="nhI-oA-tfl"/>
+        <segue reference="D0o-4r-Ssu"/>
+        <segue reference="XGq-dg-sFL"/>
     </inferredMetricsTieBreakers>
 </document>

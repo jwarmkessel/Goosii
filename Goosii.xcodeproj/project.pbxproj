@@ -195,6 +195,14 @@
 		836BC1B217C3190300EF3007 /* Slide2.png in Resources */ = {isa = PBXBuildFile; fileRef = 836BC1A617C3190300EF3007 /* Slide2.png */; };
 		836BC1B317C3190300EF3007 /* Slide2@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = 836BC1A717C3190300EF3007 /* Slide2@x2.png */; };
 		836BC25517C3786E00EF3007 /* GIFulfillmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 836BC25417C3786E00EF3007 /* GIFulfillmentViewController.m */; };
+		83729A4E18208C94004DF66E /* Goosii_iPhone120x120.png in Resources */ = {isa = PBXBuildFile; fileRef = 83729A4D18208C94004DF66E /* Goosii_iPhone120x120.png */; };
+		83729A5318208CF5004DF66E /* Goosii_iPhone57x57_Optimized.png in Resources */ = {isa = PBXBuildFile; fileRef = 83729A4F18208CF5004DF66E /* Goosii_iPhone57x57_Optimized.png */; };
+		83729A5418208CF5004DF66E /* Goosii_iPhone58x58_Optimized.png in Resources */ = {isa = PBXBuildFile; fileRef = 83729A5018208CF5004DF66E /* Goosii_iPhone58x58_Optimized.png */; };
+		83729A5518208CF5004DF66E /* Goosii_iPhone58x58.png in Resources */ = {isa = PBXBuildFile; fileRef = 83729A5118208CF5004DF66E /* Goosii_iPhone58x58.png */; };
+		83729A5618208CF5004DF66E /* Goosii_iPhone114x114_Optimized.png in Resources */ = {isa = PBXBuildFile; fileRef = 83729A5218208CF5004DF66E /* Goosii_iPhone114x114_Optimized.png */; };
+		83729A5818208E09004DF66E /* Gossii_iPhoneSettings29x29.png in Resources */ = {isa = PBXBuildFile; fileRef = 83729A5718208E09004DF66E /* Gossii_iPhoneSettings29x29.png */; };
+		83729A5A18208EE7004DF66E /* Goosii_iPhone80x80.png in Resources */ = {isa = PBXBuildFile; fileRef = 83729A5918208EE7004DF66E /* Goosii_iPhone80x80.png */; };
+		83729A5C18208EF2004DF66E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83729A5B18208EF2004DF66E /* Images.xcassets */; };
 		83F9244A17AC937F00E97376 /* Company_Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F9244117AC937F00E97376 /* Company_Back.png */; };
 		83F9244B17AC937F00E97376 /* FB_Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F9244217AC937F00E97376 /* FB_Back.png */; };
 		83F9244C17AC937F00E97376 /* FB_Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F9244317AC937F00E97376 /* FB_Button.png */; };
@@ -419,6 +427,14 @@
 		836BC1A717C3190300EF3007 /* Slide2@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Slide2@x2.png"; sourceTree = "<group>"; };
 		836BC25317C3786E00EF3007 /* GIFulfillmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIFulfillmentViewController.h; sourceTree = "<group>"; };
 		836BC25417C3786E00EF3007 /* GIFulfillmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIFulfillmentViewController.m; sourceTree = "<group>"; };
+		83729A4D18208C94004DF66E /* Goosii_iPhone120x120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Goosii_iPhone120x120.png; sourceTree = "<group>"; };
+		83729A4F18208CF5004DF66E /* Goosii_iPhone57x57_Optimized.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Goosii_iPhone57x57_Optimized.png; sourceTree = "<group>"; };
+		83729A5018208CF5004DF66E /* Goosii_iPhone58x58_Optimized.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Goosii_iPhone58x58_Optimized.png; sourceTree = "<group>"; };
+		83729A5118208CF5004DF66E /* Goosii_iPhone58x58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Goosii_iPhone58x58.png; sourceTree = "<group>"; };
+		83729A5218208CF5004DF66E /* Goosii_iPhone114x114_Optimized.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Goosii_iPhone114x114_Optimized.png; sourceTree = "<group>"; };
+		83729A5718208E09004DF66E /* Gossii_iPhoneSettings29x29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Gossii_iPhoneSettings29x29.png; sourceTree = "<group>"; };
+		83729A5918208EE7004DF66E /* Goosii_iPhone80x80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Goosii_iPhone80x80.png; sourceTree = "<group>"; };
+		83729A5B18208EF2004DF66E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		83F9244117AC937F00E97376 /* Company_Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Company_Back.png; sourceTree = "<group>"; };
 		83F9244217AC937F00E97376 /* FB_Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FB_Back.png; sourceTree = "<group>"; };
 		83F9244317AC937F00E97376 /* FB_Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FB_Button.png; sourceTree = "<group>"; };
@@ -504,6 +520,7 @@
 				83196AF117838A40008A6107 /* MainFlow */,
 				83196AF217838A69008A6107 /* ActivityFlow */,
 				83196B021783AF2B008A6107 /* Dashboard */,
+				83729A5B18208EF2004DF66E /* Images.xcassets */,
 				8309748817837C0900ABC1CF /* Supporting Files */,
 			);
 			path = Goosii;
@@ -512,6 +529,13 @@
 		8309748817837C0900ABC1CF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				83729A5918208EE7004DF66E /* Goosii_iPhone80x80.png */,
+				83729A5718208E09004DF66E /* Gossii_iPhoneSettings29x29.png */,
+				83729A4F18208CF5004DF66E /* Goosii_iPhone57x57_Optimized.png */,
+				83729A5018208CF5004DF66E /* Goosii_iPhone58x58_Optimized.png */,
+				83729A5118208CF5004DF66E /* Goosii_iPhone58x58.png */,
+				83729A5218208CF5004DF66E /* Goosii_iPhone114x114_Optimized.png */,
+				83729A4D18208C94004DF66E /* Goosii_iPhone120x120.png */,
 				836BC19B17C318D500EF3007 /* HomeScreenAssets */,
 				83F9244017AC935E00E97376 /* EventDrillDownAssets */,
 				830D2D161797E15C003EA961 /* DELETE THIS */,
@@ -898,6 +922,11 @@
 				CLASSPREFIX = GI;
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Justin Warmkessel";
+				TargetAttributes = {
+					8309747D17837C0900ABC1CF = {
+						DevelopmentTeam = 9J6N543K6L;
+					};
+				};
 			};
 			buildConfigurationList = 8309747917837C0900ABC1CF /* Build configuration list for PBXProject "Goosii" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -942,6 +971,7 @@
 				83F9244D17AC937F00E97376 /* Info_Button.png in Resources */,
 				83F9244E17AC937F00E97376 /* No_Partic_Back.png in Resources */,
 				83F9244F17AC937F00E97376 /* Partic_Back.png in Resources */,
+				83729A5518208CF5004DF66E /* Goosii_iPhone58x58.png in Resources */,
 				83F9245017AC937F00E97376 /* Partic_Bar_Back.png in Resources */,
 				83F9245117AC937F00E97376 /* Winner_Back.png in Resources */,
 				83F9245217AC937F00E97376 /* Winner_Bar_Back.png in Resources */,
@@ -955,6 +985,8 @@
 				836BC1AF17C3190300EF3007 /* Slide@x2.png in Resources */,
 				836BC1B017C3190300EF3007 /* Slide1.png in Resources */,
 				836BC1B117C3190300EF3007 /* Slide1@x2.png in Resources */,
+				83729A5C18208EF2004DF66E /* Images.xcassets in Resources */,
+				83729A5A18208EE7004DF66E /* Goosii_iPhone80x80.png in Resources */,
 				836BC1B217C3190300EF3007 /* Slide2.png in Resources */,
 				836BC1B317C3190300EF3007 /* Slide2@x2.png in Resources */,
 				8319FABC17E7DB5B00661B91 /* icon.png in Resources */,
@@ -987,6 +1019,7 @@
 				8319FB0217EA63F800661B91 /* BrokenEggAnim_007-568h@2x.png in Resources */,
 				8319FB0317EA63F800661B91 /* BrokenEggAnim_008-568h@2x.png in Resources */,
 				8319FB0417EA63F800661B91 /* BrokenEggAnim_009-568h@2x.png in Resources */,
+				83729A5418208CF5004DF66E /* Goosii_iPhone58x58_Optimized.png in Resources */,
 				8319FB0517EA63F800661B91 /* BrokenEggAnim_010-568h@2x.png in Resources */,
 				8319FB0617EA63F800661B91 /* BrokenEggAnim_011-568h@2x.png in Resources */,
 				8319FB0717EA63F800661B91 /* BrokenEggAnim_012-568h@2x.png in Resources */,
@@ -996,6 +1029,7 @@
 				8319FB0B17EA63F800661B91 /* BrokenEggAnim_016-568h@2x.png in Resources */,
 				8319FB0C17EA63F800661B91 /* BrokenEggAnim_017-568h@2x.png in Resources */,
 				8319FB7017EA67B200661B91 /* BrokenEggAnim_000@2x.png in Resources */,
+				83729A5618208CF5004DF66E /* Goosii_iPhone114x114_Optimized.png in Resources */,
 				8319FB7117EA67B200661B91 /* BrokenEggAnim_001@2x.png in Resources */,
 				8319FB7217EA67B200661B91 /* BrokenEggAnim_002@2x.png in Resources */,
 				8319FB7317EA67B200661B91 /* BrokenEggAnim_003@2x.png in Resources */,
@@ -1022,6 +1056,7 @@
 				8319FB8817EA67B200661B91 /* Intro_0006@2x.png in Resources */,
 				8319FB8917EA67B200661B91 /* Intro_0007@2x.png in Resources */,
 				8319FB8A17EA67B200661B91 /* Intro_0008@2x.png in Resources */,
+				83729A4E18208C94004DF66E /* Goosii_iPhone120x120.png in Resources */,
 				8319FB8B17EA67B200661B91 /* Intro_0009@2x.png in Resources */,
 				8319FB8C17EA67B200661B91 /* Intro_0010@2x.png in Resources */,
 				8319FB8D17EA67B200661B91 /* Intro_0011@2x.png in Resources */,
@@ -1030,6 +1065,7 @@
 				8319FB9017EA67B200661B91 /* Intro_0014@2x.png in Resources */,
 				8319FB9117EA67B200661B91 /* Intro_0015@2x.png in Resources */,
 				8319FB9217EA67B200661B91 /* Intro_0016@2x.png in Resources */,
+				83729A5318208CF5004DF66E /* Goosii_iPhone57x57_Optimized.png in Resources */,
 				8319FB9317EA67B200661B91 /* Intro_0017@2x.png in Resources */,
 				8319FB9417EA67B200661B91 /* Intro_0018@2x.png in Resources */,
 				8319FB9517EA67B200661B91 /* Intro_0019@2x.png in Resources */,
@@ -1078,6 +1114,7 @@
 				8319FBC017EA67B200661B91 /* Intro_0062@2x.png in Resources */,
 				8319FBC117EA67B200661B91 /* Intro_0063@2x.png in Resources */,
 				8319FBC217EA67B200661B91 /* Intro_0064@2x.png in Resources */,
+				83729A5818208E09004DF66E /* Gossii_iPhoneSettings29x29.png in Resources */,
 				8319FBC317EA67B200661B91 /* Intro_0065@2x.png in Resources */,
 				8319FBC417EA67B200661B91 /* Intro_0066@2x.png in Resources */,
 				8319FBC517EA67B200661B91 /* Intro_0067@2x.png in Resources */,
@@ -1238,12 +1275,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 74FD184883D948B3BC8A4AB3 /* Pods.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Goosii/Goosii-Prefix.pch";
 				INFOPLIST_FILE = "Goosii/Goosii-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1252,12 +1292,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 74FD184883D948B3BC8A4AB3 /* Pods.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Goosii/Goosii-Prefix.pch";
 				INFOPLIST_FILE = "Goosii/Goosii-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

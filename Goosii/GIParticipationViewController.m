@@ -14,6 +14,7 @@
 #import "GIPlist.h"
 #import "GIEventBoardViewController.h"
 #import "GIFulfillmentViewController.h"
+#import "GIRewardStateViewController.h"
 #import <ECSlidingViewController.h>
 
 @interface GIParticipationViewController ()
@@ -29,8 +30,7 @@
 @implementation GIParticipationViewController
 @synthesize eventList, loadingMask, indicator;
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
+- (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
@@ -38,8 +38,7 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 
     // Uncomment the following line to preserve selection between presentations.
@@ -140,20 +139,14 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
-//    if([[segue identifier] isEqualToString:@"tabViewControllerSegue"]) {
-////        GIEventBoardViewController *vc = [segue destinationViewController];
-////        vc.company = [self.eventList objectAtIndex:[self.tableView indexPathForSelectedRow].row];
-//    } else if([[segue identifier] isEqualToString:@"fulfillmentViewSegue"]) {
-//        
-//    }
+    NSLog(@"Calling Prepare for segue to %@", [segue identifier]);
     
-    if ([[segue identifier] isEqualToString:@"rewardViewSegue"]) {
+    if ([[segue identifier] isEqualToString:@"rewardStateViewSegue"]) {
+        NSLog(@"preparing to segue to rewardStateViewController");
         // Get reference to the destination view controller
-        //GIDashboardViewController *vc = [segue destinationViewController];
-        
-        // Pass any objects to the view controller here, like...
-        
-        //[vc setCompany:[self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row]];
+        GIRewardStateViewController *vc = [segue destinationViewController];
+        [vc setCompany:[self.eventList objectAtIndex:[self.tableView indexPathForSelectedRow].row]];
+
     } else if([[segue identifier] isEqualToString:@"fulfillmentViewSegue"]) {
         GIFulfillmentViewController *vc = [segue destinationViewController];
         [vc setCompany:[self.eventList objectAtIndex:[self.tableView indexPathForSelectedRow].row]];
@@ -169,10 +162,11 @@
         //NSLog(@"startDate %f v curDate %f", [[vc.company startDate] floatValue], floor(timeInMilliseconds));
         float endDateInSeconds = [[vc.company endDate] floatValue] / 1000;
         NSLog(@"The time in endDateInSeconds %f", endDateInSeconds);
-        
+
+        float startDateInSeconds = [[vc.company startDate] floatValue] / 1000;
         
         //TODO CHANGE THIS BACK TO <=
-        if(endDateInSeconds <= timeInMilliseconds) {
+        if(endDateInSeconds <= timeInMilliseconds ||  timeInMilliseconds < startDateInSeconds) {
             NSLog(@"Currently no events");
             [vc showNoEventsPopUp];
             
@@ -202,9 +196,13 @@
                                
                                SBJsonParser *parser = [[SBJsonParser alloc] init];
 //                               
-                               NSArray *jsonObject = [parser objectWithString:newStr];
+                               NSDictionary *jsonObject = [parser objectWithString:newStr];
                                
-                               for (id company in jsonObject) {
+                               NSDictionary *userObj = [jsonObject objectForKey:@"userObject"];
+                               
+                               NSArray *companyArray = [jsonObject objectForKey:@"contests"];
+                               
+                               for (id company in companyArray) {
                                    
                                    NSArray *participantsAry = [company objectForKey:@"participants"];
                                    
@@ -225,7 +223,6 @@
                                    NSLog(@"START DATE %f", startDate);
                                    NSLog(@"END DATE %f", endDate);
                                    
-                                   
                                    double curTime = floor(timeInMiliseconds);
                                    NSLog(@"CURRENT DATE %f", curTime);
                                    
@@ -233,16 +230,11 @@
                                    NSLog(@"TOTAL DURATION IN MIL %f", totalDuration);
                                    
                                    //Elapsed time in seconds equals the current time minus the startdate.
-
-                                   
-                                   
                                    double elapsedTime = curTime - startDate;
                                    
                                    NSLog(@"ELAPSED TIME %f", elapsedTime);
                                    
                                    double percentage = elapsedTime / totalDuration;
-                                   
-                                   
                                    
                                    if(percentage > 1.0) {
                                        percentage = 1;
@@ -253,7 +245,7 @@
                                    //Calculate Participation Percentage.
                                    float partPercentage = 0;
                                    float ttlParticipationCount = 0;
-                                   NSDictionary *userObj = [company objectForKey:@"user"];
+                                   
                                    NSArray *contests = [userObj objectForKey:@"contests"];
                                    for (id contest in contests) {
                                        partPercentage = 0;
@@ -317,6 +309,7 @@
                                    NSString * isReward = @"NO";
                                    
                                    //Check rewards
+                                   NSLog(@"Set Reward flag");
                                    NSArray *rewards = [userObj objectForKey:@"rewards"];
                                    
                                    for (id contest in rewards) {
@@ -324,7 +317,7 @@
                                        NSString *companyId = [company objectForKey:@"_id"];
                                        
                                        if([contestCompanyId isEqualToString:companyId]) {
-                                           
+                                           NSLog(@"Set Reward flag to YES");
                                            NSLog(@"Setting reward for %@", [company objectForKey:@"name"]);
                                            isReward = @"YES";
                                        }
@@ -466,34 +459,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
-    
-    //Determine whether selected event has fulfillment requirements.
-//    GICompany *company = [self.eventList objectAtIndex:indexPath.row];
-//    NSLog(@"The company id to use %@", company.companyId);
-//    
-//    BOOL fulfillment = [self determineFulfillment:company.companyId];
-//    
-//    if(fulfillment == YES) {
-//        [self performSegueWithIdentifier:@"fulfillmentViewSegue" sender:self];    
-//    } else {
-//        [self performSegueWithIdentifier:@"tabViewControllerSegue" sender:self];
-//    }
-    
     GICompany *selectedCompany = [self.eventList objectAtIndex:[self.tableView indexPathForSelectedRow].row];
     
     NSString *segueName;
     
-    NSLog(@"===================> %@", selectedCompany.fulfillment);
-    
     if([selectedCompany.reward isEqualToString:@"YES"]) {
-        segueName = @"rewardViewSegue";
+        segueName = @"rewardStateViewSegue";
     } else if([selectedCompany.fulfillment isEqualToString:@"YES"]) {
         segueName = @"fulfillmentViewSegue";
     } else {

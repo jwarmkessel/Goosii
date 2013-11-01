@@ -33,9 +33,11 @@
     self.navigationController.navigationBarHidden = YES;
 
     //TODO Remove this shim
-    self.company.reward = @"YES";
+    //self.company.reward  = [NSString stringWithFormat:@"YES"];
     
     if([self.company.reward isEqualToString:@"YES"]) {
+        
+        NSLog(@"There is a company reward");
         self.textInputField.delegate = self; // ADD THIS LINE
         self.textInputField.placeholder = @"Password";
         self.textInputField.backgroundColor = [UIColor whiteColor];
@@ -54,6 +56,7 @@
         self.userIntructTxtField.textColor = [UIColor whiteColor];
         
     } else {
+        NSLog(@"There is NOT a company reward");
         UIView *notRewardedView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
         [notRewardedView setBackgroundColor:[self colorWithHexString:@"C63D0F"]];        
 

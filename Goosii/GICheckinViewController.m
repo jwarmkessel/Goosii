@@ -12,6 +12,7 @@
 #import "GIEventBoardViewController.h"
 #import "GIPlist.h"
 #import "GIFulfillmentViewController.h"
+#import "GIRewardViewController.h"
 #import "GIHomeViewController.h"
 #import "GIMainViewController.h"
 #import <ECSlidingViewController.h>
@@ -209,8 +210,6 @@
     
     NSString *segueName;
     
-    NSLog(@"===================> %@", selectedCompany.fulfillment);
-    
     if([selectedCompany.reward isEqualToString:@"YES"]) {
         segueName = @"rewardViewSegue";
     } else if([selectedCompany.fulfillment isEqualToString:@"YES"]) {
@@ -251,12 +250,10 @@
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 
     if ([[segue identifier] isEqualToString:@"rewardViewSegue"]) {
-        // Get reference to the destination view controller
-        //GIDashboardViewController *vc = [segue destinationViewController];
+        // Get reference to the destination view controllers
+        GIRewardViewController *vc = [segue destinationViewController];
+        [vc setCompany:[self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row]];
         
-        // Pass any objects to the view controller here, like...
-        
-        //[vc setCompany:[self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row]];
     } else if([[segue identifier] isEqualToString:@"fulfillmentViewSegue"]) {
         GIFulfillmentViewController *vc = [segue destinationViewController];
         [vc setCompany:[self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row]];
@@ -273,9 +270,10 @@
         float endDateInSeconds = [[vc.company endDate] floatValue] / 1000;
         NSLog(@"The time in endDateInSeconds %f", endDateInSeconds);
         
+        float startDateInSeconds = [[vc.company startDate] floatValue] / 1000;
         
         //TODO CHANGE THIS BACK TO <=
-        if(endDateInSeconds <= timeInMilliseconds) {
+        if(endDateInSeconds <= timeInMilliseconds ||  timeInMilliseconds < startDateInSeconds) {
             NSLog(@"Currently no events");
             [vc showNoEventsPopUp];
             

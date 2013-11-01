@@ -10,6 +10,7 @@
 #import "GICompany.h"
 #import <QuartzCore/QuartzCore.h>
 #import "GIPlist.h"
+#import <ECSlidingViewController.h>
 
 @interface GIRewardStateViewController ()
 
@@ -130,9 +131,7 @@
     [skipBtn addTarget:self
                 action:@selector(okayBtnHandler:)
       forControlEvents:UIControlEventTouchDown];
-    
 
-    
     [self.view addSubview:imgView];
     [self.view addSubview:transparentWinStateCell];
     [self.view addSubview:rewardStateLbl];
@@ -147,6 +146,13 @@
 
 - (void)okayBtnHandler:sender {
     [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    
+    [super viewWillAppear:YES];
+    [self.navigationController.navigationBar setAlpha:0.0f];
+    self.slidingViewController.panGesture.enabled = NO;
 }
 
 - (void)didReceiveMemoryWarning
