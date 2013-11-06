@@ -19,7 +19,7 @@
 
 #define METERS_PER_MILE 1609.344
 #define METERS_TO_MILE_CONVERSION 0.00062137
-#define DISTANCE_ALLOWED_FROM_COMPANY 4000.0f
+#define DISTANCE_ALLOWED_FROM_COMPANY 10.0f
 
 @interface GICheckinViewController () {
     BOOL isFromChild;

@@ -9,6 +9,7 @@
 #import "GIRewardViewController.h"
 #import "GICompany.h"
 #import <QuartzCore/QuartzCore.h>
+#import "GIPlist.h"
 
 @interface GIRewardViewController ()
 
@@ -139,7 +140,9 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField{
     NSLog(@"textFieldDidEndEditing");
     
-    NSString *validatePasswordUrlString = [NSString stringWithFormat:@"%@checkPassword/%@/%@", GOOSIIAPI, self.company.companyId, textField.text];
+    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
+    
+    NSString *validatePasswordUrlString = [NSString stringWithFormat:@"%@checkPassword/%@/%@/%@", GOOSIIAPI, self.company.companyId, [plist objectForKey:@"userId"],textField.text];
     
     NSURL *url = [NSURL URLWithString:validatePasswordUrlString];
     
