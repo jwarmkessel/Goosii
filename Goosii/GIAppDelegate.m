@@ -126,6 +126,7 @@
             NSLog(@"connection failed");
         }
     } else {
+        
         NSUUID *uid = [UIDevice currentDevice].identifierForVendor;
         
         NSLog(@"IdentifierForVendor %@",[uid UUIDString]);
