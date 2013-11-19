@@ -210,10 +210,10 @@
     
     NSString *segueName;
     
-    if([selectedCompany.reward isEqualToString:@"YES"]) {
-        segueName = @"rewardViewSegue";
-    } else if([selectedCompany.fulfillment isEqualToString:@"YES"]) {
+    if([selectedCompany.fulfillment isEqualToString:@"YES"]) {
         segueName = @"fulfillmentViewSegue";
+    } else if([selectedCompany.reward isEqualToString:@"YES"]) {
+        segueName = @"rewardViewSegue";
     } else {
         segueName = @"eventDrillDownViewSegue";
     }
@@ -352,16 +352,23 @@
                                    BOOL isParticipating = NO;
                                    int totalParticipantsNum = [participantsAry count];
                                    
+                                   NSLog(@"The total participants num %lu", (unsigned long)[participantsAry count]);
+                                   
                                    //Check if user is participating in this event and temporarily add 1 if not
                                    for (id participantsId in participantsAry) {
+                                       NSLog(@"Checking if user is already a participant %@", [NSString stringWithFormat:@"%d", totalParticipantsNum]);
                                        NSString *partObj = [participantsId objectForKey:@"userId"];
                                        
-                                       if(![[plist objectForKey:@"userId"] isEqualToString:partObj]){
+                                       
+                                       
+                                       if([[plist objectForKey:@"userId"] isEqualToString:partObj]){
+                                           NSLog(@"User is totally entered already %@", [NSString stringWithFormat:@"%d", totalParticipantsNum]);
                                            isParticipating = YES;
                                        }
                                    }
                                    
                                    if(!isParticipating){
+                                       NSLog(@"Incrementing users count %@", [NSString stringWithFormat:@"%d", totalParticipantsNum]);
                                        totalParticipantsNum++;
                                    }
                                    
@@ -462,17 +469,24 @@
                                    
                                    NSString * isReward = @"NO";
                                    
-                                  //Check rewards
+                                  //Check rewards and fulfillment
                                    NSArray *rewards = [userObj objectForKey:@"rewards"];
                                    
                                    for (id contest in rewards) {
                                        NSString *contestCompanyId =[contest objectForKey:@"companyId"];
                                        NSString *companyId = [company objectForKey:@"_id"];
                                        
+                                       
                                        if([contestCompanyId isEqualToString:companyId]) {
                                            
-                                           NSLog(@"Setting reward for %@", [company objectForKey:@"name"]);
-                                           isReward = @"YES";
+                                           if ( [[contest objectForKey:@"fulfillment"] floatValue] == 0 ) {
+                                               NSLog(@"Setting reward for %@", [company objectForKey:@"name"]);
+                                               isReward = @"YES";
+                                               isFulfillment = @"NO";
+                                           } else {
+                                               isFulfillment = @"YES";
+                                               isReward = @"YES";
+                                           }
                                        }
                                    }
                                    

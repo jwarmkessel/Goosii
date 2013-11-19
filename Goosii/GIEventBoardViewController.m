@@ -118,7 +118,7 @@
 
 - (void)toggleButtonImage:(NSTimer*)timer {
     
-if(toggle) {
+    if(toggle) {
         fbPartLbl.textColor = [UIColor yellowColor];
     } else {
         fbPartLbl.textColor = [UIColor whiteColor];

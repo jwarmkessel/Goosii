@@ -24,7 +24,7 @@
 @end
 
 @implementation GIFulfillmentViewController
-@synthesize participationBtn, company, backButton;
+@synthesize participationBtn, company, backButton, blinkTimer, fbPartLbl, toggle;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -38,7 +38,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
+    blinkTimer=[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(toggleButtonImage:) userInfo:nil repeats: YES];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -73,6 +75,17 @@
 
 - (void)handleBack:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)toggleButtonImage:(NSTimer*)timer {
+    
+    if(toggle) {
+        fbPartLbl.textColor = [UIColor yellowColor];
+    } else {
+        fbPartLbl.textColor = [UIColor whiteColor];
+    }
+    
+    toggle = !toggle;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -285,7 +298,9 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
     NSLog(@"The Participation Number %f", [company.participationPercentage floatValue]);
     float participationNum = [company.participationPercentage floatValue] * 100;
-    participationLabel.text = [NSString stringWithFormat:@"%i%% Participation", (int) participationNum];
+    //TODO Fulfillment shows 0 percent. :(
+//    participationLabel.text = [NSString stringWithFormat:@"%i%% Participation", (int) participationNum];
+    participationLabel.text = @"Your Participation was 100%";
     [participationLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0]];
     participationLabel.textColor = [UIColor whiteColor];
     participationLabel.backgroundColor = [UIColor clearColor];
@@ -340,7 +355,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                               action:@selector(participationBtnHandler)
                     forControlEvents:UIControlEventTouchDown];
     
-    UILabel *fbPartLbl = [[UILabel alloc] initWithFrame:CGRectMake((cell.frame.size.width/2-110), 340.0f, 220.0f, 50.0f)];
+    fbPartLbl = [[UILabel alloc] initWithFrame:CGRectMake((cell.frame.size.width/2-110), 340.0f, 220.0f, 50.0f)];
     fbPartLbl.text = @"Must Post to be Rewarded";
     [fbPartLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
     fbPartLbl.textColor = [UIColor whiteColor];

@@ -101,6 +101,8 @@
     self.slidingViewController.panGesture.enabled = YES;
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+    
+    [self.navigationController.navigationBar setAlpha:1.0f];
 
     [super viewWillAppear:YES];
     [self.eventList removeAllObjects];
@@ -310,6 +312,20 @@
                                    
                                    //Check rewards
                                    NSLog(@"Set Reward flag");
+//                                   NSArray *rewards = [userObj objectForKey:@"rewards"];
+//                                   
+//                                   for (id contest in rewards) {
+//                                       NSString *contestCompanyId =[contest objectForKey:@"companyId"];
+//                                       NSString *companyId = [company objectForKey:@"_id"];
+//                                       
+//                                       if([contestCompanyId isEqualToString:companyId]) {
+//                                           NSLog(@"Set Reward flag to YES");
+//                                           NSLog(@"Setting reward for %@", [company objectForKey:@"name"]);
+//                                           isReward = @"YES";
+//                                       }
+//                                   }
+                                   
+                                   //Check rewards and fulfillment
                                    NSArray *rewards = [userObj objectForKey:@"rewards"];
                                    
                                    for (id contest in rewards) {
@@ -317,9 +333,15 @@
                                        NSString *companyId = [company objectForKey:@"_id"];
                                        
                                        if([contestCompanyId isEqualToString:companyId]) {
-                                           NSLog(@"Set Reward flag to YES");
-                                           NSLog(@"Setting reward for %@", [company objectForKey:@"name"]);
-                                           isReward = @"YES";
+                                           
+                                           if ( [[contest objectForKey:@"fulfillment"] floatValue] == 0 ) {
+                                               NSLog(@"Setting reward for %@", [company objectForKey:@"name"]);
+                                               isReward = @"YES";
+                                               isFulfillment = @"NO";
+                                           } else {
+                                               isFulfillment = @"YES";
+                                               isReward = @"YES";
+                                           }
                                        }
                                    }
                                    
@@ -463,10 +485,10 @@
     
     NSString *segueName;
     
-    if([selectedCompany.reward isEqualToString:@"YES"]) {
-        segueName = @"rewardStateViewSegue";
-    } else if([selectedCompany.fulfillment isEqualToString:@"YES"]) {
+    if([selectedCompany.fulfillment isEqualToString:@"YES"]) {
         segueName = @"fulfillmentViewSegue";
+    } else if([selectedCompany.reward isEqualToString:@"YES"]) {
+        segueName = @"rewardStateViewSegue";
     } else {
         segueName = @"eventDrillDownViewSegue";
     }
