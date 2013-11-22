@@ -411,24 +411,25 @@
                                    NSArray *contests = [userObj objectForKey:@"contests"];
                                    
                                    for (id contest in contests) {
-                                       NSLog(@"The PARITICPATION Count %f", [[contest objectForKey:@"participationCount"] floatValue]);
+                                       
+                                       NSLog(@" %@ ", [company objectForKey:@"name"]);
                                        
                                        NSString *contestCompanyId =[contest objectForKey:@"companyId"];
                                        NSString *companyId = [company objectForKey:@"_id"];
                                        
                                        if([contestCompanyId isEqualToString:companyId]) {
                                            
-                                           ttlParticipationCount = 0;
+                                           NSLog(@"         %@ and %@", contestCompanyId, companyId);
                                            
                                            if([contest objectForKey:@"participationCount"] == nil) {
-                                               NSLog(@"total participation is nil so we add one");
+                                               NSLog(@"         total participation is nil so we add one");
                                                ttlParticipationCount = 1;
                                            } else {
                                                ttlParticipationCount = [[contest objectForKey:@"participationCount"] floatValue];
                                            }
-                                           
-                                           NSLog(@"The participation count %f", ttlParticipationCount);
-                                           
+                                       
+                                           NSLog(@"         The participation count %f", ttlParticipationCount);
+                                       
                                            if(totalDuration != 0.0) {
                                                partPercentage = elapsedTime / 86400;
                                                
@@ -448,8 +449,10 @@
                                                    partPercentage = 1;
                                                }
                                                
-                                               NSLog(@"PART PERCENTAGE %f", partPercentage);
+                                               NSLog(@"         PART PERCENTAGE %f", partPercentage);
                                            }
+                                           
+                                           break;
                                        }
                                    }                                
                                    
@@ -471,11 +474,15 @@
                                    
                                   //Check rewards and fulfillment
                                    NSArray *rewards = [userObj objectForKey:@"rewards"];
+                                   int rewardIsSelected = 0;
                                    
                                    for (id contest in rewards) {
                                        NSString *contestCompanyId =[contest objectForKey:@"companyId"];
                                        NSString *companyId = [company objectForKey:@"_id"];
                                        
+                                       if(rewardIsSelected) {
+                                           break;
+                                       }
                                        
                                        if([contestCompanyId isEqualToString:companyId]) {
                                            
@@ -483,6 +490,11 @@
                                                NSLog(@"Setting reward for %@", [company objectForKey:@"name"]);
                                                isReward = @"YES";
                                                isFulfillment = @"NO";
+                                               
+                                               rewardIsSelected = 1;
+                                               
+                                               //If there is a reward that is found and fulfilled then exit this iteration.
+                                               break;
                                            } else {
                                                isFulfillment = @"YES";
                                                isReward = @"YES";

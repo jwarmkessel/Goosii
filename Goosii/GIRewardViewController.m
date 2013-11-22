@@ -157,9 +157,12 @@
     
     NSLog(@"THE REWARD RESPONSE %@", newStr);
     
-    if([newStr isEqualToString:@"valid"]) {
-        NSLog(@"Success XOXOXOXOXOXOXOXOX");
+    if([newStr isEqualToString:@"invalid"]) {
+        NSLog(@"INVALID");
         
+        
+    } else {
+        self.company.prize = newStr;
         [self displayRewardModalView];
     }
 }

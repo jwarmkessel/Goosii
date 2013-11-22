@@ -73,9 +73,27 @@
     self.tableView.separatorColor = [UIColor clearColor];
 }
 
-- (void)handleBack:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
+- (void) handleBack:(id)sender {
+    // pop to root view controller
+    NSArray *viewControllerArray = [self.navigationController viewControllers];
+    NSLog(@"Nav controller array %lu", (unsigned long)[[self.navigationController viewControllers] count]);
+    int parentViewControllerIndex = [viewControllerArray count] - 2;
+    
+    if([[self.navigationController.viewControllers objectAtIndex:(parentViewControllerIndex)] isKindOfClass:[GICheckinViewController class]]) {
+        
+        GICheckinViewController *checkinViewController = [self.navigationController.viewControllers objectAtIndex:(parentViewControllerIndex)];
+        
+        [checkinViewController setInset];
+        [checkinViewController.locationManager startUpdatingLocation];
+        
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+       
+        
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
+
 
 - (void)toggleButtonImage:(NSTimer*)timer {
     
@@ -298,9 +316,9 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
     NSLog(@"The Participation Number %f", [company.participationPercentage floatValue]);
     float participationNum = [company.participationPercentage floatValue] * 100;
-    //TODO Fulfillment shows 0 percent. :(
-//    participationLabel.text = [NSString stringWithFormat:@"%i%% Participation", (int) participationNum];
-    participationLabel.text = @"Your Participation was 100%";
+    
+    //TODO this needs to actually show the true participation points
+    participationLabel.text = [NSString stringWithFormat:@"%i%% Participation", (int) participationNum];
     [participationLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0]];
     participationLabel.textColor = [UIColor whiteColor];
     participationLabel.backgroundColor = [UIColor clearColor];
