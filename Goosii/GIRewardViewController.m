@@ -12,11 +12,11 @@
 #import "GIPlist.h"
 
 @interface GIRewardViewController ()
-
+@property (nonatomic, strong)UIButton *saveForLaterBtn;
 @end
 
 @implementation GIRewardViewController
-@synthesize company, textInputField, companyNameLbl, userIntructTxtField, isRewarded;
+@synthesize company, textInputField, companyNameLbl, userIntructTxtField, isRewarded, saveForLaterBtn;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -57,7 +57,7 @@
         self.userIntructTxtField.textColor = [UIColor whiteColor];
         
         CGRect saveForLaterRect = CGRectMake(10, 300, 300, 50);
-        UIButton *saveForLaterBtn = [[UIButton alloc] initWithFrame:saveForLaterRect];
+        saveForLaterBtn = [[UIButton alloc] initWithFrame:saveForLaterRect];
         
         [saveForLaterBtn setBackgroundColor:[self colorWithHexString:@"3b5999"]];
         
@@ -137,33 +137,42 @@
     textField.backgroundColor = [UIColor whiteColor];
     return YES;
 }
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    saveForLaterBtn.enabled = NO;
+}
+
 - (void)textFieldDidEndEditing:(UITextField *)textField{
     NSLog(@"textFieldDidEndEditing");
     
+    saveForLaterBtn.enabled = YES;
+    
     GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
     
-    NSString *validatePasswordUrlString = [NSString stringWithFormat:@"%@checkPassword/%@/%@/%@", GOOSIIAPI, self.company.companyId, [plist objectForKey:@"userId"],textField.text];
-    
-    NSURL *url = [NSURL URLWithString:validatePasswordUrlString];
-    
-    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-    
-    NSError *requestError;
-    NSURLResponse *urlResponse = nil;
-    NSData *response = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&urlResponse error:&requestError];
-    
-    NSString* newStr = [[NSString alloc] initWithData:response
-                                             encoding:NSUTF8StringEncoding];
-    
-    NSLog(@"THE REWARD RESPONSE %@", newStr);
-    
-    if([newStr isEqualToString:@"invalid"]) {
-        NSLog(@"INVALID");
+    if([textField.text length] != 0) {
+        NSString *validatePasswordUrlString = [NSString stringWithFormat:@"%@checkPassword/%@/%@/%@", GOOSIIAPI, self.company.companyId, [plist objectForKey:@"userId"],textField.text];
         
+        NSURL *url = [NSURL URLWithString:validatePasswordUrlString];
         
-    } else {
-        self.company.prize = newStr;
-        [self displayRewardModalView];
+        NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+        
+        NSError *requestError;
+        NSURLResponse *urlResponse = nil;
+        NSData *response = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&urlResponse error:&requestError];
+        
+        NSString* newStr = [[NSString alloc] initWithData:response
+                                                 encoding:NSUTF8StringEncoding];
+        
+        NSLog(@"THE REWARD RESPONSE %@", newStr);
+        
+        if([newStr isEqualToString:@"invalid"]) {
+            NSLog(@"INVALID");
+            
+            
+        } else {
+            self.company.prize = newStr;
+            [self displayRewardModalView];
+        }
     }
 }
 

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 @class GICompany;
+@class GIProgressBar;
 
 @interface GIEventBoardViewController : UITableViewController <MKMapViewDelegate, UITextViewDelegate> {
     BOOL isEvent;
@@ -19,6 +20,8 @@
 @property (nonatomic, strong) NSTimer *blinkTimer;
 @property (nonatomic, strong) UILabel *fbPartLbl;
 @property (assign) BOOL toggle;
+
+@property (nonatomic, strong) GIProgressBar *participationBar;
 
 - (void)showNoEventsPopUp;
 @end

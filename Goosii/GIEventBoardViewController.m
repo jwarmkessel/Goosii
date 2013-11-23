@@ -25,7 +25,6 @@
 @property (nonatomic, strong) UIView *enteredPopUpView;
 
 @property (nonatomic, strong) UILabel *participationLbl;
-@property (nonatomic, strong) GIProgressBar *participationBar;
 @property (nonatomic, strong) GIProgressBar *timeDurationBar;
 
 @property (nonatomic, strong) UITableViewCell *moreInfoTblViewcell;
@@ -41,7 +40,7 @@
 @end
 
 @implementation GIEventBoardViewController
-@synthesize company, noEventsPopUpView, mapView, companyInfoContainerView, backButton, participationLbl, prizeImg, toggle, blinkTimer, fbPartLbl;
+@synthesize company, noEventsPopUpView, mapView, companyInfoContainerView, backButton, participationLbl, prizeImg, toggle, blinkTimer, fbPartLbl, participationBar;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -594,7 +593,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         
         GIProgressBar *participationBarBackground = [[GIProgressBar alloc] initWithFrame:participationBarBackgroundRect hexStringColor:@"FF3100"];
         
-        CGRect participationBarRect = CGRectMake(xPos, 20.0f, 0.0f, progressBarThickness);
+        CGRect participationBarRect = CGRectMake(xPos, 20.0f, 1.0f, progressBarThickness);
         self.participationBar = [[GIProgressBar alloc] initWithFrame:participationBarRect hexStringColor:@"3EFF29"];
         
         self.participationBtn = [[UIButton alloc] initWithFrame:CGRectMake(cell.layer.frame.size.width/2 - (200/2), self.participationBar.layer.frame.origin.y + progressBarThickness + 15.0f, 200.0f, 50.0f)];
@@ -754,17 +753,26 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     self.company.participationPercentage = [NSString stringWithFormat:@"%f", partPercentage];
     float participationNum = [self.company.participationPercentage floatValue] * 100;
     self.participationLbl.text = [NSString stringWithFormat:@"%i%% Participation", (int) participationNum];
+
+    float partWidth = [self.company.participationPercentage floatValue] * 280.0;
+    NSLog(@"The percentage %f and cell width %f", [self.company.participationPercentage floatValue], 300.0f);
+    NSLog(@"The calculation %f", partWidth);
     
+    NSLog(@"The participation bar %f, %f, %f, %f", self.participationBar.layer.frame.origin.x, self.participationBar.layer.frame.origin.y, self.participationBar.layer.frame.size.width, self.participationBar.layer.frame.size.height);
+    [self.tableView reloadData];
     //Animate the progress bars to juic-ify this app!
     [UIView animateWithDuration:1 animations:^{
 
-        float partWidth = [self.company.participationPercentage floatValue] * 280.0;
-        NSLog(@"The percentage %f and cell width %f", [self.company.participationPercentage floatValue], 300.0f);
-        NSLog(@"The calculation %f", partWidth);
-        self.participationBar.frame = CGRectMake(10, 20, partWidth, 20);
+        
+        participationBar.layer.frame = CGRectMake(10, 20, partWidth, 20);
+
+        
         
     } completion:^(BOOL finished) {
         NSLog(@"done");
+
+        NSLog(@"The participation bar after %f, %f, %f, %f", self.participationBar.layer.frame.origin.x, self.participationBar.layer.frame.origin.y, self.participationBar.layer.frame.size.width, self.participationBar.layer.frame.size.height);
+
     }];
 }
 
