@@ -147,11 +147,11 @@
         NSLog(@"preparing to segue to rewardStateViewController");
         // Get reference to the destination view controller
         GIRewardStateViewController *vc = [segue destinationViewController];
-        [vc setCompany:[self.eventList objectAtIndex:[self.tableView indexPathForSelectedRow].row]];
+        [vc setCompany:(GICompany*)[self.eventList objectAtIndex:[self.tableView indexPathForSelectedRow].row]];
 
     } else if([[segue identifier] isEqualToString:@"fulfillmentViewSegue"]) {
         GIFulfillmentViewController *vc = [segue destinationViewController];
-        [vc setCompany:[self.eventList objectAtIndex:[self.tableView indexPathForSelectedRow].row]];
+        [vc setCompany:(GICompany*)[self.eventList objectAtIndex:[self.tableView indexPathForSelectedRow].row]];
         
     } else if([[segue identifier] isEqualToString:@"eventDrillDownViewSegue"]) {
         GIEventBoardViewController *vc = [segue destinationViewController];
@@ -161,17 +161,12 @@
         
         NSLog(@"The time in Milliseconds %f", timeInMilliseconds);
         
-        //NSLog(@"startDate %f v curDate %f", [[vc.company startDate] floatValue], floor(timeInMilliseconds));
-        float endDateInSeconds = [[vc.company endDate] floatValue] / 1000;
-        NSLog(@"The time in endDateInSeconds %f", endDateInSeconds);
-
-        float startDateInSeconds = [[vc.company startDate] floatValue] / 1000;
+        GICompany *selectedCompany = (GICompany*)[self.eventList objectAtIndex:[self.tableView indexPathForSelectedRow].row];
         
         //TODO CHANGE THIS BACK TO <=
-        if(endDateInSeconds <= timeInMilliseconds ||  timeInMilliseconds < startDateInSeconds) {
+        if(([selectedCompany.endDate floatValue] / 1000) < timeInMilliseconds ||  timeInMilliseconds < ([selectedCompany.startDate floatValue] / 1000)) {
             NSLog(@"Currently no events");
-            [vc showNoEventsPopUp];
-            
+            [vc showNoEventsPopUp:selectedCompany.newsURLString];
         }
     }
  
@@ -334,6 +329,14 @@
                                        }
                                    }
                                    
+                                   NSString *newsURLString = @"";
+                                   
+                                   if([[company objectForKey:@"newsURL"] length] != 0 ){
+                                       newsURLString = [company objectForKey:@"newsURL"];
+                                       NSLog(@"                                 ---------=========> THE NEWS URL %@", newsURLString);
+                                   }
+                                   
+                                   
                                    //Create company object and push to array.
                                    GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"]
                                                                                  companyId:[company objectForKey:@"_id"]
@@ -352,7 +355,8 @@
                                                                                eventReward:[event objectForKey:@"prize"]
                                                                          participationPost:[event objectForKey:@"participationPost"]
                                                                        participationPoints:[NSString stringWithFormat:@"%f", ttlParticipationCount]
-                                                                                   website:[event objectForKey:@"website"]];
+                                                                                   website:[event objectForKey:@"website"]
+                                                                                   newsUrl:newsURLString];
                                    
                                    NSLog(@"Adding company object");
                                    [self.eventList addObject:companyObj];
@@ -421,6 +425,18 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     GICompany *company = [self.eventList objectAtIndex:indexPath.row];
+    
+    NSString *urlRewardString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, company.companyId];
+    NSURL *url = [NSURL URLWithString: urlRewardString];
+    UIImage *thumbnail = [UIImage imageWithData: [NSData dataWithContentsOfURL:url]];
+    
+    CGSize itemSize = CGSizeMake(40, 40);
+    UIGraphicsBeginImageContext(itemSize);
+    CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+    [thumbnail drawInRect:imageRect];
+    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
     [cell.textLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
     cell.textLabel.text = company.name;
     

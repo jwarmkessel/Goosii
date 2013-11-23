@@ -288,80 +288,94 @@
     [self.tableView setAlpha:1];
 }
 
-- (void)showNoEventsPopUp {
+- (void)showNoEventsPopUp:(NSString*)newsURL{
+    NSLog(@"THE NEWSURL %@", newsURL);
+    if( [newsURL length] != 0 ) {
+        UIWebView *webView =[[UIWebView alloc] initWithFrame:[[UIScreen mainScreen]bounds]];
+        
+        webView.scalesPageToFit = YES;
+        
+        NSString *urlAddress = self.company.newsURLString;
+        //Create a URL object.
+        NSURL *url = [NSURL URLWithString:urlAddress];
+        //URL Requst Object
+        NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+        //Load the request in the UIWebView.
+        [webView loadRequest:requestObj];
+        
+        [self.view addSubview:webView];
+    } else {
+        float xPos = [[UIScreen mainScreen] bounds].size.width;
+        //UIView *noEventsPopUpMask = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
-    
-    float xPos = [[UIScreen mainScreen] bounds].size.width;
-    //UIView *noEventsPopUpMask = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
-    [self.tableView setAlpha:0.5];
-    xPos = xPos/2 - 100.0f;
-    float yPos = 75.0f;
-    
-    
-
-    CGRect noEventsPopUpRect = CGRectMake(xPos, yPos, 200.0f, 200.0f);
-    self.noEventsPopUpView = [[UIView alloc] initWithFrame:noEventsPopUpRect];
-    self.noEventsPopUpView.layer.borderColor = [UIColor blackColor].CGColor;
-    self.noEventsPopUpView.layer.borderWidth = 3.0f;
-    
-    NSString *infoString = @"Sorry, no events.";
-    
-    UILabel *noEventLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 10.0f, 190.0f,50)];
-    noEventLbl.text = infoString;
-    noEventLbl.textAlignment = NSTextAlignmentCenter;
-    [noEventLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
-    noEventLbl.textColor = [UIColor whiteColor];
-    noEventLbl.backgroundColor = [UIColor clearColor];
+        [self.tableView setAlpha:0.5];
+        xPos = xPos/2 - 100.0f;
+        float yPos = 75.0f;
 
 
-    // border radius
-    [self.noEventsPopUpView.layer setCornerRadius:30.0f];
-    
-    // border
-    //[self.noEventsPopUpView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
-    [self.noEventsPopUpView.layer setBorderWidth:1.5f];
-    
-    // drop shadow
-    [self.noEventsPopUpView.layer setShadowColor:[UIColor blackColor].CGColor];
-    [self.noEventsPopUpView.layer setShadowOpacity:0.8];
-    [self.noEventsPopUpView.layer setShadowRadius:3.0];
-    [self.noEventsPopUpView.layer setShadowOffset:CGSizeMake(2.0, 2.0)];
-    
-    [self.noEventsPopUpView setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
-    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-    [window addSubview:self.noEventsPopUpView];
-    
-    [self.noEventsPopUpView addSubview:noEventLbl];
-    
-    [self.noEventsPopUpView setAlpha:0.3];
-    
-    [UIView
-     animateWithDuration:0.2
-     animations:^ {
-         [self.noEventsPopUpView setAlpha:1];
-         CATransform3D rotationAndPerspectiveTransform = CATransform3DIdentity;
-         rotationAndPerspectiveTransform.m34 = 1.0 / -500;
-         rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, -45.0 * M_PI / 180.0f, 0.0f, 1.0f, 0.0f);
-         noEventLbl.layer.transform = rotationAndPerspectiveTransform;
-         
 
-     }
-     completion:^(BOOL finished) {
-         
-         [UIView
-          animateWithDuration:0.1
-          animations:^ {
-              CATransform3D rotationAndPerspectiveTransform = CATransform3DIdentity;
-              rotationAndPerspectiveTransform.m34 = 1.0 / -500;
-              rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, M_PI / 180.0f, 0.0f, 1.0f, 0.0f);
-              noEventLbl.layer.transform = rotationAndPerspectiveTransform;
+        CGRect noEventsPopUpRect = CGRectMake(xPos, yPos, 200.0f, 200.0f);
+        self.noEventsPopUpView = [[UIView alloc] initWithFrame:noEventsPopUpRect];
+        self.noEventsPopUpView.layer.borderColor = [UIColor blackColor].CGColor;
+        self.noEventsPopUpView.layer.borderWidth = 3.0f;
 
-          }
-          completion:^(BOOL finished) {
-          }];
-     }];
-    
+        NSString *infoString = @"Sorry, no events.";
+
+        UILabel *noEventLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 10.0f, 190.0f,50)];
+        noEventLbl.text = infoString;
+        noEventLbl.textAlignment = NSTextAlignmentCenter;
+        [noEventLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
+        noEventLbl.textColor = [UIColor whiteColor];
+        noEventLbl.backgroundColor = [UIColor clearColor];
+
+
+        // border radius
+        [self.noEventsPopUpView.layer setCornerRadius:30.0f];
+
+        // border
+        //[self.noEventsPopUpView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
+        [self.noEventsPopUpView.layer setBorderWidth:1.5f];
+
+        // drop shadow
+        [self.noEventsPopUpView.layer setShadowColor:[UIColor blackColor].CGColor];
+        [self.noEventsPopUpView.layer setShadowOpacity:0.8];
+        [self.noEventsPopUpView.layer setShadowRadius:3.0];
+        [self.noEventsPopUpView.layer setShadowOffset:CGSizeMake(2.0, 2.0)];
+
+        [self.noEventsPopUpView setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
+        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+        [window addSubview:self.noEventsPopUpView];
+
+        [self.noEventsPopUpView addSubview:noEventLbl];
+
+        [self.noEventsPopUpView setAlpha:0.3];
+
+        [UIView
+         animateWithDuration:0.2
+         animations:^ {
+             [self.noEventsPopUpView setAlpha:1];
+             CATransform3D rotationAndPerspectiveTransform = CATransform3DIdentity;
+             rotationAndPerspectiveTransform.m34 = 1.0 / -500;
+             rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, -45.0 * M_PI / 180.0f, 0.0f, 1.0f, 0.0f);
+             noEventLbl.layer.transform = rotationAndPerspectiveTransform;
+             
+
+         }
+         completion:^(BOOL finished) {
+             
+             [UIView
+              animateWithDuration:0.1
+              animations:^ {
+                  CATransform3D rotationAndPerspectiveTransform = CATransform3DIdentity;
+                  rotationAndPerspectiveTransform.m34 = 1.0 / -500;
+                  rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, M_PI / 180.0f, 0.0f, 1.0f, 0.0f);
+                  noEventLbl.layer.transform = rotationAndPerspectiveTransform;
+
+              }
+              completion:^(BOOL finished) {
+              }];
+         }];
+    }
     isEvent = NO;
 }
 

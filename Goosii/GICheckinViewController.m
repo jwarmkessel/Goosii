@@ -152,9 +152,40 @@
     GICompany *company = [self.nearbyLocationsAry objectAtIndex:indexPath.row];
     [cell.textLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
     cell.textLabel.text = company.name;
+    
+    
+    
+    
+    
+    
+    NSString *urlRewardString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, company.companyId];
+    NSURL *url = [NSURL URLWithString: urlRewardString];
+    UIImage *thumbnail = [UIImage imageWithData: [NSData dataWithContentsOfURL:url]];
 
+    CGSize itemSize = CGSizeMake(40, 40);
+    UIGraphicsBeginImageContext(itemSize);
+    CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+    [thumbnail drawInRect:imageRect];
+    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+//    CGSize itemSize = CGSizeMake(40, 40);
+//    UIGraphicsBeginImageContext(itemSize);
+//    CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+//    [thumbnail drawInRect:imageRect];
+//    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
+//    
+//    cell.imageView.image = thumbnail;
+    
+    
+    
+    
+    
     UILabel *milesLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 80, cell.frame.size.height)];
+    
     milesLbl.text = company.distanceStr;
+    
     cell.accessoryView =milesLbl;
     return cell;
 }
@@ -263,23 +294,19 @@
    
     } else if([[segue identifier] isEqualToString:@"eventDrillDownViewSegue"]) {
         GIEventBoardViewController *vc = [segue destinationViewController];
-        vc.company = [self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+        vc.company = (GICompany*)[self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row];
         
         NSTimeInterval timeInMilliseconds = [[NSDate date] timeIntervalSince1970];
         
         NSLog(@"The time in Milliseconds %f", timeInMilliseconds);
         
-        //NSLog(@"startDate %f v curDate %f", [[vc.company startDate] floatValue], floor(timeInMilliseconds));
-        float endDateInSeconds = [[vc.company endDate] floatValue] / 1000;
-        NSLog(@"The time in endDateInSeconds %f", endDateInSeconds);
-        
-        float startDateInSeconds = [[vc.company startDate] floatValue] / 1000;
+        GICompany *selectedCompany = (GICompany*)[self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row];
         
         //TODO CHANGE THIS BACK TO <=
-        if(endDateInSeconds <= timeInMilliseconds ||  timeInMilliseconds < startDateInSeconds) {
-            NSLog(@"Currently no events");
-            [vc showNoEventsPopUp];
+        if(([selectedCompany.endDate floatValue] / 1000) < timeInMilliseconds ||  timeInMilliseconds < ([selectedCompany.startDate floatValue] / 1000)) {
             
+            NSLog(@"Currently no events");
+            [vc showNoEventsPopUp:selectedCompany.newsURLString];
         }
     }
 }
@@ -335,11 +362,17 @@
                                NSDictionary *superObject = [parser objectWithString:newStr];
                                NSDictionary *userObj = [superObject objectForKey:@"userObject"];
                                NSArray *results = [superObject objectForKey:@"results"];
-                               
-                               
+
                                for (id result in results) {
                                    //This is the company object.
                                    NSDictionary *company = [result objectForKey:@"obj"];
+                                   
+                                   NSString *newsURLString = @"";
+                                   
+                                   if([[company objectForKey:@"newsURL"] length] != 0 ){
+                                       newsURLString = [company objectForKey:@"newsURL"];
+                                       NSLog(@"                                 ---------=========> THE NEWS URL %@", newsURLString);
+                                   }
 
                                    //Set longitude and latitude
                                    NSDictionary *location = [company objectForKey:@"location"];
@@ -374,6 +407,14 @@
                                    
                                    NSString *totalParticipants = [NSString stringWithFormat:@"%d", totalParticipantsNum];
                                    
+                                   
+                                   
+                                   
+
+                                   
+                                   
+                                   
+                                   
                                    //Determine percentage of time
                                    NSTimeInterval timeInMiliseconds = [[NSDate date] timeIntervalSince1970];
                                    
@@ -385,18 +426,30 @@
                                    startDate = startDate / 1000;
                                    endDate = endDate / 1000;
                                    
+                                   NSLog(@"             The company name %@", [company objectForKey:@"name"]);
+                                   NSLog(@"             The start date %f", startDate);
+                                   NSLog(@"             The end date %f", endDate);
                                    
-                                   double curTime = floor(timeInMiliseconds);
+                                   NSLog(@"             The current date %f", timeInMiliseconds);
+                                   
+                                   
 
-                                   double totalDuration = endDate - startDate;
+                                   
+                                   
+                                   
 
+                                   float totalDuration = endDate - startDate;
+                                   
                                    
                                    //Elapsed time in seconds equals the current time minus the startdate.
-                                   double elapsedTime = curTime - startDate;
+                                   float elapsedTime = timeInMiliseconds - startDate;
+
                                    
-                                   double percentage = elapsedTime / totalDuration;
+                                   NSLog(@"             ELAPSED TIME %f", elapsedTime);
+                                   NSLog(@"             TOTALDURATION TIME %f", totalDuration);
+                                   float percentage = elapsedTime / totalDuration;
                                    
-                                   
+                                   NSLog(@"                         The percentage %f", percentage);
                                    
                                    if(percentage > 1.0) {
                                        percentage = 1;
@@ -497,6 +550,8 @@
                                        }
                                    }
                                    
+
+                                   
                                    NSLog(@"FINALLY THE PARTICIPATION PERCENTAGE %@", [NSString stringWithFormat:@"%f", partPercentage]);
                                    
                                    //Determine whether company is near enough
@@ -524,7 +579,8 @@
                                                                          participationPost:[event objectForKey:@"participationPost"]
                                                                        participationPoints:[NSString stringWithFormat:@"%f", ttlParticipationCount]
                                                                                   distance:[NSString stringWithFormat:@"%.2f mi", distanceInMiles]
-                                                                                   website:[event objectForKey:@"website"]];
+                                                                                   website:[event objectForKey:@"website"]
+                                                                                   newsUrl:newsURLString];
                                    
 
                                    if(distanceInMiles < DISTANCE_ALLOWED_FROM_COMPANY) {

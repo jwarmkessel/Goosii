@@ -76,6 +76,7 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
     self.slidingViewController.panGesture.enabled = YES;
+    self.navigationController.navigationBarHidden = YES;
 }
 
 -(IBAction)enterBtn:(id)sender {

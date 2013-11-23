@@ -23,5 +23,5 @@
 
 @property (nonatomic, strong) GIProgressBar *participationBar;
 
-- (void)showNoEventsPopUp;
+- (void)showNoEventsPopUp:(NSString*)newsURL;
 @end
