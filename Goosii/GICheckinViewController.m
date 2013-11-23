@@ -474,31 +474,26 @@
                                    
                                   //Check rewards and fulfillment
                                    NSArray *rewards = [userObj objectForKey:@"rewards"];
-                                   int rewardIsSelected = 0;
+
                                    
                                    for (id contest in rewards) {
                                        NSString *contestCompanyId =[contest objectForKey:@"companyId"];
                                        NSString *companyId = [company objectForKey:@"_id"];
                                        
-                                       if(rewardIsSelected) {
-                                           break;
-                                       }
                                        
-                                       if([contestCompanyId isEqualToString:companyId]) {
+                                       if([contestCompanyId isEqualToString:companyId] && [[contest objectForKey:@"fulfillment"] floatValue] == 0) {
+                                           NSLog(@"Setting reward for %@", [company objectForKey:@"name"]);
+                                           isReward = @"YES";
+                                           isFulfillment = @"NO";
                                            
-                                           if ( [[contest objectForKey:@"fulfillment"] floatValue] == 0 ) {
-                                               NSLog(@"Setting reward for %@", [company objectForKey:@"name"]);
-                                               isReward = @"YES";
-                                               isFulfillment = @"NO";
-                                               
-                                               rewardIsSelected = 1;
-                                               
-                                               //If there is a reward that is found and fulfilled then exit this iteration.
-                                               break;
-                                           } else {
-                                               isFulfillment = @"YES";
-                                               isReward = @"YES";
-                                           }
+                                           //If there is a reward that is found and fulfilled then exit this iteration.
+                                           break;
+
+                                       } else if([contestCompanyId isEqualToString:companyId]) {
+                                           isReward = @"YES";
+                                           isFulfillment = @"YES";
+                                           
+                                           break;
                                        }
                                    }
                                    

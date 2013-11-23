@@ -310,21 +310,6 @@
                                    
                                    NSString * isReward = @"NO";
                                    
-                                   //Check rewards
-                                   NSLog(@"Set Reward flag");
-//                                   NSArray *rewards = [userObj objectForKey:@"rewards"];
-//                                   
-//                                   for (id contest in rewards) {
-//                                       NSString *contestCompanyId =[contest objectForKey:@"companyId"];
-//                                       NSString *companyId = [company objectForKey:@"_id"];
-//                                       
-//                                       if([contestCompanyId isEqualToString:companyId]) {
-//                                           NSLog(@"Set Reward flag to YES");
-//                                           NSLog(@"Setting reward for %@", [company objectForKey:@"name"]);
-//                                           isReward = @"YES";
-//                                       }
-//                                   }
-                                   
                                    //Check rewards and fulfillment
                                    NSArray *rewards = [userObj objectForKey:@"rewards"];
                                    
@@ -332,16 +317,20 @@
                                        NSString *contestCompanyId =[contest objectForKey:@"companyId"];
                                        NSString *companyId = [company objectForKey:@"_id"];
                                        
-                                       if([contestCompanyId isEqualToString:companyId]) {
+                                       
+                                       if([contestCompanyId isEqualToString:companyId] && [[contest objectForKey:@"fulfillment"] floatValue] == 0) {
+                                           NSLog(@"Setting reward for %@", [company objectForKey:@"name"]);
+                                           isReward = @"YES";
+                                           isFulfillment = @"NO";
                                            
-                                           if ( [[contest objectForKey:@"fulfillment"] floatValue] == 0 ) {
-                                               NSLog(@"Setting reward for %@", [company objectForKey:@"name"]);
-                                               isReward = @"YES";
-                                               isFulfillment = @"NO";
-                                           } else {
-                                               isFulfillment = @"YES";
-                                               isReward = @"YES";
-                                           }
+                                           //If there is a reward that is found and fulfilled then exit this iteration.
+                                           break;
+                                           
+                                       } else if([contestCompanyId isEqualToString:companyId]) {
+                                           isReward = @"YES";
+                                           isFulfillment = @"YES";
+                                           
+                                           break;
                                        }
                                    }
                                    
