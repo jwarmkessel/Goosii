@@ -33,8 +33,6 @@
 @implementation GICheckinViewController
 @synthesize loadingMask, nearbyLocationsAry, locationManager, indicator;
 
-
-
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];

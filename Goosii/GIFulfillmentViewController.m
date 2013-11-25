@@ -14,6 +14,7 @@
 #import "GIRewardStateViewController.h"
 #import "GICheckinViewController.h"
 #import "GIRewardViewController.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface GIFulfillmentViewController ()
 {
@@ -49,13 +50,15 @@
     
     //Set image for the tableview background
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    NSString *urlString = [NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, self.company.companyId];
+
     
-    NSURL *url = [NSURL URLWithString:urlString];
-    NSData *data = [NSData dataWithContentsOfURL:url];
-    UIImage *img = [[UIImage alloc] initWithData:data];
+    NSString *urlString = [NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, company.companyId];
     
-    imgView.image = img;
+    NSLog(@"%@", urlString);
+    
+    [imgView setImageWithURL:[NSURL URLWithString:urlString]
+            placeholderImage:[UIImage imageNamed:@"backgroundImage.jpg"]];
+
     
     // change the back button to cancel and add an event handler
     self.backButton = [[UIBarButtonItem alloc] initWithTitle:@"back"
@@ -301,14 +304,13 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     CGRect prizeImgView = CGRectMake((200/2-45), 135, 95, 90.0);
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:prizeImgView];
-
-    NSString *urlString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, self.company.companyId];
     
-    NSURL *url = [NSURL URLWithString:urlString];
-    NSData *data = [NSData dataWithContentsOfURL:url];
-    UIImage *img = [[UIImage alloc] initWithData:data];
+    NSString *urlString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, company.companyId];
     
-    imgView.image = img;
+    NSLog(@"%@", urlString);
+    
+    [imgView setImageWithURL:[NSURL URLWithString:urlString]
+            placeholderImage:[UIImage imageNamed:@"backgroundImage.jpg"]];
     
     //Participation Label
     CGRect participationLblRect = CGRectMake(((200/2-45) + 90), 135, 110, 90.0);
@@ -411,7 +413,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
     
-    NSString *urlPost = [NSString stringWithFormat:@"%@removeFulfillmentObject/%@/%@", GOOSIIAPI, self.company.companyId,[plist objectForKey:@"userId"]];
+    NSString *urlPost = [NSString stringWithFormat:@"%@removeFulfillmentAndReward/%@/%@", GOOSIIAPI, self.company.companyId,[plist objectForKey:@"userId"]];
 
     NSLog(@"Remove fulfillment flag %@", urlPost);
     
@@ -426,7 +428,24 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                                                                         encoding:NSUTF8StringEncoding];
                                
                                NSLog(@"ReceivedData %@", newStr);
-                               [self.navigationController popViewControllerAnimated:YES];                               
+                               // pop to root view controller
+                               NSArray *viewControllerArray = [self.navigationController viewControllers];
+                               NSLog(@"Nav controller array %lu", (unsigned long)[[self.navigationController viewControllers] count]);
+                               int parentViewControllerIndex = [viewControllerArray count] - 2;
+                               
+                               if([[self.navigationController.viewControllers objectAtIndex:(parentViewControllerIndex)] isKindOfClass:[GICheckinViewController class]]) {
+                                   
+                                   GICheckinViewController *checkinViewController = [self.navigationController.viewControllers objectAtIndex:(parentViewControllerIndex)];
+                                   
+                                   [checkinViewController setInset];
+                                   [checkinViewController.locationManager startUpdatingLocation];
+                                   
+                                   [self.navigationController popViewControllerAnimated:YES];
+                               } else {
+                                   
+                                   
+                                   [self.navigationController popViewControllerAnimated:YES];
+                               }
                            }];
 }
 

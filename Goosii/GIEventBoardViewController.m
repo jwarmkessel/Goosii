@@ -16,6 +16,7 @@
 #import "GICheckinViewController.h"
 #import <MapKit/MapKit.h>
 #import <ECSlidingViewController.h>
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface GIEventBoardViewController ()
 {
@@ -66,23 +67,35 @@
     //Set image for the tableview background
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
-    NSString *urlString = [NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, self.company.companyId];
+    NSString *urlString = [NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, company.companyId];
     
-    NSURL *url = [NSURL URLWithString:urlString];
-    NSData *data = [NSData dataWithContentsOfURL:url];
-    UIImage *img = [[UIImage alloc] initWithData:data];
+    NSLog(@"%@", urlString);
+
+    [imgView setImageWithURL:[NSURL URLWithString:urlString]
+                   placeholderImage:[UIImage imageNamed:@"backgroundImage.jpg"]];
+
     
-    imgView.image = img;
+//    NSString *urlString = [NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, self.company.companyId];
+//    
+//    NSURL *url = [NSURL URLWithString:urlString];
+//    NSData *data = [NSData dataWithContentsOfURL:url];
+//    UIImage *img = [[UIImage alloc] initWithData:data];
+//    
+//    imgView.image = img;
     
-    NSString *urlRewardString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, self.company.companyId];
+//    NSString *urlRewardString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, self.company.companyId];
+//    
+//    NSURL *urlReward = [NSURL URLWithString:urlRewardString];
+//    NSData *dataReward = [NSData dataWithContentsOfURL:urlReward];
+//    UIImage *rewardImg = [[UIImage alloc] initWithData:dataReward];
+
+    NSString *urlRewardString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, company.companyId];
     
-    NSURL *urlReward = [NSURL URLWithString:urlRewardString];
-    NSData *dataReward = [NSData dataWithContentsOfURL:urlReward];
-    UIImage *rewardImg = [[UIImage alloc] initWithData:dataReward];
+    NSLog(@"%@", urlRewardString);
     
-    self.prizeImg = [[UIImageView alloc] init];
-    self.prizeImg.image = rewardImg;
-    
+    [self.prizeImg setImageWithURL:[NSURL URLWithString:urlRewardString]
+            placeholderImage:[UIImage imageNamed:@"imagePlaceHolder.png"]];
+
     //TODO Not sure this is necessary
     [self.tableView setDelegate:self];
 
@@ -222,7 +235,7 @@
     prizeLbl.backgroundColor = [UIColor clearColor];
     prizeLbl.editable = NO;
     
-    UIButton *closeCompanyInfoViewBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, 300.0, 230.0, 45.0)];
+    UIButton *closeCompanyInfoViewBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, 400.0, 230.0, 45.0)];
     [closeCompanyInfoViewBtn setBackgroundColor:[self colorWithHexString:@"3b5999"]];
 
     [closeCompanyInfoViewBtn.layer setCornerRadius:3];

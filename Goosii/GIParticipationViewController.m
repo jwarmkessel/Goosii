@@ -69,8 +69,6 @@
         
     }
     
-    
-    
     if(![self.slidingViewController.underLeftViewController isKindOfClass:[GIMenuViewController class]]) {
         self.slidingViewController.underLeftViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Menu"];
     }
@@ -512,27 +510,27 @@
     
     [self performSegueWithIdentifier:segueName sender:self];
     
-    GICompany *curCompany = [self.eventList objectAtIndex:indexPath.row];
-    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
+//    GICompany *curCompany = [self.eventList objectAtIndex:indexPath.row];
+//    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
     
     //Enter the user into the contest if they haven't already.
-    NSString *urlString = [NSString stringWithFormat:@"%@enterContest/%@/%@", GOOSIIAPI, [plist objectForKey:@"userId"], curCompany.companyId];
-    
-    NSLog(@"Requesting %@", urlString);
-    
-    NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-    
-    [NSURLConnection sendAsynchronousRequest:urlRequest
-                                       queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                               
-                               // your data or an error will be ready here
-                               NSString* newStr = [[NSString alloc] initWithData:data
-                                                                        encoding:NSUTF8StringEncoding];
-                               NSLog(@"enterContests response: %@", newStr);
-                               
-                           }];
+//    NSString *urlString = [NSString stringWithFormat:@"%@enterContest/%@/%@", GOOSIIAPI, [plist objectForKey:@"userId"], curCompany.companyId];
+//    
+//    NSLog(@"Requesting %@", urlString);
+//    
+//    NSURL *url = [NSURL URLWithString:urlString];
+//    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+//    
+//    [NSURLConnection sendAsynchronousRequest:urlRequest
+//                                       queue:[NSOperationQueue mainQueue]
+//                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+//                               
+//                               // your data or an error will be ready here
+//                               NSString* newStr = [[NSString alloc] initWithData:data
+//                                                                        encoding:NSUTF8StringEncoding];
+//                               NSLog(@"enterContests response: %@", newStr);
+//                               
+//                           }];
 
     
     
