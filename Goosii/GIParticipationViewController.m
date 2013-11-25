@@ -16,6 +16,7 @@
 #import "GIFulfillmentViewController.h"
 #import "GIRewardStateViewController.h"
 #import <ECSlidingViewController.h>
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface GIParticipationViewController ()
 @property (nonatomic, strong) GICompany *selCompany;
@@ -426,21 +427,28 @@
     }
     GICompany *company = [self.eventList objectAtIndex:indexPath.row];
     
-    NSString *urlRewardString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, company.companyId];
-    NSURL *url = [NSURL URLWithString: urlRewardString];
-    UIImage *thumbnail = [UIImage imageWithData: [NSData dataWithContentsOfURL:url]];
+    NSString *urlRewardString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImageThumb.png", kBASE_URL, company.companyId];
     
-    CGSize itemSize = CGSizeMake(40, 40);
-    UIGraphicsBeginImageContext(itemSize);
-    CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
-    [thumbnail drawInRect:imageRect];
-    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
+    NSLog(@"%@", urlRewardString);
+    [cell.imageView setImageWithURL:[NSURL URLWithString:urlRewardString]
+                   placeholderImage:[UIImage imageNamed:@"imagePlaceHolder.png"]];
     [cell.textLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
     cell.textLabel.text = company.name;
     
     return cell;
+}
+
+//Change the Height of the Cell [Default is 44]:
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    NSLog(@"===============================>heightForRowAtIndexPath");
+//    if (indexPath.section == 0) {
+//        if (indexPath.row == 1) {
+//            return 90;
+//        }
+//    }
+    return 100;
 }
 
 /*

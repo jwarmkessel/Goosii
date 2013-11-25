@@ -3,6 +3,9 @@ PODS:
   - FlurrySDK (4.2.3)
   - PunchScrollView (1.0.2)
   - SBJson (3.2)
+  - SDWebImage (3.5):
+    - SDWebImage/Core
+  - SDWebImage/Core (3.5)
   - TestFlightSDK (2.0)
 
 DEPENDENCIES:
@@ -10,13 +13,15 @@ DEPENDENCIES:
   - FlurrySDK (~> 4.2.3)
   - PunchScrollView (~> 1.0.2)
   - SBJson (~> 3.2)
+  - SDWebImage (~> 3.5)
   - TestFlightSDK (~> 2.0)
 
 SPEC CHECKSUMS:
   ECSlidingViewController: fc9a9a6564d4a64c0d8c7cf5583d2b9a469ecd04
   FlurrySDK: 20b3fd669eeafd005ca8ff65a1406d1befbc8031
   PunchScrollView: 5f4bedc1230bb29dd68c09cc3b8e57547cfb962a
-  SBJson: e60b4dc22448c2ae1e754b523a4ab53408e85c8d
+  SBJson: abc2bf2baef456d5dae213f9826fe2b6fdf19861
+  SDWebImage: f1a72472f8a2d54445f1fedafe2090593d9caf7f
   TestFlightSDK: 940906d4b2550cf397c6f2d2fcc4ebfdcd8ae858
 
 COCOAPODS: 0.20.2

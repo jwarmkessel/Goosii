@@ -49,6 +49,7 @@
 		8319FAAA17E7B47700661B91 /* GIGlobalVariables.m in Sources */ = {isa = PBXBuildFile; fileRef = 8319FAA917E7B47700661B91 /* GIGlobalVariables.m */; };
 		8319FABC17E7DB5B00661B91 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8319FABB17E7DB5B00661B91 /* icon.png */; };
 		8319FABE17E7DB6500661B91 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8319FABD17E7DB6500661B91 /* icon@2x.png */; };
+		831F0E9C1842E2D300DD43BD /* imagePlaceHolder.png in Resources */ = {isa = PBXBuildFile; fileRef = 831F0E9B1842E2D300DD43BD /* imagePlaceHolder.png */; };
 		836BC1A817C3190300EF3007 /* Bubble.png in Resources */ = {isa = PBXBuildFile; fileRef = 836BC19C17C3190300EF3007 /* Bubble.png */; };
 		836BC1A917C3190300EF3007 /* Bubble@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = 836BC19D17C3190300EF3007 /* Bubble@x2.png */; };
 		836BC1AA17C3190300EF3007 /* Bubble1.png in Resources */ = {isa = PBXBuildFile; fileRef = 836BC19E17C3190300EF3007 /* Bubble1.png */; };
@@ -359,6 +360,7 @@
 		8319FAA917E7B47700661B91 /* GIGlobalVariables.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIGlobalVariables.m; sourceTree = "<group>"; };
 		8319FABB17E7DB5B00661B91 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ../icon.png; sourceTree = "<group>"; };
 		8319FABD17E7DB6500661B91 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon@2x.png"; path = "../icon@2x.png"; sourceTree = "<group>"; };
+		831F0E9B1842E2D300DD43BD /* imagePlaceHolder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = imagePlaceHolder.png; sourceTree = "<group>"; };
 		836BC19C17C3190300EF3007 /* Bubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bubble.png; sourceTree = "<group>"; };
 		836BC19D17C3190300EF3007 /* Bubble@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bubble@x2.png"; sourceTree = "<group>"; };
 		836BC19E17C3190300EF3007 /* Bubble1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bubble1.png; sourceTree = "<group>"; };
@@ -687,6 +689,7 @@
 		8309748817837C0900ABC1CF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				831F0E9B1842E2D300DD43BD /* imagePlaceHolder.png */,
 				83729A5918208EE7004DF66E /* Goosii_iPhone80x80.png */,
 				83729A5718208E09004DF66E /* Gossii_iPhoneSettings29x29.png */,
 				83729A4F18208CF5004DF66E /* Goosii_iPhone57x57_Optimized.png */,
@@ -1335,6 +1338,7 @@
 				83A4A7B0183AEC0F00C7FE3A /* Intro_0074.png in Resources */,
 				83A4A786183AEC0F00C7FE3A /* Intro_0032.png in Resources */,
 				83A4A773183AEC0F00C7FE3A /* Intro_0013.png in Resources */,
+				831F0E9C1842E2D300DD43BD /* imagePlaceHolder.png in Resources */,
 				83A4A7BD183AEC0F00C7FE3A /* BrokenEggAnim_008@2x.png in Resources */,
 				83A4A801183AEC0F00C7FE3A /* Intro_0058@2x.png in Resources */,
 				83A4A821183AEC0F00C7FE3A /* BrokenEggAnim_011-568h@2x.png in Resources */,

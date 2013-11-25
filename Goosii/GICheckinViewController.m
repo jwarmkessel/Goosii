@@ -16,6 +16,8 @@
 #import "GIHomeViewController.h"
 #import "GIMainViewController.h"
 #import <ECSlidingViewController.h>
+#import <SDWebImage/UIImageView+WebCache.h>
+
 
 #define METERS_PER_MILE 1609.344
 #define METERS_TO_MILE_CONVERSION 0.00062137
@@ -153,34 +155,25 @@
     [cell.textLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
     cell.textLabel.text = company.name;
     
-    
-    
-    
-    
-    
-    NSString *urlRewardString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, company.companyId];
-    NSURL *url = [NSURL URLWithString: urlRewardString];
-    UIImage *thumbnail = [UIImage imageWithData: [NSData dataWithContentsOfURL:url]];
+    // Here we use the new provided setImageWithURL: method to load the web image
 
-    CGSize itemSize = CGSizeMake(40, 40);
-    UIGraphicsBeginImageContext(itemSize);
-    CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
-    [thumbnail drawInRect:imageRect];
-    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
+
     
+    NSString *urlRewardString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImageThumb.png", kBASE_URL, company.companyId];
+    
+    NSLog(@"%@", urlRewardString);
+    [cell.imageView setImageWithURL:[NSURL URLWithString:urlRewardString]
+                   placeholderImage:[UIImage imageNamed:@"imagePlaceHolder.png"]];
+
+    
+//    UIImage *thumbnail = [UIImage imageWithData: [NSData dataWithContentsOfURL:url]];
+//
 //    CGSize itemSize = CGSizeMake(40, 40);
 //    UIGraphicsBeginImageContext(itemSize);
 //    CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
 //    [thumbnail drawInRect:imageRect];
 //    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
 //    UIGraphicsEndImageContext();
-//    
-//    cell.imageView.image = thumbnail;
-    
-    
-    
-    
     
     UILabel *milesLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 80, cell.frame.size.height)];
     
@@ -190,6 +183,11 @@
     return cell;
 }
 
+//Change the Height of the Cell [Default is 44]:
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    return 100;
+}
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
