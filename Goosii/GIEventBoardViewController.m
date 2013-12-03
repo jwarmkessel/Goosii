@@ -86,17 +86,7 @@
 
                                    UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Skip" style:UIBarButtonItemStylePlain target:self action:@selector(refreshPropertyList:)];
                                    self.navigationItem.rightBarButtonItem = anotherButton;
-                               } else {
-                                   
-                                   rewardEmployeeView= [[GIRewardEmployeeController alloc] initWithNibName:@"GIRewardEmployeeController" bundle:nil];
-                                   [self addChildViewController:rewardEmployeeView];
-                                   [self.tableView addSubview:rewardEmployeeView.view];
-
-                                   
-                                   UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Skip" style:UIBarButtonItemStylePlain target:self action:@selector(refreshPropertyList:)];
-                                   self.navigationItem.rightBarButtonItem = anotherButton;
                                }
-                               
                            }];
     
     // do something only for logged in fb users} else {//do something else for non-fb users}

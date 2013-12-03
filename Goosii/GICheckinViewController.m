@@ -309,6 +309,14 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading {
     
 }
+- (void)locationManager:(CLLocationManager *)manager didFinishDeferredUpdatesWithError:(NSError *)error {
+    NSLog(@"didFinishDeferredUpdatesWithError");
+    
+}
+
+- (void)locationManagerDidPauseLocationUpdates:(CLLocationManager *)manager {
+    NSLog(@"locationManagerDidPauseLocationUpdates");
+}
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
@@ -323,246 +331,264 @@
                                        queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
                                
+                               if(!error) {
+                                   NSLog(@"THE RESPONSE %@", response);
+                                   
+                                   // your data or an error will be ready here
+                                   NSString* newStr = [[NSString alloc] initWithData:data
+                                                                            encoding:NSUTF8StringEncoding];
+                                   
+                                   NSLog(@"%@", newStr);
+                                   
+                                   SBJsonParser *parser = [[SBJsonParser alloc] init];
+                                   
+                                   NSDictionary *superObject = [parser objectWithString:newStr];
+                                   NSDictionary *userObj = [superObject objectForKey:@"userObject"];
+                                   NSArray *results = [superObject objectForKey:@"results"];
 
-                               // your data or an error will be ready here
-                               NSString* newStr = [[NSString alloc] initWithData:data
-                                                                        encoding:NSUTF8StringEncoding];
-                               
-                               NSLog(@"%@", newStr);
-                               
-                               SBJsonParser *parser = [[SBJsonParser alloc] init];
-                               
-                               NSDictionary *superObject = [parser objectWithString:newStr];
-                               NSDictionary *userObj = [superObject objectForKey:@"userObject"];
-                               NSArray *results = [superObject objectForKey:@"results"];
-
-                               for (id result in results) {
-                                   //This is the company object.
-                                   NSDictionary *company = [result objectForKey:@"obj"];
-                                   
-                                   NSString *newsURLString = @"";
-                                   
-                                   if([[company objectForKey:@"newsURL"] length] != 0 ){
-                                       newsURLString = [company objectForKey:@"newsURL"];
-                                       NSLog(@"                                 ---------=========> THE NEWS URL %@", newsURLString);
-                                   }
-
-                                   //Set longitude and latitude
-                                   NSDictionary *location = [company objectForKey:@"location"];
-                                   NSArray *coordinateArray = [location objectForKey:@"coordinates"];
-                                   NSString *longitudeStr = [NSString stringWithFormat:@"%@", [coordinateArray objectAtIndex:0]];
-                                   NSString *latitudeStr = [NSString stringWithFormat:@"%@", [coordinateArray objectAtIndex:1]];
-
-                                   NSArray *participantsAry = [company objectForKey:@"participants"];
-                                   
-                                   BOOL isParticipating = NO;
-                                   int totalParticipantsNum = [participantsAry count];
-                                   
-                                   NSLog(@"The total participants num %lu", (unsigned long)[participantsAry count]);
-                                   
-                                   //Check if user is participating in this event and temporarily add 1 if not
-                                   for (id participantsId in participantsAry) {
-                                       NSLog(@"Checking if user is already a participant %@", [NSString stringWithFormat:@"%d", totalParticipantsNum]);
-                                       NSString *partObj = [participantsId objectForKey:@"userId"];
+                                   for (id result in results) {
+                                       //This is the company object.
+                                       NSDictionary *company = [result objectForKey:@"obj"];
                                        
+                                       NSString *newsURLString = @"";
                                        
-                                       
-                                       if([[plist objectForKey:@"userId"] isEqualToString:partObj]){
-                                           NSLog(@"User is totally entered already %@", [NSString stringWithFormat:@"%d", totalParticipantsNum]);
-                                           isParticipating = YES;
+                                       if([[company objectForKey:@"newsURL"] length] != 0 ){
+                                           newsURLString = [company objectForKey:@"newsURL"];
+                                           NSLog(@"                                 ---------=========> THE NEWS URL %@", newsURLString);
                                        }
-                                   }
-                                   
-                                   if(!isParticipating){
-                                       NSLog(@"Incrementing users count %@", [NSString stringWithFormat:@"%d", totalParticipantsNum]);
-                                       totalParticipantsNum++;
-                                   }
-                                   
-                                   NSString *totalParticipants = [NSString stringWithFormat:@"%d", totalParticipantsNum];
-                                   
 
-                                   //Determine percentage of time
-                                   NSTimeInterval timeInMiliseconds = [[NSDate date] timeIntervalSince1970];
-                                                                      
-                                   
-                                   //NSLog(@"The Current Date %f", timeInMiliseconds);
-                                   NSDictionary *event = [company objectForKey:@"contest"];
-                                   
-                                   double startDate = floor([[event objectForKey:@"startDate"] doubleValue]);
-                                   double endDate = floor([[event objectForKey:@"endDate"] doubleValue]);
-                                   startDate = startDate / 1000;
-                                   endDate = endDate / 1000;
+                                       //Set longitude and latitude
+                                       NSDictionary *location = [company objectForKey:@"location"];
+                                       NSArray *coordinateArray = [location objectForKey:@"coordinates"];
+                                       NSString *longitudeStr = [NSString stringWithFormat:@"%@", [coordinateArray objectAtIndex:0]];
+                                       NSString *latitudeStr = [NSString stringWithFormat:@"%@", [coordinateArray objectAtIndex:1]];
 
-                                   
-                                   NSLog(@"             The company name %@", [company objectForKey:@"name"]);
-                                   NSLog(@"             The start date %f", startDate);
-                                   NSLog(@"             The end date %f", endDate);
-                                   
-                                   NSLog(@"             The current date %f", timeInMiliseconds);
-                                   
-                                   float totalDuration = endDate - startDate;
-                                   
-                                   
-                                   //Elapsed time in seconds equals the current time minus the startdate.
-                                   float elapsedTime = timeInMiliseconds - startDate;
-
-                                   
-                                   NSLog(@"             ELAPSED TIME %f", elapsedTime);
-                                   NSLog(@"             TOTALDURATION TIME %f", totalDuration);
-                                   float percentage = elapsedTime / totalDuration;
-                                   
-                                   NSLog(@"                         The percentage %f", percentage);
-                                   
-                                   if(percentage > 1.0) {
-                                       percentage = 1;
-                                   }
-                                   
-                                   NSString *timePercent = [NSString stringWithFormat:@"%f", percentage];
-                                   
-                                   //Calculate Participation Percentage.
-                                   float partPercentage = 0;
-                                   float ttlParticipationCount = 0;
-                                   
-                                   NSArray *contests = [userObj objectForKey:@"contests"];
-                                   
-                                   for (id contest in contests) {
+                                       NSArray *participantsAry = [company objectForKey:@"participants"];
                                        
-                                       NSLog(@" %@ ", [company objectForKey:@"name"]);
+                                       BOOL isParticipating = NO;
+                                       int totalParticipantsNum = [participantsAry count];
                                        
-                                       NSString *contestCompanyId =[contest objectForKey:@"companyId"];
-                                       NSString *companyId = [company objectForKey:@"_id"];
+                                       NSLog(@"The total participants num %lu", (unsigned long)[participantsAry count]);
                                        
-                                       if([contestCompanyId isEqualToString:companyId]) {
+                                       //Check if user is participating in this event and temporarily add 1 if not
+                                       for (id participantsId in participantsAry) {
+                                           NSLog(@"Checking if user is already a participant %@", [NSString stringWithFormat:@"%d", totalParticipantsNum]);
+                                           NSString *partObj = [participantsId objectForKey:@"userId"];
                                            
-                                           NSLog(@"         %@ and %@", contestCompanyId, companyId);
                                            
-                                           if([contest objectForKey:@"participationCount"] == nil) {
-                                               NSLog(@"         total participation is nil so we add one");
-                                               ttlParticipationCount = 1;
-                                           } else {
-                                               ttlParticipationCount = [[contest objectForKey:@"participationCount"] floatValue];
+                                           
+                                           if([[plist objectForKey:@"userId"] isEqualToString:partObj]){
+                                               NSLog(@"User is totally entered already %@", [NSString stringWithFormat:@"%d", totalParticipantsNum]);
+                                               isParticipating = YES;
                                            }
+                                       }
                                        
-                                           NSLog(@"         The participation count %f", ttlParticipationCount);
+                                       if(!isParticipating){
+                                           NSLog(@"Incrementing users count %@", [NSString stringWithFormat:@"%d", totalParticipantsNum]);
+                                           totalParticipantsNum++;
+                                       }
                                        
-                                           if(totalDuration != 0.0) {
-                                               partPercentage = elapsedTime / 86400;
-                                               
-                                               if(elapsedTime < 86400) {
-                                                   partPercentage = 1;
-                                               }
-                                               
-                                               partPercentage = floor(partPercentage);
+                                       NSString *totalParticipants = [NSString stringWithFormat:@"%d", totalParticipantsNum];
+                                       
 
-                                               if(ttlParticipationCount > 0) {
-                                                   partPercentage =  ttlParticipationCount / partPercentage;
+                                       //Determine percentage of time
+                                       NSTimeInterval timeInMiliseconds = [[NSDate date] timeIntervalSince1970];
+                                                                          
+                                       
+                                       //NSLog(@"The Current Date %f", timeInMiliseconds);
+                                       NSDictionary *event = [company objectForKey:@"contest"];
+                                       
+                                       double startDate = floor([[event objectForKey:@"startDate"] doubleValue]);
+                                       double endDate = floor([[event objectForKey:@"endDate"] doubleValue]);
+                                       startDate = startDate / 1000;
+                                       endDate = endDate / 1000;
+
+                                       
+                                       NSLog(@"             The company name %@", [company objectForKey:@"name"]);
+                                       NSLog(@"             The start date %f", startDate);
+                                       NSLog(@"             The end date %f", endDate);
+                                       
+                                       NSLog(@"             The current date %f", timeInMiliseconds);
+                                       
+                                       float totalDuration = endDate - startDate;
+                                       
+                                       
+                                       //Elapsed time in seconds equals the current time minus the startdate.
+                                       float elapsedTime = timeInMiliseconds - startDate;
+
+                                       
+                                       NSLog(@"             ELAPSED TIME %f", elapsedTime);
+                                       NSLog(@"             TOTALDURATION TIME %f", totalDuration);
+                                       float percentage = elapsedTime / totalDuration;
+                                       
+                                       NSLog(@"                         The percentage %f", percentage);
+                                       
+                                       if(percentage > 1.0) {
+                                           percentage = 1;
+                                       }
+                                       
+                                       NSString *timePercent = [NSString stringWithFormat:@"%f", percentage];
+                                       
+                                       //Calculate Participation Percentage.
+                                       float partPercentage = 0;
+                                       float ttlParticipationCount = 0;
+                                       
+                                       NSArray *contests = [userObj objectForKey:@"contests"];
+                                       
+                                       for (id contest in contests) {
+                                           
+                                           NSLog(@" %@ ", [company objectForKey:@"name"]);
+                                           
+                                           NSString *contestCompanyId =[contest objectForKey:@"companyId"];
+                                           NSString *companyId = [company objectForKey:@"_id"];
+                                           
+                                           if([contestCompanyId isEqualToString:companyId]) {
+                                               
+                                               NSLog(@"         %@ and %@", contestCompanyId, companyId);
+                                               
+                                               if([contest objectForKey:@"participationCount"] == nil) {
+                                                   NSLog(@"         total participation is nil so we add one");
+                                                   ttlParticipationCount = 1;
                                                } else {
-                                                   partPercentage = 0;
+                                                   ttlParticipationCount = [[contest objectForKey:@"participationCount"] floatValue];
+                                               }
+                                           
+                                               NSLog(@"         The participation count %f", ttlParticipationCount);
+                                           
+                                               if(totalDuration != 0.0) {
+                                                   partPercentage = elapsedTime / 86400;
+                                                   
+                                                   if(elapsedTime < 86400) {
+                                                       partPercentage = 1;
+                                                   }
+                                                   
+                                                   partPercentage = floor(partPercentage);
+
+                                                   if(ttlParticipationCount > 0) {
+                                                       partPercentage =  ttlParticipationCount / partPercentage;
+                                                   } else {
+                                                       partPercentage = 0;
+                                                   }
+                                                   
+                                                   if(partPercentage > 1) {
+                                                       partPercentage = 1;
+                                                   }
+                                                   
+                                                   NSLog(@"         PART PERCENTAGE %f", partPercentage);
                                                }
                                                
-                                               if(partPercentage > 1) {
-                                                   partPercentage = 1;
-                                               }
-                                               
-                                               NSLog(@"         PART PERCENTAGE %f", partPercentage);
+                                               break;
                                            }
-                                           
-                                           break;
-                                       }
-                                   }                                
-                                   
-                                   //Check fulfillments
-                                   NSArray *fulfillments = [userObj objectForKey:@"fulfillments"];
-                                   
-                                   NSString *isFulfillment = @"NO";
-                                   for (id contest in fulfillments) {
-                                       NSString *contestCompanyId =[contest objectForKey:@"companyId"];
-                                       NSString *companyId = [company objectForKey:@"_id"];
+                                       }                                
                                        
-                                       if([contestCompanyId isEqualToString:companyId]) {
-                                           NSLog(@"Setting fulfillment for %@", [company objectForKey:@"name"]);                                           
-                                           isFulfillment = @"YES";
+                                       //Check fulfillments
+                                       NSArray *fulfillments = [userObj objectForKey:@"fulfillments"];
+                                       
+                                       NSString *isFulfillment = @"NO";
+                                       for (id contest in fulfillments) {
+                                           NSString *contestCompanyId =[contest objectForKey:@"companyId"];
+                                           NSString *companyId = [company objectForKey:@"_id"];
+                                           
+                                           if([contestCompanyId isEqualToString:companyId]) {
+                                               NSLog(@"Setting fulfillment for %@", [company objectForKey:@"name"]);                                           
+                                               isFulfillment = @"YES";
+                                           }
+                                       }
+                                       
+                                       NSString * isReward = @"NO";
+                                       
+                                      //Check rewards and fulfillment
+                                       NSArray *rewards = [userObj objectForKey:@"rewards"];
+
+                                       
+                                       for (id contest in rewards) {
+                                           NSString *contestCompanyId =[contest objectForKey:@"companyId"];
+                                           NSString *companyId = [company objectForKey:@"_id"];
+                                           
+                                           
+                                           if([contestCompanyId isEqualToString:companyId] && [[contest objectForKey:@"fulfillment"] floatValue] == 0) {
+                                               NSLog(@"Setting reward for %@", [company objectForKey:@"name"]);
+                                               isReward = @"YES";
+                                               isFulfillment = @"NO";
+                                               
+                                               //If there is a reward that is found and fulfilled then exit this iteration.
+                                               break;
+
+                                           } else if([contestCompanyId isEqualToString:companyId]) {
+                                               isReward = @"YES";
+                                               isFulfillment = @"YES";
+                                               
+                                               break;
+                                           }
+                                       }
+                                       
+
+                                       
+                                       NSLog(@"FINALLY THE PARTICIPATION PERCENTAGE %@", [NSString stringWithFormat:@"%f", partPercentage]);
+                                       
+                                       //Determine whether company is near enough
+                                       NSLog(@"The longitude %@ AND the latitude %@", longitudeStr, latitudeStr);
+                                       CLLocation *companyLocation = [[CLLocation alloc] initWithLatitude:[latitudeStr floatValue] longitude:[longitudeStr floatValue]];
+
+                                       float distanceInMiles = METERS_TO_MILE_CONVERSION * [manager.location distanceFromLocation:companyLocation];
+
+                                       [[SDImageCache sharedImageCache] removeImageForKey:[NSString stringWithFormat:@"%@/companyAssets/%@/rewardImageThumb.png", kBASE_URL, [company objectForKey:@"_id"]] fromDisk:YES];
+                                       
+                                       //Create company object and push to array.
+                                       GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"]
+                                                                                     companyId:[company objectForKey:@"_id"]
+                                                                                       address:[company objectForKey:@"address"]
+                                                                                     telephone:[company objectForKey:@"telephone"]
+                                                                             numOfParticipants:totalParticipants
+                                                                                          time:timePercent
+                                                                                 participation:[NSString stringWithFormat:@"%f", partPercentage]
+                                                                                     startDate:[event objectForKey:@"startDate"]
+                                                                                       endDate:[event objectForKey:@"endDate"]
+                                                                                   fulfillment:isFulfillment
+                                                                                        reward:isReward
+                                                                                     longitude:longitudeStr
+                                                                                      latitude:latitudeStr
+                                                                                          post:[event objectForKey:@"post"]
+                                                                                   eventReward:[event objectForKey:@"prize"]
+                                                                             participationPost:[event objectForKey:@"participationPost"]
+                                                                           participationPoints:[NSString stringWithFormat:@"%f", ttlParticipationCount]
+                                                                                      distance:[NSString stringWithFormat:@"%.2f mi", distanceInMiles]
+                                                                                       website:[event objectForKey:@"website"]
+                                                                                       newsUrl:newsURLString];
+                                       
+
+                                       if(distanceInMiles < DISTANCE_ALLOWED_FROM_COMPANY) {
+                                           NSLog(@"Include the %@", [company objectForKey:@"name"]);
+                                           [self.nearbyLocationsAry addObject:companyObj];
                                        }
                                    }
-                                   
-                                   NSString * isReward = @"NO";
-                                   
-                                  //Check rewards and fulfillment
-                                   NSArray *rewards = [userObj objectForKey:@"rewards"];
 
-                                   
-                                   for (id contest in rewards) {
-                                       NSString *contestCompanyId =[contest objectForKey:@"companyId"];
-                                       NSString *companyId = [company objectForKey:@"_id"];
-                                       
-                                       
-                                       if([contestCompanyId isEqualToString:companyId] && [[contest objectForKey:@"fulfillment"] floatValue] == 0) {
-                                           NSLog(@"Setting reward for %@", [company objectForKey:@"name"]);
-                                           isReward = @"YES";
-                                           isFulfillment = @"NO";
-                                           
-                                           //If there is a reward that is found and fulfilled then exit this iteration.
-                                           break;
+                                   //Stop updating users location
+                                   [self.locationManager stopMonitoringSignificantLocationChanges];
+                                   [self.locationManager stopUpdatingLocation];
 
-                                       } else if([contestCompanyId isEqualToString:companyId]) {
-                                           isReward = @"YES";
-                                           isFulfillment = @"YES";
-                                           
-                                           break;
-                                       }
-                                   }
+                                   [self.loadingMask removeFromSuperview];
+                                   [indicator stopAnimating];
+                                   [self.tableView reloadData];
                                    
-
+                               } else {
+                                   NSLog(@"Server Maintenance Under way.");
+                                   CGRect rect = CGRectMake(0.0, 0.0, 320.0, 50.0);
+                                   UIView *errorView = [[UIView alloc] initWithFrame:rect];
+                                   [errorView setBackgroundColor:[self colorWithHexString:@"EED202"]];
+                                   UILabel *errorStatusLbl = [[UILabel alloc] initWithFrame:rect];
+                                   [errorStatusLbl setBackgroundColor:[self colorWithHexString:@"EED202"]];
                                    
-                                   NSLog(@"FINALLY THE PARTICIPATION PERCENTAGE %@", [NSString stringWithFormat:@"%f", partPercentage]);
+                                   [errorStatusLbl setText:@"Oops, something went wrong. Check back in a few minutes"];
                                    
-                                   //Determine whether company is near enough
-                                   NSLog(@"The longitude %@ AND the latitude %@", longitudeStr, latitudeStr);
-                                   CLLocation *companyLocation = [[CLLocation alloc] initWithLatitude:[latitudeStr floatValue] longitude:[longitudeStr floatValue]];
-
-                                   float distanceInMiles = METERS_TO_MILE_CONVERSION * [manager.location distanceFromLocation:companyLocation];
-
-                                   [[SDImageCache sharedImageCache] removeImageForKey:[NSString stringWithFormat:@"%@/companyAssets/%@/rewardImageThumb.png", kBASE_URL, [company objectForKey:@"_id"]] fromDisk:YES];
+                                   errorStatusLbl.numberOfLines = 0;
+                                   [errorStatusLbl sizeToFit];
                                    
-                                   //Create company object and push to array.
-                                   GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"]
-                                                                                 companyId:[company objectForKey:@"_id"]
-                                                                                   address:[company objectForKey:@"address"]
-                                                                                 telephone:[company objectForKey:@"telephone"]
-                                                                         numOfParticipants:totalParticipants
-                                                                                      time:timePercent
-                                                                             participation:[NSString stringWithFormat:@"%f", partPercentage]
-                                                                                 startDate:[event objectForKey:@"startDate"]
-                                                                                   endDate:[event objectForKey:@"endDate"]
-                                                                               fulfillment:isFulfillment
-                                                                                    reward:isReward
-                                                                                 longitude:longitudeStr
-                                                                                  latitude:latitudeStr
-                                                                                      post:[event objectForKey:@"post"]
-                                                                               eventReward:[event objectForKey:@"prize"]
-                                                                         participationPost:[event objectForKey:@"participationPost"]
-                                                                       participationPoints:[NSString stringWithFormat:@"%f", ttlParticipationCount]
-                                                                                  distance:[NSString stringWithFormat:@"%.2f mi", distanceInMiles]
-                                                                                   website:[event objectForKey:@"website"]
-                                                                                   newsUrl:newsURLString];
-                                   
-
-                                   if(distanceInMiles < DISTANCE_ALLOWED_FROM_COMPANY) {
-                                       NSLog(@"Include the %@", [company objectForKey:@"name"]);
-                                       [self.nearbyLocationsAry addObject:companyObj];
-                                   }
+                                   [errorStatusLbl setTextAlignment:NSTextAlignmentCenter];
+                                   [self.tableView addSubview:errorView];
+                                   [errorView addSubview:errorStatusLbl];
+                                   [errorStatusLbl setCenter:errorView.center];
                                }
-
-                               //Stop updating users location
-                               [self.locationManager stopMonitoringSignificantLocationChanges];
-                               [self.locationManager stopUpdatingLocation];
-
-
-                               [self.tableView reloadData];
-                               [self.loadingMask removeFromSuperview];
-                               [indicator stopAnimating];
-
-
                            }];
     
     [self.locationManager stopMonitoringSignificantLocationChanges ];
@@ -622,5 +648,46 @@
                            alpha:1.0f];
 }
 
+- (void)connection:(NSURLConnection *)connection didWriteData:(long long)bytesWritten totalBytesWritten:(long long)totalBytesWritten expectedTotalBytes:(long long) expectedTotalBytes {
+    NSLog(@"didWriteData");
+}
+
+- (void)connectionDidResumeDownloading:(NSURLConnection *)connection totalBytesWritten:(long long)totalBytesWritten expectedTotalBytes:(long long) expectedTotalBytes {
+    NSLog(@"connectionDidResumeDownloading");
+}
+
+- (void)connectionDidFinishDownloading:(NSURLConnection *)connection destinationURL:(NSURL *) destinationURL {
+    NSLog(@"connectionDidFinishDownloading");
+}
+
+//- (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)response {
+//    
+//}
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    NSLog(@"didReceiveResponse");
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+    NSLog(@"didReceiveData");
+}
+
+//- (NSInputStream *)connection:(NSURLConnection *)connection needNewBodyStream:(NSURLRequest *)request {
+//    
+//}
+
+- (void)connection:(NSURLConnection *)connection   didSendBodyData:(NSInteger)bytesWritten
+ totalBytesWritten:(NSInteger)totalBytesWritten
+totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
+    
+}
+
+//- (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse {
+//    
+//}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    NSLog(@"connectionDidFinishLoading");
+}
 
 @end

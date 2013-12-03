@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 
-@interface GICheckinViewController : UITableViewController <CLLocationManagerDelegate, NSURLConnectionDelegate>
+@interface GICheckinViewController : UITableViewController <CLLocationManagerDelegate, NSURLConnectionDelegate, NSURLConnectionDataDelegate, NSURLConnectionDownloadDelegate>
 
 @property (strong, nonatomic) NSMutableArray *nearbyLocationsAry;
 @property (strong, nonatomic) CLLocationManager *locationManager;
