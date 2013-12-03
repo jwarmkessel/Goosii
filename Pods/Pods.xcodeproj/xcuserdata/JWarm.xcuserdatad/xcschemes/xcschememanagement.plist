@@ -4,35 +4,75 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Pods-ECSlidingViewController.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-FlurrySDK.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-PunchScrollView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-SBJson.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-SDWebImage.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-TestFlightSDK.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>1</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>132EFF03EA9344B9A9F79D43</key>
+		<key>26F71111137943849B61B0B2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5F19A0ACD959416F9EDD064F</key>
+		<key>3F0C9DFAA3E64295AF5EFC18</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8C16594898594E169D658219</key>
+		<key>481B33B52EFE4DCCB2DB4820</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>92B4E77F71804768BE733B7C</key>
+		<key>69C20CE4E38349D188C6ABC8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DEC342E633FC44608FF91A79</key>
+		<key>EA6697A4E0FB46A09F6216F3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EABF61BB156146BC8C32AD1C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FA38547F057A411BA788A172</key>
 		<dict>
 			<key>primary</key>
 			<true/>

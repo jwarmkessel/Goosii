@@ -33,6 +33,7 @@
     
     self.navigationController.navigationBarHidden = YES;
 
+
     //TODO Remove this shim
     //self.company.reward  = [NSString stringWithFormat:@"YES"];
     
@@ -56,7 +57,7 @@
         [self.userIntructTxtField setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
         self.userIntructTxtField.textColor = [UIColor whiteColor];
         
-        CGRect saveForLaterRect = CGRectMake(10, 300, 300, 50);
+        CGRect saveForLaterRect = CGRectMake(10, 350, 300, 50);
         saveForLaterBtn = [[UIButton alloc] initWithFrame:saveForLaterRect];
         
         [saveForLaterBtn setBackgroundColor:[self colorWithHexString:@"3b5999"]];
@@ -176,6 +177,7 @@
     }
 }
 
+
 - (void)displayRewardModalView {
     
     CGRect rewardRect = CGRectMake(10, 100, 300, 300);
@@ -223,6 +225,7 @@
     else {
         [textField resignFirstResponder];
     }
+    
     return YES;
 }
 

@@ -283,6 +283,8 @@
 		83A4A825183AEC0F00C7FE3A /* BrokenEggAnim_015-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83A4A751183AEC0F00C7FE3A /* BrokenEggAnim_015-568h@2x.png */; };
 		83A4A826183AEC0F00C7FE3A /* BrokenEggAnim_016-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83A4A752183AEC0F00C7FE3A /* BrokenEggAnim_016-568h@2x.png */; };
 		83A4A827183AEC0F00C7FE3A /* BrokenEggAnim_017-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83A4A753183AEC0F00C7FE3A /* BrokenEggAnim_017-568h@2x.png */; };
+		83CF1108184D4D8B003A9B67 /* GIRewardEmployeeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CF1106184D4D8B003A9B67 /* GIRewardEmployeeController.m */; };
+		83CF1109184D4D8B003A9B67 /* GIRewardEmployeeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83CF1107184D4D8B003A9B67 /* GIRewardEmployeeController.xib */; };
 		83F9244A17AC937F00E97376 /* Company_Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F9244117AC937F00E97376 /* Company_Back.png */; };
 		83F9244B17AC937F00E97376 /* FB_Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F9244217AC937F00E97376 /* FB_Back.png */; };
 		83F9244C17AC937F00E97376 /* FB_Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F9244317AC937F00E97376 /* FB_Button.png */; };
@@ -595,6 +597,9 @@
 		83A4A751183AEC0F00C7FE3A /* BrokenEggAnim_015-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BrokenEggAnim_015-568h@2x.png"; sourceTree = "<group>"; };
 		83A4A752183AEC0F00C7FE3A /* BrokenEggAnim_016-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BrokenEggAnim_016-568h@2x.png"; sourceTree = "<group>"; };
 		83A4A753183AEC0F00C7FE3A /* BrokenEggAnim_017-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BrokenEggAnim_017-568h@2x.png"; sourceTree = "<group>"; };
+		83CF1105184D4D8B003A9B67 /* GIRewardEmployeeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIRewardEmployeeController.h; sourceTree = "<group>"; };
+		83CF1106184D4D8B003A9B67 /* GIRewardEmployeeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIRewardEmployeeController.m; sourceTree = "<group>"; };
+		83CF1107184D4D8B003A9B67 /* GIRewardEmployeeController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GIRewardEmployeeController.xib; sourceTree = "<group>"; };
 		83F9244117AC937F00E97376 /* Company_Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Company_Back.png; sourceTree = "<group>"; };
 		83F9244217AC937F00E97376 /* FB_Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FB_Back.png; sourceTree = "<group>"; };
 		83F9244317AC937F00E97376 /* FB_Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FB_Button.png; sourceTree = "<group>"; };
@@ -833,6 +838,9 @@
 				83196B2417900437008A6107 /* GIEventViewCell.m */,
 				83196CB017914B35008A6107 /* GICountingLabel.h */,
 				83196CB117914B35008A6107 /* GICountingLabel.m */,
+				83CF1105184D4D8B003A9B67 /* GIRewardEmployeeController.h */,
+				83CF1106184D4D8B003A9B67 /* GIRewardEmployeeController.m */,
+				83CF1107184D4D8B003A9B67 /* GIRewardEmployeeController.xib */,
 			);
 			name = DashboardResources;
 			sourceTree = "<group>";
@@ -1317,6 +1325,7 @@
 				83A4A77E183AEC0F00C7FE3A /* Intro_0024.png in Resources */,
 				83A4A78B183AEC0F00C7FE3A /* Intro_0037.png in Resources */,
 				83A4A797183AEC0F00C7FE3A /* Intro_0049.png in Resources */,
+				83CF1109184D4D8B003A9B67 /* GIRewardEmployeeController.xib in Resources */,
 				83A4A7FE183AEC0F00C7FE3A /* Intro_0055@2x.png in Resources */,
 				83A4A788183AEC0F00C7FE3A /* Intro_0034.png in Resources */,
 				83A4A7A2183AEC0F00C7FE3A /* Intro_0060.png in Resources */,
@@ -1515,6 +1524,7 @@
 				83196B19178F38F2008A6107 /* GIProgressBar.m in Sources */,
 				83196B1F17900273008A6107 /* GIEventBoardViewController.m in Sources */,
 				83196B2517900437008A6107 /* GIEventViewCell.m in Sources */,
+				83CF1108184D4D8B003A9B67 /* GIRewardEmployeeController.m in Sources */,
 				83196CB217914B36008A6107 /* GICountingLabel.m in Sources */,
 				83F9245A17B315D900E97376 /* GIHomeViewController.m in Sources */,
 				836BC25517C3786E00EF3007 /* GIFulfillmentViewController.m in Sources */,
@@ -1550,6 +1560,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -1581,6 +1592,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;

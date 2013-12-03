@@ -11,7 +11,7 @@
 @class GICompany;
 @class GIProgressBar;
 
-@interface GIEventBoardViewController : UITableViewController <MKMapViewDelegate, UITextViewDelegate> {
+@interface GIEventBoardViewController : UITableViewController <MKMapViewDelegate, UITextViewDelegate, UITextFieldDelegate> {
     BOOL isEvent;
 }
 @property (nonatomic, strong) MKMapView *mapView;

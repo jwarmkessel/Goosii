@@ -17,11 +17,12 @@
 #import "GIMainViewController.h"
 #import <ECSlidingViewController.h>
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <SDImageCache.h>
 
 
 #define METERS_PER_MILE 1609.344
 #define METERS_TO_MILE_CONVERSION 0.00062137
-#define DISTANCE_ALLOWED_FROM_COMPANY 10.0f
+#define DISTANCE_ALLOWED_FROM_COMPANY 30.0f
 
 @interface GICheckinViewController () {
     BOOL isFromChild;
@@ -154,8 +155,6 @@
     cell.textLabel.text = company.name;
     
     // Here we use the new provided setImageWithURL: method to load the web image
-
-
     
     NSString *urlRewardString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImageThumb.png", kBASE_URL, company.companyId];
     
@@ -250,28 +249,6 @@
     NSLog(@"Segue path is %@", segueName);
     
     [self performSegueWithIdentifier:segueName sender:self];
-    
-    GICompany *curCompany = [self.nearbyLocationsAry objectAtIndex:indexPath.row];
-    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
-    
-    //Enter the user into the contest if they haven't already.
-    NSString *urlString = [NSString stringWithFormat:@"%@enterContest/%@/%@", GOOSIIAPI,[plist objectForKey:@"userId"], curCompany.companyId];
-    
-    NSLog(@"Requesting %@", urlString);
-
-    NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-    
-    [NSURLConnection sendAsynchronousRequest:urlRequest
-                                       queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                               
-                               // your data or an error will be ready here
-                               NSString* newStr = [[NSString alloc] initWithData:data
-                                                                        encoding:NSUTF8StringEncoding];
-                               NSLog(@"enterContests response: %@", newStr);
-                               
-                           }];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -403,16 +380,10 @@
                                    
                                    NSString *totalParticipants = [NSString stringWithFormat:@"%d", totalParticipantsNum];
                                    
-                                   
-                                   
-                                   
 
-                                   
-                                   
-                                   
-                                   
                                    //Determine percentage of time
                                    NSTimeInterval timeInMiliseconds = [[NSDate date] timeIntervalSince1970];
+                                                                      
                                    
                                    //NSLog(@"The Current Date %f", timeInMiliseconds);
                                    NSDictionary *event = [company objectForKey:@"contest"];
@@ -421,6 +392,7 @@
                                    double endDate = floor([[event objectForKey:@"endDate"] doubleValue]);
                                    startDate = startDate / 1000;
                                    endDate = endDate / 1000;
+
                                    
                                    NSLog(@"             The company name %@", [company objectForKey:@"name"]);
                                    NSLog(@"             The start date %f", startDate);
@@ -428,12 +400,6 @@
                                    
                                    NSLog(@"             The current date %f", timeInMiliseconds);
                                    
-                                   
-
-                                   
-                                   
-                                   
-
                                    float totalDuration = endDate - startDate;
                                    
                                    
@@ -555,6 +521,8 @@
                                    CLLocation *companyLocation = [[CLLocation alloc] initWithLatitude:[latitudeStr floatValue] longitude:[longitudeStr floatValue]];
 
                                    float distanceInMiles = METERS_TO_MILE_CONVERSION * [manager.location distanceFromLocation:companyLocation];
+
+                                   [[SDImageCache sharedImageCache] removeImageForKey:[NSString stringWithFormat:@"%@/companyAssets/%@/rewardImageThumb.png", kBASE_URL, [company objectForKey:@"_id"]] fromDisk:YES];
                                    
                                    //Create company object and push to array.
                                    GICompany *companyObj = [[GICompany alloc] initWithName:[company objectForKey:@"name"]
@@ -584,16 +552,26 @@
                                        [self.nearbyLocationsAry addObject:companyObj];
                                    }
                                }
-                               
+
+                               //Stop updating users location
+                               [self.locationManager stopMonitoringSignificantLocationChanges];
+                               [self.locationManager stopUpdatingLocation];
+
+
                                [self.tableView reloadData];
                                [self.loadingMask removeFromSuperview];
                                [indicator stopAnimating];
+
 
                            }];
     
     [self.locationManager stopMonitoringSignificantLocationChanges ];
     [self.locationManager stopUpdatingLocation];
     [self.locationManager stopUpdatingHeading];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    NSLog(@"Asynchronous call failed");
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {

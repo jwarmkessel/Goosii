@@ -17,6 +17,7 @@
 #import <MapKit/MapKit.h>
 #import <ECSlidingViewController.h>
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "GIRewardEmployeeController.h"
 
 @interface GIEventBoardViewController ()
 {
@@ -38,10 +39,13 @@
 @property (nonatomic, strong) UIBarButtonItem *backButton;
 
 @property (nonatomic, strong) UIImageView *prizeImg;
+@property (nonatomic, strong) UIButton* infoBtn;
+
+@property (nonatomic, strong) GIRewardEmployeeController *rewardEmployeeView;
 @end
 
 @implementation GIEventBoardViewController
-@synthesize company, noEventsPopUpView, mapView, companyInfoContainerView, backButton, participationLbl, prizeImg, toggle, blinkTimer, fbPartLbl, participationBar;
+@synthesize company, noEventsPopUpView, mapView, companyInfoContainerView, backButton, participationLbl, prizeImg, toggle, blinkTimer, fbPartLbl, participationBar, infoBtn, rewardEmployeeView;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -55,53 +59,74 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    blinkTimer=[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(toggleButtonImage:) userInfo:nil repeats: YES];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    //Enter the user into the contest if they haven't already.
+    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
+    
+    NSString *enterEventUrlString = [NSString stringWithFormat:@"%@enterContest/%@/%@", GOOSIIAPI,[plist objectForKey:@"userId"], self.company.companyId];
+    
+    NSURL *enterEventURL = [NSURL URLWithString:enterEventUrlString];
+    NSURLRequest *enterEventRequest = [NSURLRequest requestWithURL:enterEventURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+    
+    [NSURLConnection sendAsynchronousRequest:enterEventRequest
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                               
+                               // your data or an error will be ready here
+                               NSString* newStr = [[NSString alloc] initWithData:data
+                                                                        encoding:NSUTF8StringEncoding];
+                               NSLog(@"response: %@", newStr);
+                               
+                               //If this is the first time checking in.
+                               if([newStr isEqualToString:@"YES"]) {
+                                   
+                                   rewardEmployeeView = [[GIRewardEmployeeController alloc] initWithNibName:@"GIRewardEmployeeController" bundle:nil];
+                                   [self addChildViewController:rewardEmployeeView];
+                                   [self.tableView addSubview:rewardEmployeeView.view];
 
-    //Set image for the tableview background
+                                   UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Skip" style:UIBarButtonItemStylePlain target:self action:@selector(refreshPropertyList:)];
+                                   self.navigationItem.rightBarButtonItem = anotherButton;
+                               } else {
+                                   
+                                   rewardEmployeeView= [[GIRewardEmployeeController alloc] initWithNibName:@"GIRewardEmployeeController" bundle:nil];
+                                   [self addChildViewController:rewardEmployeeView];
+                                   [self.tableView addSubview:rewardEmployeeView.view];
+
+                                   
+                                   UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Skip" style:UIBarButtonItemStylePlain target:self action:@selector(refreshPropertyList:)];
+                                   self.navigationItem.rightBarButtonItem = anotherButton;
+                               }
+                               
+                           }];
+    
+    // do something only for logged in fb users} else {//do something else for non-fb users}
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
+        NSLog(@"I'm totally logged in");
+    }else {
+        NSLog(@"I'm totally NOT logged in");
+    }
+
+    //Make the call to action text animate with blinking.
+    blinkTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(toggleButtonImage:) userInfo:nil repeats: YES];
+
+    //Load the background image and reward image asynchronously. For now I'm removing the cached image until I have time to set Http Headers to handle caching.
+    [[SDImageCache sharedImageCache] removeImageForKey:[NSString stringWithFormat:@"%@/companyAssets/%@/rewardImageThumb.png", kBASE_URL, company.companyId] fromDisk:YES];
+
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
-    NSString *urlString = [NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, company.companyId];
     
-    NSLog(@"%@", urlString);
+    NSString *urlString = [NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, company.companyId];
 
     [imgView setImageWithURL:[NSURL URLWithString:urlString]
                    placeholderImage:[UIImage imageNamed:@"backgroundImage.jpg"]];
 
-    
-//    NSString *urlString = [NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, self.company.companyId];
-//    
-//    NSURL *url = [NSURL URLWithString:urlString];
-//    NSData *data = [NSData dataWithContentsOfURL:url];
-//    UIImage *img = [[UIImage alloc] initWithData:data];
-//    
-//    imgView.image = img;
-    
-//    NSString *urlRewardString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, self.company.companyId];
-//    
-//    NSURL *urlReward = [NSURL URLWithString:urlRewardString];
-//    NSData *dataReward = [NSData dataWithContentsOfURL:urlReward];
-//    UIImage *rewardImg = [[UIImage alloc] initWithData:dataReward];
-
     NSString *urlRewardString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, company.companyId];
-    
-    NSLog(@"%@", urlRewardString);
     
     [self.prizeImg setImageWithURL:[NSURL URLWithString:urlRewardString]
             placeholderImage:[UIImage imageNamed:@"imagePlaceHolder.png"]];
 
-    //TODO Not sure this is necessary
-    [self.tableView setDelegate:self];
-
     [self.tableView setBackgroundView:imgView];
     
-    // change the back button to cancel and add an event handler    
+    //Override the back button.
     self.backButton = [[UIBarButtonItem alloc] initWithTitle:@"back"
                                                        style:UIBarButtonItemStyleBordered
                                                       target:self
@@ -128,6 +153,14 @@
     [self.mapView setDelegate:self];
 }
 
+-(void)refreshPropertyList:(id)sender {
+    NSLog(@"removing from parent view controller");
+    [rewardEmployeeView.view removeFromSuperview];
+    [rewardEmployeeView removeFromParentViewController];
+    
+    self.navigationItem.rightBarButtonItem = nil;
+}
+
 - (void)toggleButtonImage:(NSTimer*)timer {
     
     if(toggle) {
@@ -148,7 +181,7 @@
 }
 
 - (void)showCompanyInfo {
-    
+    infoBtn.enabled = NO;
     self.backButton.enabled = NO;
     //Get the window object.
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];
@@ -226,8 +259,16 @@
     
     UIImageView *companyInfoPrizeImage = [[UIImageView alloc] initWithFrame:CGRectMake(((xWidth/2)-50), 155.0f, 100.0,100.0f)];
     companyInfoPrizeImage.image = self.prizeImg.image;
+
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat screenHeight = screenRect.size.height;
+
+    CGRect prizeLblRect = CGRectMake(0.0f, 250.0f, xWidth,200.0f);
+    if(screenHeight < 568) {
+        prizeLblRect = CGRectMake(0.0f, 175.0f, xWidth,200.0f);
+    }
     
-    UITextView *prizeLbl = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 250.0f, xWidth,200.0f)];
+    UITextView *prizeLbl = [[UITextView alloc] initWithFrame:prizeLblRect];
     prizeLbl.text = [NSString stringWithFormat:@"Reward: %@", self.company.prize];
     prizeLbl.textAlignment = NSTextAlignmentCenter;;
     [prizeLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
@@ -235,7 +276,12 @@
     prizeLbl.backgroundColor = [UIColor clearColor];
     prizeLbl.editable = NO;
     
-    UIButton *closeCompanyInfoViewBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, 400.0, 230.0, 45.0)];
+    
+    CGRect closeCompanyInfoViewBtnRect = CGRectMake(10, 400.0, 230.0, 45.0);
+    if(screenHeight < 568) {
+        closeCompanyInfoViewBtnRect = CGRectMake(10, 300.0, 230.0, 45.0);
+    }
+    UIButton *closeCompanyInfoViewBtn = [[UIButton alloc] initWithFrame:closeCompanyInfoViewBtnRect];
     [closeCompanyInfoViewBtn setBackgroundColor:[self colorWithHexString:@"3b5999"]];
 
     [closeCompanyInfoViewBtn.layer setCornerRadius:3];
@@ -287,6 +333,7 @@
 }
 
 - (void)closeCompanyInfoView:(id)sender {
+    infoBtn.enabled = YES;
     
     [UIView animateWithDuration:0.8 animations:^{
         self.companyInfoContainerView.frame = CGRectMake(self.companyInfoContainerView.frame.origin.x, -500, self.companyInfoContainerView.frame.size.width, self.companyInfoContainerView.frame.size.height);
@@ -483,7 +530,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         transparentCompanyNameCell.layer.cornerRadius = 4;
         
         CGRect infoRect = CGRectMake((cell.layer.frame.size.width-50), (cell.layer.frame.size.height/2-15), 31, 30.0);;
-        UIButton* infoBtn = [[UIButton alloc] initWithFrame:infoRect];
+        infoBtn = [[UIButton alloc] initWithFrame:infoRect];
         UIImage *infoBtnImage = [UIImage imageNamed:@"Info_Button.png"];
         [infoBtn setBackgroundImage:infoBtnImage forState:UIControlStateNormal];
         
@@ -832,6 +879,43 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 //        [self.tableView endUpdates];
 //    }
     
+}
+
+
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
+    NSLog(@"textFieldShouldBeginEditing");
+    return NO;
+}
+
+
+- (void)saveForLaterBtnHandler:sender {
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    NSLog(@"touchesBegan:withEvent:");
+    [self.tableView.window endEditing:YES];
+    [super touchesBegan:touches withEvent:event];
+}
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField{
+    NSLog(@"textFieldShouldEndEditing");
+
+    return YES;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    NSLog(@"textFieldDidBeginEditing");
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField{
+    NSLog(@"textFieldDidEndEditing");
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    NSLog(@"textFieldShouldReturn:");
+    
+    return YES;
 }
 
 -(UIColor*)colorWithHexString:(NSString*)hex {

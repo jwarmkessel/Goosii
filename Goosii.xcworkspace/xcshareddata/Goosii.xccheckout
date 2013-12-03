@@ -2,8 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>D321165B-9669-465D-8B2E-C819FAF6E3E5</string>
+	<string>3C1BF7A1-1ACE-42C3-B8D8-EE55025374E8</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Goosii</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
