@@ -20,7 +20,7 @@
 @property (nonatomic, strong) NSTimer *blinkTimer;
 @property (nonatomic, strong) UILabel *fbPartLbl;
 @property (assign) BOOL toggle;
-
+@property (nonatomic, strong) UIButton* infoBtn;
 @property (nonatomic, strong) GIProgressBar *participationBar;
 
 - (void)showNoEventsPopUp:(NSString*)newsURL;

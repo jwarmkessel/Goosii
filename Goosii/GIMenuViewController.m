@@ -37,6 +37,8 @@
     
     [self.slidingViewController setAnchorRightRevealAmount:200.0f];
     self.slidingViewController.underLeftWidthLayout = ECFullWidth;
+    
+    [self.tableView setContentInset:UIEdgeInsetsMake(40,0,0,0)];
 
 }
 

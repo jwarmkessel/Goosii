@@ -25,6 +25,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
 
     }
     return self;
@@ -34,9 +35,11 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [self.view setBackgroundColor:[self colorWithHexString:@"3b5999"]];
-    
+    [self.view setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
+    [self.textView setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
     [self.textView setTextColor:[UIColor whiteColor]];
+    [self.textField setReturnKeyType:UIReturnKeyDone];
+
 
 
 }

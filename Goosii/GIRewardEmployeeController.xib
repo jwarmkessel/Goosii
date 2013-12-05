@@ -29,9 +29,10 @@
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" usesAttributedText="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9c6-q0-fy1">
                     <rect key="frame" x="41" y="74" width="240" height="133"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.23137254901960785" green="0.34901960784313724" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.77647058823529413" green="0.23921568627450979" blue="0.058823529411764705" alpha="1" colorSpace="deviceRGB"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <attributedString key="attributedText">
-                        <fragment content="Will You Help Us Recognize Our Employees?">
+                        <fragment content="Who introduced you to Goosii?">
                             <attributes>
                                 <font key="NSFont" size="14" name="HelveticaNeue"/>
                                 <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
@@ -44,7 +45,7 @@
                     </connections>
                 </textView>
             </subviews>
-            <color key="backgroundColor" red="0.23137254900000001" green="0.34901960780000002" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.77647058823529413" green="0.23921568627450979" blue="0.058823529411764705" alpha="1" colorSpace="calibratedRGB"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>

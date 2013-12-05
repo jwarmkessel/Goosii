@@ -50,9 +50,9 @@
     
     
     if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
-        slidingMenuButton.frame = CGRectMake(8, 10, 34, 24);
+        slidingMenuButton.frame = CGRectMake(8, 10, 38, 24);
     }else {
-        slidingMenuButton.frame = CGRectMake(8, 20, 34, 24);
+        slidingMenuButton.frame = CGRectMake(8, 30, 38, 24);
     }
     
     [slidingMenuButton setBackgroundImage:[UIImage imageNamed:@"Slide.png"] forState:UIControlStateNormal];

@@ -82,7 +82,7 @@
     
     UIImage *image = [UIImage imageNamed:@"Slide.png"];
     UIBarButtonItem *button2 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(myAboutButtonClicked:)];
-    
+
     self.navigationItem.leftBarButtonItem = button2;
 }
 
@@ -178,7 +178,7 @@
     NSLog(@"getUserContests %@", urlString);
     NSURL *url = [NSURL URLWithString:urlString];
     
-    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:60.0];
     
     [NSURLConnection sendAsynchronousRequest:urlRequest
                                        queue:[NSOperationQueue mainQueue]
@@ -244,24 +244,26 @@
                                        float ttlParticipationCount = 0;
                                        
                                        NSArray *contests = [userObj objectForKey:@"contests"];
+                                       
                                        for (id contest in contests) {
-                                           partPercentage = 0;
+                                           
+                                           NSLog(@" %@ ", [company objectForKey:@"name"]);
                                            
                                            NSString *contestCompanyId =[contest objectForKey:@"companyId"];
                                            NSString *companyId = [company objectForKey:@"_id"];
                                            
                                            if([contestCompanyId isEqualToString:companyId]) {
                                                
-                                               ttlParticipationCount = 0;
+                                               NSLog(@"         %@ and %@", contestCompanyId, companyId);
                                                
                                                if([contest objectForKey:@"participationCount"] == nil) {
-                                                   NSLog(@"total participation is nil so we add one");
+                                                   NSLog(@"         total participation is nil so we add one");
                                                    ttlParticipationCount = 1;
                                                } else {
                                                    ttlParticipationCount = [[contest objectForKey:@"participationCount"] floatValue];
                                                }
                                                
-                                               NSLog(@"The participation count %f", ttlParticipationCount);
+                                               NSLog(@"         The participation count %f", ttlParticipationCount);
                                                
                                                if(totalDuration != 0.0) {
                                                    partPercentage = elapsedTime / 86400;
@@ -282,8 +284,10 @@
                                                        partPercentage = 1;
                                                    }
                                                    
-                                                   NSLog(@"PART PERCENTAGE %f", partPercentage);
+                                                   NSLog(@"         PART PERCENTAGE %f", partPercentage);
                                                }
+                                               
+                                               break;
                                            }
                                        }
                                        

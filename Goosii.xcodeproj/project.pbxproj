@@ -283,6 +283,8 @@
 		83A4A825183AEC0F00C7FE3A /* BrokenEggAnim_015-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83A4A751183AEC0F00C7FE3A /* BrokenEggAnim_015-568h@2x.png */; };
 		83A4A826183AEC0F00C7FE3A /* BrokenEggAnim_016-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83A4A752183AEC0F00C7FE3A /* BrokenEggAnim_016-568h@2x.png */; };
 		83A4A827183AEC0F00C7FE3A /* BrokenEggAnim_017-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83A4A753183AEC0F00C7FE3A /* BrokenEggAnim_017-568h@2x.png */; };
+		83AC9C60184ED23E00F186E1 /* GICompanyInfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83AC9C5E184ED23E00F186E1 /* GICompanyInfoController.m */; };
+		83AC9C61184ED23E00F186E1 /* GICompanyInfoController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83AC9C5F184ED23E00F186E1 /* GICompanyInfoController.xib */; };
 		83CF1108184D4D8B003A9B67 /* GIRewardEmployeeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CF1106184D4D8B003A9B67 /* GIRewardEmployeeController.m */; };
 		83CF1109184D4D8B003A9B67 /* GIRewardEmployeeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83CF1107184D4D8B003A9B67 /* GIRewardEmployeeController.xib */; };
 		83F9244A17AC937F00E97376 /* Company_Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F9244117AC937F00E97376 /* Company_Back.png */; };
@@ -597,6 +599,9 @@
 		83A4A751183AEC0F00C7FE3A /* BrokenEggAnim_015-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BrokenEggAnim_015-568h@2x.png"; sourceTree = "<group>"; };
 		83A4A752183AEC0F00C7FE3A /* BrokenEggAnim_016-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BrokenEggAnim_016-568h@2x.png"; sourceTree = "<group>"; };
 		83A4A753183AEC0F00C7FE3A /* BrokenEggAnim_017-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BrokenEggAnim_017-568h@2x.png"; sourceTree = "<group>"; };
+		83AC9C5D184ED23E00F186E1 /* GICompanyInfoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GICompanyInfoController.h; sourceTree = "<group>"; };
+		83AC9C5E184ED23E00F186E1 /* GICompanyInfoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GICompanyInfoController.m; sourceTree = "<group>"; };
+		83AC9C5F184ED23E00F186E1 /* GICompanyInfoController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GICompanyInfoController.xib; sourceTree = "<group>"; };
 		83CF1105184D4D8B003A9B67 /* GIRewardEmployeeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIRewardEmployeeController.h; sourceTree = "<group>"; };
 		83CF1106184D4D8B003A9B67 /* GIRewardEmployeeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIRewardEmployeeController.m; sourceTree = "<group>"; };
 		83CF1107184D4D8B003A9B67 /* GIRewardEmployeeController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GIRewardEmployeeController.xib; sourceTree = "<group>"; };
@@ -841,6 +846,9 @@
 				83CF1105184D4D8B003A9B67 /* GIRewardEmployeeController.h */,
 				83CF1106184D4D8B003A9B67 /* GIRewardEmployeeController.m */,
 				83CF1107184D4D8B003A9B67 /* GIRewardEmployeeController.xib */,
+				83AC9C5D184ED23E00F186E1 /* GICompanyInfoController.h */,
+				83AC9C5E184ED23E00F186E1 /* GICompanyInfoController.m */,
+				83AC9C5F184ED23E00F186E1 /* GICompanyInfoController.xib */,
 			);
 			name = DashboardResources;
 			sourceTree = "<group>";
@@ -1428,6 +1436,7 @@
 				836BC1B317C3190300EF3007 /* Slide2@x2.png in Resources */,
 				83A4A765183AEC0F00C7FE3A /* BrokenEggAnim_017.png in Resources */,
 				83A4A7C7183AEC0F00C7FE3A /* Intro_0000@2x.png in Resources */,
+				83AC9C61184ED23E00F186E1 /* GICompanyInfoController.xib in Resources */,
 				83A4A79B183AEC0F00C7FE3A /* Intro_0053.png in Resources */,
 				8319FABC17E7DB5B00661B91 /* icon.png in Resources */,
 				83A4A7F2183AEC0F00C7FE3A /* Intro_0043@2x.png in Resources */,
@@ -1523,6 +1532,7 @@
 				83196B15178DE4AC008A6107 /* GIPlist.m in Sources */,
 				83196B19178F38F2008A6107 /* GIProgressBar.m in Sources */,
 				83196B1F17900273008A6107 /* GIEventBoardViewController.m in Sources */,
+				83AC9C60184ED23E00F186E1 /* GICompanyInfoController.m in Sources */,
 				83196B2517900437008A6107 /* GIEventViewCell.m in Sources */,
 				83CF1108184D4D8B003A9B67 /* GIRewardEmployeeController.m in Sources */,
 				83196CB217914B36008A6107 /* GICountingLabel.m in Sources */,

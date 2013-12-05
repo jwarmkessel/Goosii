@@ -18,6 +18,7 @@
 #import <ECSlidingViewController.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "GIRewardEmployeeController.h"
+#import "GICompanyInfoController.h"
 
 @interface GIEventBoardViewController ()
 {
@@ -39,13 +40,13 @@
 @property (nonatomic, strong) UIBarButtonItem *backButton;
 
 @property (nonatomic, strong) UIImageView *prizeImg;
-@property (nonatomic, strong) UIButton* infoBtn;
 
 @property (nonatomic, strong) GIRewardEmployeeController *rewardEmployeeView;
+@property (nonatomic, strong) GICompanyInfoController *companyInfoController;
 @end
 
 @implementation GIEventBoardViewController
-@synthesize company, noEventsPopUpView, mapView, companyInfoContainerView, backButton, participationLbl, prizeImg, toggle, blinkTimer, fbPartLbl, participationBar, infoBtn, rewardEmployeeView;
+@synthesize company = _company, noEventsPopUpView, mapView, companyInfoContainerView, backButton, participationLbl, prizeImg, toggle, blinkTimer, fbPartLbl, participationBar, infoBtn, rewardEmployeeView, companyInfoController;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -100,16 +101,16 @@
     blinkTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(toggleButtonImage:) userInfo:nil repeats: YES];
 
     //Load the background image and reward image asynchronously. For now I'm removing the cached image until I have time to set Http Headers to handle caching.
-    [[SDImageCache sharedImageCache] removeImageForKey:[NSString stringWithFormat:@"%@/companyAssets/%@/rewardImageThumb.png", kBASE_URL, company.companyId] fromDisk:YES];
+    [[SDImageCache sharedImageCache] removeImageForKey:[NSString stringWithFormat:@"%@/companyAssets/%@/rewardImageThumb.png", kBASE_URL, self.company.companyId] fromDisk:YES];
 
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    NSString *urlString = [NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, company.companyId];
+    NSString *urlString = [NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, self.company.companyId];
 
     [imgView setImageWithURL:[NSURL URLWithString:urlString]
                    placeholderImage:[UIImage imageNamed:@"backgroundImage.jpg"]];
 
-    NSString *urlRewardString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, company.companyId];
+    NSString *urlRewardString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, self.company.companyId];
     
     [self.prizeImg setImageWithURL:[NSURL URLWithString:urlRewardString]
             placeholderImage:[UIImage imageNamed:@"imagePlaceHolder.png"]];
@@ -172,170 +173,11 @@
 
 - (void)showCompanyInfo {
     infoBtn.enabled = NO;
-    self.backButton.enabled = NO;
-    //Get the window object.
-    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
 
-    float xPos = [[UIScreen mainScreen] bounds].size.width;
-    [self.tableView setAlpha:0.5];
-    xPos = xPos/2 - 125.0f;
-    float yPos = 75.0f;
-    float xWidth = 250;
-    float yHeightMargin = 100.0f;
-    float yHeight = [[UIScreen mainScreen] bounds].size.height - yHeightMargin;
-    
-    float layerCornerRadius = 5.0f;
-    
-    //Create the foundation layer for the company info screen.
-    CGRect companyInfoContainerViewRect = CGRectMake(xPos, yPos, xWidth, yHeight);
-    self.companyInfoContainerView = [[UIView alloc] initWithFrame:companyInfoContainerViewRect];
-    
-    //Add the foundation layer to the window.
-    [window addSubview:self.companyInfoContainerView];
-    
-    //Initialize the mapview and add it to the foundation layer.
-    CGRect noEventsPopUpRect = CGRectMake(0.0f, 0.0f, xWidth, yHeight);
-    self.mapView = [[MKMapView alloc] initWithFrame:noEventsPopUpRect];
-    [self.companyInfoContainerView addSubview:self.mapView];
-    [self.mapView.layer setCornerRadius:layerCornerRadius];
-    [self.mapView.layer setShadowColor:[UIColor blackColor].CGColor];
-    [self.mapView.layer setShadowOpacity:0.8];
-    [self.mapView.layer setShadowRadius:3.0];
-    [self.mapView.layer setShadowOffset:CGSizeMake(2.0, 2.0)];
-    
-    //MapView configurations
-    MKCoordinateRegion newRegion;
-    newRegion.center.latitude = [self.company.latitude doubleValue];
-    newRegion.center.longitude = [self.company.longitude doubleValue];
-    newRegion.span.latitudeDelta = 1.0;
-    newRegion.span.longitudeDelta = 8.0;
-    [self.mapView setRegion:newRegion animated:YES];
+    companyInfoController = [[GICompanyInfoController alloc] initWithNibName:@"GICompanyInfoController" bundle:nil company:self.company];
 
-    CGRect mapViewTintedLayerRect = CGRectMake(0.0f, 0.0f, xWidth, yHeight);
-    UIView *mapViewTintedLayer = [[UIView alloc] initWithFrame:mapViewTintedLayerRect];
-    [self.companyInfoContainerView addSubview:mapViewTintedLayer];
-
-    [mapViewTintedLayer setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
-    [mapViewTintedLayer setAlpha:0.6];
-    [mapViewTintedLayer.layer setBorderColor:[self colorWithHexString:@"C63D0F"].CGColor];
-    [mapViewTintedLayer.layer setBorderWidth:1.5f];
-    [mapViewTintedLayer.layer setCornerRadius:layerCornerRadius];
-    
-    UITextView *companyNameLbl = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 10.0f, xWidth,44.0f)];
-    companyNameLbl.text = self.company.name;
-    [companyNameLbl setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
-    companyNameLbl.textAlignment = NSTextAlignmentCenter;;
-    [companyNameLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
-    companyNameLbl.textColor = [UIColor whiteColor];
-    companyNameLbl.editable = NO;
-    
-    UITextView *addressLbl = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 50.0f, xWidth,150.0f)];
-    addressLbl.text = self.company.address;
-    addressLbl.textAlignment = NSTextAlignmentCenter;;
-    [addressLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
-    addressLbl.textColor = [UIColor whiteColor];
-    addressLbl.backgroundColor = [UIColor clearColor];
-    addressLbl.editable = NO;
-    
-    UIButton *telephoneBtn = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 105.0, xWidth, 44.0f)];
-    [telephoneBtn setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
-    [telephoneBtn setTitle:[NSString stringWithFormat:@"%@", self.company.telephone] forState:UIControlStateNormal];
-    [telephoneBtn.titleLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
-    [telephoneBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
-    [telephoneBtn addTarget:self
-                     action:@selector(telephoneBtnHandler:)
-           forControlEvents:UIControlEventTouchUpInside];
-    
-    UIImageView *companyInfoPrizeImage = [[UIImageView alloc] initWithFrame:CGRectMake(((xWidth/2)-50), 155.0f, 100.0,100.0f)];
-    companyInfoPrizeImage.image = self.prizeImg.image;
-
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    CGFloat screenHeight = screenRect.size.height;
-
-    CGRect prizeLblRect = CGRectMake(0.0f, 250.0f, xWidth,200.0f);
-    if(screenHeight < 568) {
-        prizeLblRect = CGRectMake(0.0f, 175.0f, xWidth,200.0f);
-    }
-    
-    UITextView *prizeLbl = [[UITextView alloc] initWithFrame:prizeLblRect];
-    prizeLbl.text = [NSString stringWithFormat:@"Reward: %@", self.company.prize];
-    prizeLbl.textAlignment = NSTextAlignmentCenter;;
-    [prizeLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
-    prizeLbl.textColor = [UIColor blackColor];
-    prizeLbl.backgroundColor = [UIColor clearColor];
-    prizeLbl.editable = NO;
-    
-    
-    CGRect closeCompanyInfoViewBtnRect = CGRectMake(10, 400.0, 230.0, 45.0);
-    if(screenHeight < 568) {
-        closeCompanyInfoViewBtnRect = CGRectMake(10, 300.0, 230.0, 45.0);
-    }
-    UIButton *closeCompanyInfoViewBtn = [[UIButton alloc] initWithFrame:closeCompanyInfoViewBtnRect];
-    [closeCompanyInfoViewBtn setBackgroundColor:[self colorWithHexString:@"3b5999"]];
-
-    [closeCompanyInfoViewBtn.layer setCornerRadius:3];
-    [closeCompanyInfoViewBtn setTitle:@"Done" forState:UIControlStateNormal];
-    [closeCompanyInfoViewBtn.titleLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
-    [closeCompanyInfoViewBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [closeCompanyInfoViewBtn setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
-    
-    [closeCompanyInfoViewBtn.layer setShadowColor:[UIColor blackColor].CGColor];
-    [closeCompanyInfoViewBtn.layer setShadowOpacity:0.8];
-    [closeCompanyInfoViewBtn.layer setShadowRadius:3.0];
-    
-    [closeCompanyInfoViewBtn addTarget:self
-                                action:@selector(closeCompanyInfoView:)
-                      forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.companyInfoContainerView addSubview:companyNameLbl];
-    [self.companyInfoContainerView addSubview:addressLbl];
-    [self.companyInfoContainerView addSubview:telephoneBtn];
-    [self.companyInfoContainerView addSubview:prizeLbl];
-    [self.companyInfoContainerView addSubview:companyInfoPrizeImage];
-    [self.companyInfoContainerView addSubview:closeCompanyInfoViewBtn];
-    [self.companyInfoContainerView setAlpha:0];
-    
-    [UIView animateWithDuration:0.5 animations:^{
-        [self.companyInfoContainerView setAlpha:1];
-        
-    } completion:^(BOOL finished) {
-        NSLog(@"finished");
-    }];
-    
-    [UIView animateWithDuration:2.0 animations:^{
-        MKCoordinateRegion newRegion;
-        
-        newRegion.center.latitude = [self.company.latitude doubleValue];
-        newRegion.center.longitude = [self.company.longitude doubleValue];
-        
-        newRegion.span.latitudeDelta = 0.05;
-        newRegion.span.longitudeDelta = 0.05;
-        [self.mapView setRegion:newRegion animated:YES];
-    } completion:^(BOOL finished) {
-        NSLog(@"Done");
-    }];
-}
-
-- (IBAction)telephoneBtnHandler:sender {
-    NSLog(@"telephoneBtnHandler");
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", self.company.telephone]]];
-}
-
-- (void)closeCompanyInfoView:(id)sender {
-    infoBtn.enabled = YES;
-    
-    [UIView animateWithDuration:0.8 animations:^{
-        self.companyInfoContainerView.frame = CGRectMake(self.companyInfoContainerView.frame.origin.x, -500, self.companyInfoContainerView.frame.size.width, self.companyInfoContainerView.frame.size.height);
-        
-        [self.companyInfoContainerView setAlpha:0];
-        
-    } completion:^(BOOL finished) {
-        [self.companyInfoContainerView removeFromSuperview];
-    }];
-    
-    self.backButton.enabled = YES;
-    [self.tableView setAlpha:1];
+    [self addChildViewController:companyInfoController];
+    [self.tableView addSubview:companyInfoController.view];
 }
 
 - (void)showNoEventsPopUp:(NSString*)newsURL{
@@ -519,11 +361,24 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         transparentCompanyNameCell.layer.shadowOffset = CGSizeMake(.6f, .6f);
         transparentCompanyNameCell.layer.cornerRadius = 4;
         
-        CGRect infoRect = CGRectMake((cell.layer.frame.size.width-50), (cell.layer.frame.size.height/2-15), 31, 30.0);;
+        CGRect infoRect = CGRectMake((cell.layer.frame.size.width-50), (cell.layer.frame.size.height/2-15), 35, 33.0);;
         infoBtn = [[UIButton alloc] initWithFrame:infoRect];
-        UIImage *infoBtnImage = [UIImage imageNamed:@"Info_Button.png"];
-        [infoBtn setBackgroundImage:infoBtnImage forState:UIControlStateNormal];
         
+        [infoBtn setBackgroundColor:[self colorWithHexString:@"ffffff"]];
+        
+        
+        [infoBtn.layer setCornerRadius:3];
+        [infoBtn setTitle:@"i" forState:UIControlStateNormal];
+        [infoBtn.titleLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
+        [infoBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [infoBtn setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+        
+        [infoBtn.layer setShadowColor:[UIColor blackColor].CGColor];
+        [infoBtn.layer setShadowOpacity:0.8];
+//        [infoBtn.layer setShadowRadius:3.0];
+//        UIImage *infoBtnImage = [UIImage imageNamed:@"Info_Button.png"];
+//        [infoBtn setBackgroundImage:infoBtnImage forState:UIControlStateNormal];
+//        
         [infoBtn addTarget:self
                  action:@selector(showCompanyInfo)
                   forControlEvents:UIControlEventTouchDown];
@@ -532,7 +387,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         [cell addSubview:transparentCompanyNameCell];
         [cell addSubview:companyNameLbl];
         [cell addSubview:infoBtn];
-                
+        
     }else if(totalParticipantsCellIndex == curCellIndex){        
         //Create a transparent layer on top of the cell as a background to the elements on top of it.
         //This is required because otherwise the alpha set on this element affects its child elements.
@@ -642,7 +497,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         
         self.participationLbl = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 5.0f, 320.0f,15.0f)];
         
-        float participationNum = [company.participationPercentage floatValue] * 100;
+        float participationNum = [self.company.participationPercentage floatValue] * 100;
         
         self.participationLbl.text = [NSString stringWithFormat:@"%i%% Participation", (int) participationNum];
         [self.participationLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:13.0f]];
@@ -756,7 +611,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         [sharingComposer setCompletionHandler:completionHandler];
         [sharingComposer setInitialText:[NSString stringWithFormat:@"%@ %@",[self editableText],[self permanentText]]];
         
-        [sharingComposer addURL:[NSURL URLWithString:company.website]];
+        [sharingComposer addURL:[NSURL URLWithString:self.company.website]];
         
         [self presentViewController:sharingComposer animated:YES completion:^{
             for (UIView *viewLayer1 in [[sharingComposer view] subviews]) {
