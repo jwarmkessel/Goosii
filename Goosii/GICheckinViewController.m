@@ -18,21 +18,24 @@
 #import <ECSlidingViewController.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <SDImageCache.h>
+#import "GINoEventsNearby.h"
 
 
 #define METERS_PER_MILE 1609.344
 #define METERS_TO_MILE_CONVERSION 0.00062137
-#define DISTANCE_ALLOWED_FROM_COMPANY 30.0f
+#define DISTANCE_ALLOWED_FROM_COMPANY 1.0f
 
 @interface GICheckinViewController () {
     BOOL isFromChild;
 }
 @property (strong, nonatomic) UIView *loadingMask;
 @property (strong, nonatomic) UIActivityIndicatorView *indicator;
+
+@property (nonatomic, strong) GINoEventsNearby *noEventsNearbyController;
 @end
 
 @implementation GICheckinViewController
-@synthesize loadingMask, nearbyLocationsAry, locationManager, indicator;
+@synthesize loadingMask, nearbyLocationsAry, locationManager, indicator, noEventsNearbyController;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -82,6 +85,14 @@
     //Set the color of the NavBar
     self.navigationController.navigationBar.translucent = YES;
     [self.navigationController.navigationBar setAlpha:0.9];
+    
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:refreshControl];
+}
+
+- (void)refresh:(UIRefreshControl *)refreshControl {
+    [refreshControl endRefreshing];
 }
 
 - (void)setInset {
@@ -274,7 +285,7 @@
         NSLog(@"The time in Milliseconds %f", timeInMilliseconds);
         
         GICompany *selectedCompany = (GICompany*)[self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row];
-        
+
         //TODO CHANGE THIS BACK TO <=
         if(([selectedCompany.endDate floatValue] / 1000) < timeInMilliseconds ||  timeInMilliseconds < ([selectedCompany.startDate floatValue] / 1000)) {
             
@@ -345,7 +356,7 @@
                                    NSDictionary *superObject = [parser objectWithString:newStr];
                                    NSDictionary *userObj = [superObject objectForKey:@"userObject"];
                                    NSArray *results = [superObject objectForKey:@"results"];
-
+                                   
                                    for (id result in results) {
                                        //This is the company object.
                                        NSDictionary *company = [result objectForKey:@"obj"];
@@ -570,6 +581,14 @@
                                    [self.loadingMask removeFromSuperview];
                                    [indicator stopAnimating];
                                    [self.tableView reloadData];
+                                   
+                                   if([self.nearbyLocationsAry count] == 0) {
+                                       noEventsNearbyController = [[GINoEventsNearby alloc] initWithNibName:@"GINoEventsNearby" bundle:nil];
+                                       
+                                       [self addChildViewController:noEventsNearbyController];
+                                       [self.tableView addSubview:noEventsNearbyController.view];
+                                       
+                                   }
                                    
                                } else {
                                    NSLog(@"Server Maintenance Under way.");

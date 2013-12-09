@@ -43,6 +43,7 @@
 
 @property (nonatomic, strong) GIRewardEmployeeController *rewardEmployeeView;
 @property (nonatomic, strong) GICompanyInfoController *companyInfoController;
+
 @end
 
 @implementation GIEventBoardViewController
@@ -631,30 +632,25 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 - (void) updateParticipationPercentage {
+    NSLog(@"updateParticipationPercentage");
 
     NSTimeInterval timeInMiliseconds = [[NSDate date] timeIntervalSince1970];
     double startDate = floor([self.company.startDate doubleValue]);
     double endDate = floor([self.company.endDate doubleValue]);
     startDate = startDate / 1000;
     endDate = endDate / 1000;
-    NSLog(@"START DATE %f", startDate);
-    NSLog(@"END DATE %f", endDate);
-    
     
     double curTime = floor(timeInMiliseconds);
-    NSLog(@"CURRENT DATE %f", curTime);
-    
     double totalDuration = endDate - startDate;
-    NSLog(@"TOTAL DURATION IN MIL %f", totalDuration);
-    
     double elapsedTime = curTime - startDate;
-    //Participation percentage is calculated by number of number of participation counts divided by number of days.
+
     float partPercentage = 0;
     
-    partPercentage = 0;
-
     float ttlParticipationCount = [self.company.participationPoints floatValue] + 1;
-
+    self.company.participationPoints = [NSString stringWithFormat:@"%f", ttlParticipationCount];
+    
+    NSLog(@" ======== > Checking Total Participation Count %f", ttlParticipationCount);
+    
     if(totalDuration != 0.0) {
         partPercentage = elapsedTime / 86400;
         
@@ -678,21 +674,10 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"The calculation %f", partWidth);
     
     NSLog(@"The participation bar %f, %f, %f, %f", self.participationBar.layer.frame.origin.x, self.participationBar.layer.frame.origin.y, self.participationBar.layer.frame.size.width, self.participationBar.layer.frame.size.height);
-    [self.tableView reloadData];
-    //Animate the progress bars to juic-ify this app!
-    [UIView animateWithDuration:1 animations:^{
 
-        
-        participationBar.layer.frame = CGRectMake(10, 20, partWidth, 20);
-
-        
-        
-    } completion:^(BOOL finished) {
-        NSLog(@"done");
-
-        NSLog(@"The participation bar after %f, %f, %f, %f", self.participationBar.layer.frame.origin.x, self.participationBar.layer.frame.origin.y, self.participationBar.layer.frame.size.width, self.participationBar.layer.frame.size.height);
-
-    }];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
 }
 
 - (NSString *)editableText {
