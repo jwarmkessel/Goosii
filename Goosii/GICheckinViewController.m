@@ -23,7 +23,7 @@
 
 #define METERS_PER_MILE 1609.344
 #define METERS_TO_MILE_CONVERSION 0.00062137
-#define DISTANCE_ALLOWED_FROM_COMPANY 1.0f
+#define DISTANCE_ALLOWED_FROM_COMPANY 10.0f
 
 @interface GICheckinViewController () {
     BOOL isFromChild;
@@ -162,6 +162,9 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     GICompany *company = [self.nearbyLocationsAry objectAtIndex:indexPath.row];
+    
+    NSLog(@"%@", [NSString stringWithFormat:@"row %d", indexPath.row]);
+    
     [cell.textLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
     cell.textLabel.text = company.name;
     
@@ -172,16 +175,6 @@
     NSLog(@"%@", urlRewardString);
     [cell.imageView setImageWithURL:[NSURL URLWithString:urlRewardString]
                    placeholderImage:[UIImage imageNamed:@"imagePlaceHolder.png"]];
-
-    
-//    UIImage *thumbnail = [UIImage imageWithData: [NSData dataWithContentsOfURL:url]];
-//
-//    CGSize itemSize = CGSizeMake(40, 40);
-//    UIGraphicsBeginImageContext(itemSize);
-//    CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
-//    [thumbnail drawInRect:imageRect];
-//    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
-//    UIGraphicsEndImageContext();
     
     UILabel *milesLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 80, cell.frame.size.height)];
     

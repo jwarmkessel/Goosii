@@ -13,4 +13,5 @@
     #import <Foundation/Foundation.h>
     #import "GIGoosiiConstants.h"
     #import "GIGlobalVariables.h"
+    #import <NewRelicAgent/NewRelic.h>
 #endif

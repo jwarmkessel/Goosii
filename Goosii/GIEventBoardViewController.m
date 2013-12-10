@@ -371,15 +371,12 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         [infoBtn.layer setCornerRadius:3];
         [infoBtn setTitle:@"i" forState:UIControlStateNormal];
         [infoBtn.titleLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:20.0f]];
-        [infoBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [infoBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [infoBtn setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
-        
+        [infoBtn setBackgroundColor:[self colorWithHexString:@"3B5999"]];
         [infoBtn.layer setShadowColor:[UIColor blackColor].CGColor];
         [infoBtn.layer setShadowOpacity:0.8];
-//        [infoBtn.layer setShadowRadius:3.0];
-//        UIImage *infoBtnImage = [UIImage imageNamed:@"Info_Button.png"];
-//        [infoBtn setBackgroundImage:infoBtnImage forState:UIControlStateNormal];
-//        
+
         [infoBtn addTarget:self
                  action:@selector(showCompanyInfo)
                   forControlEvents:UIControlEventTouchDown];

@@ -9,7 +9,6 @@
             <connections>
                 <outlet property="rewardImageView" destination="YXn-d0-d3t" id="uWI-lF-I7x"/>
                 <outlet property="rewardLbl" destination="5dR-dY-dvC" id="nGN-4U-oUn"/>
-                <outlet property="telBtn" destination="iAE-iE-5dV" id="ICo-jv-ItF"/>
                 <outlet property="view" destination="1" id="Cms-QS-Mjq"/>
             </connections>
         </placeholder>
@@ -19,7 +18,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Reward" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5dR-dY-dvC">
-                    <rect key="frame" x="20" y="193" width="280" height="41"/>
+                    <rect key="frame" x="20" y="0.0" width="280" height="41"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -29,23 +28,8 @@
                     <rect key="frame" x="40" y="49" width="240" height="128"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iAE-iE-5dV">
-                    <rect key="frame" x="11" y="11" width="280" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="Tel: 4086054692">
-                        <color key="titleColor" red="0.09803922474" green="0.2588235438" blue="0.33333334329999997" alpha="1" colorSpace="deviceRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
-                        <userDefinedRuntimeAttribute type="string" keyPath="layer.borderWidth" value="1"/>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <action selector="telBtnHandler:" destination="-1" eventType="touchUpInside" id="U4U-ni-GQt"/>
-                    </connections>
-                </button>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.77647058820000003" green="0.23921568630000001" blue="0.058823529409999999" alpha="1" colorSpace="deviceRGB"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>

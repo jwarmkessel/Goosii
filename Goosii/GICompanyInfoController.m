@@ -14,20 +14,20 @@
 
 @interface GICompanyInfoController ()
 @property (nonatomic, strong) GIEventBoardViewController *eventViewController;
-@property (strong, nonatomic) IBOutlet UIButton *telBtn;
-- (IBAction)telBtnHandler:(id)sender;
+@property (strong, nonatomic) UIButton *telBtn;
 @property (strong, nonatomic) IBOutlet UIImageView *rewardImageView;
 @property (strong, nonatomic) IBOutlet UILabel *rewardLbl;
+@property (strong, nonatomic) UIButton *addressLbl;
 @end
 
 @implementation GICompanyInfoController
-@synthesize eventViewController, company;
+@synthesize eventViewController, company, addressLbl, telBtn;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil company:(GICompany *)companyObj {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        CGRect rect = CGRectMake(10, 0, 300, 300);
+        CGRect rect = CGRectMake(10, 0, 300, 400);
         self.view.frame = rect;
         self.company = companyObj;
         
@@ -42,7 +42,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        CGRect rect = CGRectMake(10, 0, 300, 300);
+        CGRect rect = CGRectMake(10, 0, 300, 400);
         self.view.frame = rect;
     }
     return self;
@@ -63,13 +63,60 @@
     
     [self.rewardImageView setCenter:CGPointMake(self.view.center.x - 10, 120)];
     [self.rewardLbl setText:self.company.prize];
+    [self.rewardLbl setTextColor:[UIColor whiteColor]];
+    [self.rewardLbl.layer setShadowColor:[UIColor blackColor].CGColor];
+    [self.rewardLbl.layer setShadowOpacity:0.8];
+    [self.rewardLbl.layer setShadowRadius:3.0];
+    CGRect telBtnRect = CGRectMake(9.000000, 208.000000, 280.000000, 30.000000);
+    
+    self.telBtn = [[UIButton alloc] initWithFrame:telBtnRect];
+    [self.telBtn setTitle:[NSString stringWithFormat:@"Tel: %@", self.company.telephone] forState:UIControlStateNormal];
+    [self.telBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    
+    [self.telBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.telBtn setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+    
+//    [self.telBtn.layer setShadowColor:[UIColor blackColor].CGColor];
+//    [self.telBtn.layer setShadowOpacity:0.8];
+//    [self.telBtn.layer setShadowRadius:3.0];
+
+    [self.telBtn setTitle:[NSString stringWithFormat:@"Tel: %@", self.company.telephone] forState:UIControlStateNormal];
+
+    [self.telBtn.layer setBorderColor:[self colorWithHexString:@"3B5999"].CGColor];
+    [self.telBtn.layer setBorderWidth:1.5f];
+    [self.telBtn.layer setCornerRadius:3];
+
+    self.telBtn.titleLabel.minimumScaleFactor = 8.0/[UIFont labelFontSize];
+    self.telBtn.titleLabel.adjustsFontSizeToFitWidth = YES;
+    
+    [self.view addSubview:self.telBtn];
+    
+    [self.telBtn addTarget:self
+                    action:@selector(telBtnHandler:)
+          forControlEvents:UIControlEventTouchUpInside];
 
     
-    /*NEW TRICKS I'm using interface builder to set the cornerRadius and borderWidth. Check "Identity Inspector" and "Run time attributes".
-     
-     Self.telBtn is manually adjusted in the xib to be centered as the setCenter() doesn't work well with interface builder.
-     */
-    [self.telBtn setTitle:[NSString stringWithFormat:@"Tel: %@", self.company.telephone] forState:UIControlStateNormal];
+    CGRect addressButtonRect = CGRectMake(9.000000, 246.000000, 280.000000, 30.000000);
+    self.addressLbl = [[UIButton alloc] initWithFrame:addressButtonRect];
+    
+    [self.addressLbl setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.addressLbl setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+    
+//    [self.addressLbl.layer setShadowColor:[UIColor blackColor].CGColor];
+//    [self.addressLbl.layer setShadowOpacity:0.8];
+//    [self.addressLbl.layer setShadowRadius:3.0];
+    
+    [self.addressLbl setTitle:self.company.address forState:UIControlStateNormal];
+
+//    [self.addressLbl.layer setBorderColor:[self colorWithHexString:@"3B5999"].CGColor];
+//    [self.addressLbl.layer setBorderWidth:1.5f];
+//    [self.addressLbl.layer setCornerRadius:3];
+    
+    self.addressLbl.titleLabel.minimumScaleFactor = 8.0/[UIFont labelFontSize];
+    self.addressLbl.titleLabel.adjustsFontSizeToFitWidth = YES;
+
+    [self.view addSubview:self.addressLbl];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -85,7 +132,7 @@
     [UIView animateWithDuration:0.5 animations:^{
         [self.view setAlpha:1.0];
         
-        CGRect rect = CGRectMake(self.view.frame.origin.x, 60, 300, 300);
+        CGRect rect = CGRectMake(self.view.frame.origin.x, 60, 300, 400);
         
         self.view.frame = rect;
         
@@ -100,18 +147,25 @@
     // Do any additional setup after loading the view from its nib.
     self.eventViewController = (GIEventBoardViewController*) self.parentViewController;
 
+
+    
+//    [self.addressLbl.titleLabel setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
+//    [self.addressLbl setTintColor:[self colorWithHexString:@"C63D0f"]];
+
+    
+    
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenHeight = screenRect.size.height;
     
-    CGRect closeCompanyInfoViewBtnRect = CGRectMake(10, 220.0, 230.0, 45.0);
+    CGRect closeCompanyInfoViewBtnRect = CGRectMake(10, 320.0, 230.0, 45.0);
     if(screenHeight < 568) {
-        closeCompanyInfoViewBtnRect = CGRectMake(10, 220.0, 230.0, 45.0);
+        closeCompanyInfoViewBtnRect = CGRectMake(10, 320.0, 230.0, 45.0);
     }
     
     UIButton *closeCompanyInfoViewBtn = [[UIButton alloc] initWithFrame:closeCompanyInfoViewBtnRect];
     [closeCompanyInfoViewBtn setBackgroundColor:[self colorWithHexString:@"3b5999"]];
     
-    [closeCompanyInfoViewBtn setCenter:CGPointMake(self.view.center.x - 10, 270.0)];
+    [closeCompanyInfoViewBtn setCenter:CGPointMake(self.view.center.x - 10, 370.0)];
     
     [closeCompanyInfoViewBtn.layer setCornerRadius:3];
     [closeCompanyInfoViewBtn setTitle:@"Okay" forState:UIControlStateNormal];
@@ -186,7 +240,7 @@
                            alpha:1.0f];
 }
 
-- (IBAction)telBtnHandler:(id)sender {
+- (void)telBtnHandler:(id)sender {
     UIApplication *myApp = [UIApplication sharedApplication];
     NSString *theCall = [NSString stringWithFormat:@"tel://%@", [NSString stringWithFormat:@"%@", self.company.telephone]];
     NSLog(@"making call with %@",theCall);

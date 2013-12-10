@@ -290,6 +290,10 @@
 		83AC9C771855751D00F186E1 /* GINoEventsNearbyBackgroundGradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 83AC9C741855751D00F186E1 /* GINoEventsNearbyBackgroundGradient.png */; };
 		83AC9C781855751D00F186E1 /* GINoEventsNearbyBackgroundGradient@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83AC9C751855751D00F186E1 /* GINoEventsNearbyBackgroundGradient@2x.png */; };
 		83AC9C7A1855757800F186E1 /* GINoEventsNearbyBackgroundGradient-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83AC9C791855757800F186E1 /* GINoEventsNearbyBackgroundGradient-568h@2x.png */; };
+		83AC9C7C1856860500F186E1 /* NewRelicAgent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83AC9C7B1856860400F186E1 /* NewRelicAgent.framework */; };
+		83AC9C7E1856861D00F186E1 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83AC9C7D1856861D00F186E1 /* CoreTelephony.framework */; };
+		83AC9C801856862700F186E1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83AC9C7F1856862700F186E1 /* SystemConfiguration.framework */; };
+		83AC9C821856863800F186E1 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 83AC9C811856863800F186E1 /* libz.dylib */; };
 		83CF1108184D4D8B003A9B67 /* GIRewardEmployeeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CF1106184D4D8B003A9B67 /* GIRewardEmployeeController.m */; };
 		83CF1109184D4D8B003A9B67 /* GIRewardEmployeeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83CF1107184D4D8B003A9B67 /* GIRewardEmployeeController.xib */; };
 		83F9244A17AC937F00E97376 /* Company_Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F9244117AC937F00E97376 /* Company_Back.png */; };
@@ -613,6 +617,10 @@
 		83AC9C741855751D00F186E1 /* GINoEventsNearbyBackgroundGradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GINoEventsNearbyBackgroundGradient.png; sourceTree = "<group>"; };
 		83AC9C751855751D00F186E1 /* GINoEventsNearbyBackgroundGradient@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GINoEventsNearbyBackgroundGradient@2x.png"; sourceTree = "<group>"; };
 		83AC9C791855757800F186E1 /* GINoEventsNearbyBackgroundGradient-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GINoEventsNearbyBackgroundGradient-568h@2x.png"; sourceTree = "<group>"; };
+		83AC9C7B1856860400F186E1 /* NewRelicAgent.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NewRelicAgent.framework; sourceTree = "<group>"; };
+		83AC9C7D1856861D00F186E1 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		83AC9C7F1856862700F186E1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		83AC9C811856863800F186E1 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		83CF1105184D4D8B003A9B67 /* GIRewardEmployeeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIRewardEmployeeController.h; sourceTree = "<group>"; };
 		83CF1106184D4D8B003A9B67 /* GIRewardEmployeeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIRewardEmployeeController.m; sourceTree = "<group>"; };
 		83CF1107184D4D8B003A9B67 /* GIRewardEmployeeController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GIRewardEmployeeController.xib; sourceTree = "<group>"; };
@@ -636,7 +644,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83AC9C821856863800F186E1 /* libz.dylib in Frameworks */,
+				83AC9C801856862700F186E1 /* SystemConfiguration.framework in Frameworks */,
+				83AC9C7E1856861D00F186E1 /* CoreTelephony.framework in Frameworks */,
 				83F9245717B1CD6400E97376 /* MapKit.framework in Frameworks */,
+				83AC9C7C1856860500F186E1 /* NewRelicAgent.framework in Frameworks */,
 				83196B0C1785476D008A6107 /* Social.framework in Frameworks */,
 				83196CAF1790A2C7008A6107 /* QuartzCore.framework in Frameworks */,
 				83196B0A17854767008A6107 /* CoreLocation.framework in Frameworks */,
@@ -672,6 +684,10 @@
 		8309748017837C0900ABC1CF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				83AC9C811856863800F186E1 /* libz.dylib */,
+				83AC9C7F1856862700F186E1 /* SystemConfiguration.framework */,
+				83AC9C7D1856861D00F186E1 /* CoreTelephony.framework */,
+				83AC9C7B1856860400F186E1 /* NewRelicAgent.framework */,
 				83196CAE1790A2C7008A6107 /* QuartzCore.framework */,
 				83196B0B1785476D008A6107 /* Social.framework */,
 				83196B0917854767008A6107 /* CoreLocation.framework */,
@@ -1653,6 +1669,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/JWarm/Desktop/GoldenGoose/GoosiiVersion3/Goosii,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Goosii/Goosii-Prefix.pch";
 				INFOPLIST_FILE = "Goosii/Goosii-Info.plist";
@@ -1670,6 +1690,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/JWarm/Desktop/GoldenGoose/GoosiiVersion3/Goosii,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Goosii/Goosii-Prefix.pch";
 				INFOPLIST_FILE = "Goosii/Goosii-Info.plist";

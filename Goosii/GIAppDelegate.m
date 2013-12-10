@@ -14,6 +14,9 @@
 @implementation GIAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+    [NewRelicAgent startWithApplicationToken:@"AAd72363c0bc34636264aa4af9a4f00b6269cea4ab"];
+    
     //Set up API environment variables.
     NSObject *goosiiAPI __unused = [[GIGlobalVariables alloc] init];
 
