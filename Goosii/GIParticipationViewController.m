@@ -186,7 +186,7 @@
     NSLog(@"getUserContests %@", urlString);
     NSURL *url = [NSURL URLWithString:urlString];
     
-    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:60.0];
+    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
     
     [NSURLConnection sendAsynchronousRequest:urlRequest
                                        queue:[NSOperationQueue mainQueue]
@@ -458,6 +458,8 @@
     GICompany *company = [self.eventList objectAtIndex:indexPath.row];
     
     NSString *urlRewardString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImageThumb.png", kBASE_URL, company.companyId];
+    
+    [[SDImageCache sharedImageCache] removeImageForKey:urlRewardString fromDisk:YES];
     
     NSLog(@"%@", urlRewardString);
     [cell.imageView setImageWithURL:[NSURL URLWithString:urlRewardString]

@@ -84,19 +84,17 @@
                                    
                                    rewardEmployeeView = [[GIRewardEmployeeController alloc] initWithNibName:@"GIRewardEmployeeController" bundle:nil];
                                    [self addChildViewController:rewardEmployeeView];
+
+                                   if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+                                       [self.rewardEmployeeView.view setCenter:CGPointMake(self.rewardEmployeeView.view.center.x, (self.rewardEmployeeView.view.center.y - 20.0))];
+                                   }
+                                   
                                    [self.tableView addSubview:rewardEmployeeView.view];
 
                                    UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Skip" style:UIBarButtonItemStylePlain target:self action:@selector(refreshPropertyList:)];
                                    self.navigationItem.rightBarButtonItem = anotherButton;
                                }
                            }];
-    
-    // do something only for logged in fb users} else {//do something else for non-fb users}
-    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
-        NSLog(@"I'm totally logged in");
-    }else {
-        NSLog(@"I'm totally NOT logged in");
-    }
 
     //Make the call to action text animate with blinking.
     blinkTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(toggleButtonImage:) userInfo:nil repeats: YES];
@@ -195,6 +193,10 @@
         NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
         //Load the request in the UIWebView.
         [webView loadRequest:requestObj];
+        
+        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+            [webView setCenter:CGPointMake(webView.center.x, (webView.center.y - 20.0))];
+        }
         
         [self.view addSubview:webView];
     } else {

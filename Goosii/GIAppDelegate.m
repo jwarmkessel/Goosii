@@ -10,19 +10,24 @@
 #import "GIPlist.h"
 #import "TestFlight.h"
 #import <Flurry.h>
+#import <Social/Social.h>
+#import <Accounts/Accounts.h>
 
 @implementation GIAppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+@synthesize accountStore = _accountStore;
+@synthesize fbAccount = _fbAccount;
 
-    [NewRelicAgent startWithApplicationToken:@"AAd72363c0bc34636264aa4af9a4f00b6269cea4ab"];
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     //Set up API environment variables.
     NSObject *goosiiAPI __unused = [[GIGlobalVariables alloc] init];
 
+    [NewRelicAgent startWithApplicationToken:NEW_RELIC_TOKEN];
+    NSLog(@"The new relic token %@", NEW_RELIC_TOKEN);
 
     NSLog(@"THE CURRENT API REQUEST %@", GOOSIIAPI);
-
+ 
     //Set testflight device token.
     [TestFlight takeOff:@"bc01fdd6-8f88-4d53-927a-43a17ff87eee"];
     
@@ -31,7 +36,6 @@
     [Flurry setCrashReportingEnabled:YES];
     [Flurry startSession:@"TG9C2BZ4V4KX78GXYD4K"];
     
-
     // Let the device know we want to receive push notifications
 	[[UIApplication sharedApplication] registerForRemoteNotificationTypes:
      (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
@@ -42,7 +46,7 @@
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
 	NSLog(@"My token is: %@", deviceToken);
-
+    
     GIPlist *loginName = [[GIPlist alloc] initWithNamespace:@"Goosii"];
     
     NSString* deviceTokenStr = [[[[deviceToken description]
@@ -69,31 +73,102 @@
             NSLog(@"connection failed");
         }
     } else {
-        NSUUID *uid = [UIDevice currentDevice].identifierForVendor;
         
-        NSLog(@"IdentifierForVendor %@ STOP",[uid UUIDString]);
-        NSString *urlPost = [NSString stringWithFormat:@"%@createUser/%@/%@", GOOSIIAPI, [uid UUIDString], deviceTokenStr];
-                
-        NSURL *url = [NSURL URLWithString:urlPost];
-        NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-        [NSURLConnection sendAsynchronousRequest:urlRequest
-                                           queue:[NSOperationQueue mainQueue]
-                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                                   
-                                   // your data or an error will be ready here
-                                   NSString* newStr = [[NSString alloc] initWithData:data
-                                                                            encoding:NSUTF8StringEncoding];
-                                   
-                                   NSLog(@"ReceivedData %@", newStr);
-                                   newStr = [newStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
-                                   
-                                   //Set the user's ID for flurry to track.
-                                   [Flurry setUserID:newStr];
-                                   [Flurry setPushToken:deviceTokenStr];
-                                   
-                                   [loginName setObject:newStr forKey:@"userId"];
-                                   [loginName setObject:deviceTokenStr forKey:@"userDevicePushToken"];
-                               }];
+        // do something only for logged in fb users} else {//do something else for non-fb users}
+        if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
+            NSLog(@"I'm totally logged in");
+            //App id: 474606345992201
+            //Secret key: 6cf03ae9cb0976ec0736557edbe14544
+            
+            // Initialize the account store
+            self.accountStore = [[ACAccountStore alloc] init];
+            
+            if (self.accountStore == nil) {
+                self.accountStore = [[ACAccountStore alloc] init];
+            }
+            
+            ACAccountType * facebookAccountType = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+            
+            NSDictionary *options = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                     @"474606345992201", ACFacebookAppIdKey,
+                                     [NSArray arrayWithObject:@"email"], ACFacebookPermissionsKey,
+                                     ACFacebookAudienceKey, ACFacebookAudienceEveryone,
+                                     nil];
+            
+            [self.accountStore requestAccessToAccountsWithType:facebookAccountType options:options completion:^(BOOL granted, NSError *error) {
+                if (granted) {
+                    NSLog(@"Success");
+                    NSArray *accounts = [_accountStore accountsWithAccountType:facebookAccountType];
+                    self.fbAccount = [accounts lastObject];
+                    NSLog(@"===== username %@", self.fbAccount.userFullName);
+                    
+                    NSUUID *uid = [UIDevice currentDevice].identifierForVendor;
+                    
+                    NSLog(@"IdentifierForVendor %@ STOP",[uid UUIDString]);
+
+                    NSString* escapedUrlString = [self.fbAccount.userFullName stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
+                    NSString *urlPost = [NSString stringWithFormat:@"%@createUser/%@/%@/%@", GOOSIIAPI, [uid UUIDString], deviceTokenStr, escapedUrlString];
+                    
+                    NSLog(@"Create User urlstring %@", urlPost);
+                    
+                    NSURL *url = [NSURL URLWithString:urlPost];
+                    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+                    [NSURLConnection sendAsynchronousRequest:urlRequest
+                                                       queue:[NSOperationQueue mainQueue]
+                                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                                               
+                                               // your data or an error will be ready here
+                                               NSString* newStr = [[NSString alloc] initWithData:data
+                                                                                        encoding:NSUTF8StringEncoding];
+                                               
+                                               NSLog(@"ReceivedData %@", newStr);
+                                               newStr = [newStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+                                               
+                                               //Set the user's ID for flurry to track.
+                                               [Flurry setUserID:newStr];
+                                               [Flurry setPushToken:deviceTokenStr];
+                                               
+                                               [loginName setObject:newStr forKey:@"userId"];
+                                               [loginName setObject:deviceTokenStr forKey:@"userDevicePushToken"];
+                                           }];
+                    
+                    
+                } else {
+                    NSLog(@"ERR: %@",error);
+                    // Fail gracefully...
+                }
+            }
+             ];
+        }else {
+            NSLog(@"I'm totally NOT logged in");
+            
+            NSUUID *uid = [UIDevice currentDevice].identifierForVendor;
+            
+            NSLog(@"IdentifierForVendor %@ STOP",[uid UUIDString]);
+            NSString *urlPost = [NSString stringWithFormat:@"%@createUser/%@/%@", GOOSIIAPI, [uid UUIDString], deviceTokenStr];
+            
+            NSURL *url = [NSURL URLWithString:urlPost];
+            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+            [NSURLConnection sendAsynchronousRequest:urlRequest
+                                               queue:[NSOperationQueue mainQueue]
+                                   completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                                       
+                                       // your data or an error will be ready here
+                                       NSString* newStr = [[NSString alloc] initWithData:data
+                                                                                encoding:NSUTF8StringEncoding];
+                                       
+                                       NSLog(@"ReceivedData %@", newStr);
+                                       newStr = [newStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+                                       
+                                       //Set the user's ID for flurry to track.
+                                       [Flurry setUserID:newStr];
+                                       [Flurry setPushToken:deviceTokenStr];
+                                       
+                                       [loginName setObject:newStr forKey:@"userId"];
+                                       [loginName setObject:deviceTokenStr forKey:@"userDevicePushToken"];
+                                   }];
+        }
+
     }
 
 }

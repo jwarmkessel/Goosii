@@ -11,5 +11,5 @@
 @interface GIGlobalVariables : NSObject
 
 extern NSString *GOOSIIAPI;
-
+extern NSString *NEW_RELIC_TOKEN;
 @end

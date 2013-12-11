@@ -30,6 +30,7 @@
 		830D2D201797E183003EA961 /* image3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 830D2D1A1797E183003EA961 /* image3.jpg */; };
 		830D2D211797E183003EA961 /* image4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 830D2D1B1797E183003EA961 /* image4.jpg */; };
 		830D2D221797E183003EA961 /* image5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 830D2D1C1797E183003EA961 /* image5.jpg */; };
+		8313FDDC1857F1C700A73A7A /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8313FDDB1857F1C700A73A7A /* Accounts.framework */; };
 		83196AF017838A34008A6107 /* GIMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83196AEF17838A34008A6107 /* GIMainViewController.m */; };
 		83196AF517838CB4008A6107 /* GIParticipationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83196AF417838CB4008A6107 /* GIParticipationViewController.m */; };
 		83196AFE17839261008A6107 /* GoosiiLogoTransparent200x140.png in Resources */ = {isa = PBXBuildFile; fileRef = 83196AFA17839261008A6107 /* GoosiiLogoTransparent200x140.png */; };
@@ -343,6 +344,7 @@
 		830D2D1A1797E183003EA961 /* image3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image3.jpg; sourceTree = "<group>"; };
 		830D2D1B1797E183003EA961 /* image4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image4.jpg; sourceTree = "<group>"; };
 		830D2D1C1797E183003EA961 /* image5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image5.jpg; sourceTree = "<group>"; };
+		8313FDDB1857F1C700A73A7A /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		83196AEE17838A34008A6107 /* GIMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIMainViewController.h; sourceTree = "<group>"; };
 		83196AEF17838A34008A6107 /* GIMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIMainViewController.m; sourceTree = "<group>"; };
 		83196AF317838CB4008A6107 /* GIParticipationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIParticipationViewController.h; sourceTree = "<group>"; };
@@ -644,6 +646,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8313FDDC1857F1C700A73A7A /* Accounts.framework in Frameworks */,
 				83AC9C821856863800F186E1 /* libz.dylib in Frameworks */,
 				83AC9C801856862700F186E1 /* SystemConfiguration.framework in Frameworks */,
 				83AC9C7E1856861D00F186E1 /* CoreTelephony.framework in Frameworks */,
@@ -684,6 +687,7 @@
 		8309748017837C0900ABC1CF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8313FDDB1857F1C700A73A7A /* Accounts.framework */,
 				83AC9C811856863800F186E1 /* libz.dylib */,
 				83AC9C7F1856862700F186E1 /* SystemConfiguration.framework */,
 				83AC9C7D1856861D00F186E1 /* CoreTelephony.framework */,

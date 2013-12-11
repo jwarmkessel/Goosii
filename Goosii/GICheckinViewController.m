@@ -23,7 +23,7 @@
 
 #define METERS_PER_MILE 1609.344
 #define METERS_TO_MILE_CONVERSION 0.00062137
-#define DISTANCE_ALLOWED_FROM_COMPANY 10.0f
+#define DISTANCE_ALLOWED_FROM_COMPANY 40.0f
 
 @interface GICheckinViewController () {
     BOOL isFromChild;
@@ -172,6 +172,8 @@
     
     NSString *urlRewardString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImageThumb.png", kBASE_URL, company.companyId];
     
+    [[SDImageCache sharedImageCache] removeImageForKey:urlRewardString fromDisk:YES];
+
     NSLog(@"%@", urlRewardString);
     [cell.imageView setImageWithURL:[NSURL URLWithString:urlRewardString]
                    placeholderImage:[UIImage imageNamed:@"imagePlaceHolder.png"]];
@@ -325,11 +327,11 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
     NSLog(@"The manager.location %@", manager.location);
-    NSString *urlString = [NSString stringWithFormat:@"%@testGeoSpatialQuery/%@/%f/%f", GOOSIIAPI, [plist objectForKey:@"userId"], manager.location.coordinate.longitude, manager.location.coordinate.latitude];
+    NSString *urlString = [NSString stringWithFormat:@"%@geoSpatialQuery/%@/%f/%f", GOOSIIAPI, [plist objectForKey:@"userId"], manager.location.coordinate.longitude, manager.location.coordinate.latitude];
     
     NSLog(@"THE URL STRING FOR CHECKING IN %@", urlString);
     NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:60.0];
+    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
     
     [NSURLConnection sendAsynchronousRequest:urlRequest
                                        queue:[NSOperationQueue mainQueue]
@@ -559,9 +561,11 @@
                                                                                       distance:[NSString stringWithFormat:@"%.2f mi", distanceInMiles]
                                                                                        website:[event objectForKey:@"website"]
                                                                                        newsUrl:newsURLString];
-                                       
 
-                                       if(distanceInMiles < DISTANCE_ALLOWED_FROM_COMPANY) {
+                                       //Get the distance allowed by the server for checking into nearby companies.
+                                       NSDictionary *distanceConfiguration = [superObject objectForKey:@"distanceConfiguration"];
+
+                                       if(distanceInMiles < [[distanceConfiguration objectForKey:@"distance"] floatValue]) {
                                            NSLog(@"Include the %@", [company objectForKey:@"name"]);
                                            [self.nearbyLocationsAry addObject:companyObj];
                                        }
@@ -573,6 +577,7 @@
 
                                    [self.loadingMask removeFromSuperview];
                                    [indicator stopAnimating];
+                                   NSLog(@"POST NSURLCONNECTION & RELOADING TABLE VIEW %lu", (unsigned long)[self.nearbyLocationsAry count] );
                                    [self.tableView reloadData];
                                    
                                    if([self.nearbyLocationsAry count] == 0) {
