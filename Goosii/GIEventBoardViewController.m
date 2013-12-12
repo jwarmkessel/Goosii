@@ -190,7 +190,8 @@
         //Create a URL object.
         NSURL *url = [NSURL URLWithString:urlAddress];
         //URL Requst Object
-        NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+//        NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+        NSURLRequest *requestObj = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10.0];
         //Load the request in the UIWebView.
         [webView loadRequest:requestObj];
         
