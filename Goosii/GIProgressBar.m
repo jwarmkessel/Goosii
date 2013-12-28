@@ -34,7 +34,7 @@
     //UIColor *fillColor = [UIColor colorWithRed:0.526 green:0.525 blue:0.526 alpha:1];
     //UIColor *strokeColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
     
-    UIBezierPath *roundedRectanglePath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, 310, 40) cornerRadius:1];
+    UIBezierPath *roundedRectanglePath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, 310, 50) cornerRadius:1];
 
     [fillColor setFill];
     [roundedRectanglePath fill];

@@ -31,6 +31,7 @@
 		830D2D211797E183003EA961 /* image4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 830D2D1B1797E183003EA961 /* image4.jpg */; };
 		830D2D221797E183003EA961 /* image5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 830D2D1C1797E183003EA961 /* image5.jpg */; };
 		8313FDDC1857F1C700A73A7A /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8313FDDB1857F1C700A73A7A /* Accounts.framework */; };
+		8315EC3D18625967005D69FB /* GIEventScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8315EC3C18625967005D69FB /* GIEventScrollViewController.m */; };
 		83196AF017838A34008A6107 /* GIMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83196AEF17838A34008A6107 /* GIMainViewController.m */; };
 		83196AF517838CB4008A6107 /* GIParticipationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83196AF417838CB4008A6107 /* GIParticipationViewController.m */; };
 		83196AFE17839261008A6107 /* GoosiiLogoTransparent200x140.png in Resources */ = {isa = PBXBuildFile; fileRef = 83196AFA17839261008A6107 /* GoosiiLogoTransparent200x140.png */; };
@@ -345,6 +346,8 @@
 		830D2D1B1797E183003EA961 /* image4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image4.jpg; sourceTree = "<group>"; };
 		830D2D1C1797E183003EA961 /* image5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image5.jpg; sourceTree = "<group>"; };
 		8313FDDB1857F1C700A73A7A /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		8315EC3B18625967005D69FB /* GIEventScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GIEventScrollViewController.h; path = ../GIEventScrollViewController.h; sourceTree = "<group>"; };
+		8315EC3C18625967005D69FB /* GIEventScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GIEventScrollViewController.m; path = ../GIEventScrollViewController.m; sourceTree = "<group>"; };
 		83196AEE17838A34008A6107 /* GIMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIMainViewController.h; sourceTree = "<group>"; };
 		83196AEF17838A34008A6107 /* GIMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIMainViewController.m; sourceTree = "<group>"; };
 		83196AF317838CB4008A6107 /* GIParticipationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIParticipationViewController.h; sourceTree = "<group>"; };
@@ -709,6 +712,8 @@
 				83196B11178DE48C008A6107 /* Resources */,
 				839C8F5D17F783F100A75F6E /* iPad */,
 				8309749917837C0900ABC1CF /* MainStoryboard.storyboard */,
+				8315EC3B18625967005D69FB /* GIEventScrollViewController.h */,
+				8315EC3C18625967005D69FB /* GIEventScrollViewController.m */,
 				8319FAA517E3DFC400661B91 /* GIGoosiiConstants.h */,
 				8319FAA817E7B47700661B91 /* GIGlobalVariables.h */,
 				8319FAA917E7B47700661B91 /* GIGlobalVariables.m */,
@@ -1576,6 +1581,7 @@
 				83AC9C60184ED23E00F186E1 /* GICompanyInfoController.m in Sources */,
 				83196B2517900437008A6107 /* GIEventViewCell.m in Sources */,
 				83CF1108184D4D8B003A9B67 /* GIRewardEmployeeController.m in Sources */,
+				8315EC3D18625967005D69FB /* GIEventScrollViewController.m in Sources */,
 				83196CB217914B36008A6107 /* GICountingLabel.m in Sources */,
 				83F9245A17B315D900E97376 /* GIHomeViewController.m in Sources */,
 				836BC25517C3786E00EF3007 /* GIFulfillmentViewController.m in Sources */,

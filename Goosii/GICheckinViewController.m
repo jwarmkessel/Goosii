@@ -19,6 +19,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <SDImageCache.h>
 #import "GINoEventsNearby.h"
+#import "GIEventScrollViewController.h"
 
 
 #define METERS_PER_MILE 1609.344
@@ -272,7 +273,7 @@
         [vc setCompany:[self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row]];
    
     } else if([[segue identifier] isEqualToString:@"eventDrillDownViewSegue"]) {
-        GIEventBoardViewController *vc = [segue destinationViewController];
+        GIEventScrollViewController *vc = [segue destinationViewController];
         vc.company = (GICompany*)[self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row];
         
         NSTimeInterval timeInMilliseconds = [[NSDate date] timeIntervalSince1970];

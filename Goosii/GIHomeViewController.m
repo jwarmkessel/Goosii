@@ -8,13 +8,15 @@
 
 #import "GIHomeViewController.h"
 #import <ECSlidingViewController.h>
+#import <CSAnimationView.h>
 
 @interface GIHomeViewController ()
 @property (nonatomic, strong) UIImageView *animationImgView;
+@property (nonatomic, strong) CSAnimationView *goosiiLogoAnimationContainer;
 @end
 
 @implementation GIHomeViewController
-@synthesize animationImgView, slidingMenuButton;
+@synthesize animationImgView, slidingMenuButton, goosiiLogoAnimationContainer;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -32,12 +34,22 @@
     
     [self.navigationController.navigationBar setAlpha:0.0f];
     
-    self.animationImgView = [[UIImageView alloc] initWithFrame:CGRectMake(74, 100, 172, 117)];
-    self.animationImgView.image = [UIImage imageNamed:@"BrokenEggAnim_017.png"];
-    [self.view addSubview:self.animationImgView];
+    goosiiLogoAnimationContainer = [[CSAnimationView alloc] initWithFrame:CGRectMake(74, 100, 172, 117)];
     
-    /* This animate command is a recursive execution of animation block. Unusable */
-    //[self animate:self.view withState:10 andLastState:80];
+    
+    self.animationImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 172, 117)];
+    self.animationImgView.image = [UIImage imageNamed:@"BrokenEggAnim_017.png"];
+
+    
+    goosiiLogoAnimationContainer.backgroundColor = [UIColor clearColor];
+    [goosiiLogoAnimationContainer addSubview:self.animationImgView];
+    [self.view addSubview:goosiiLogoAnimationContainer];
+    
+    goosiiLogoAnimationContainer.duration = 1;
+    goosiiLogoAnimationContainer.delay    = 0;
+    goosiiLogoAnimationContainer.type = CSAnimationTypeZoomOut;
+    
+    [goosiiLogoAnimationContainer startCanvasAnimation];
     
     [self runLogoAnimation];
 
@@ -60,15 +72,27 @@
     
     [self.view addSubview:self.slidingMenuButton];
     
+    CSAnimationView *enterBtnContainer = [[CSAnimationView alloc] initWithFrame:CGRectMake(20, 300, 280, 50)];
+    
     UIButton *enterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    enterBtn.frame = CGRectMake(20, 300, 280, 50);
+    enterBtn.frame = CGRectMake(0, 0, 280, 50);
     //[enterBtn setBackgroundColor:[self colorWithHexString:@"3b5999"]];
     [enterBtn addTarget:self action:@selector(enterBtn:) forControlEvents:UIControlEventTouchUpInside];
     [enterBtn setTitle:@"Tap anywhere to begin." forState:UIControlStateNormal];
     enterBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
     [enterBtn.titleLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
     [enterBtn.titleLabel setTextColor:[UIColor whiteColor]];
-    [self.view addSubview:enterBtn];
+    
+    enterBtnContainer.backgroundColor = [UIColor clearColor];
+    
+    enterBtnContainer.duration = 1.5;
+    enterBtnContainer.delay    = 0;
+    enterBtnContainer.type = CSAnimationTypePop;
+    
+    [enterBtnContainer addSubview:enterBtn];
+    [self.view addSubview:enterBtnContainer];
+    
+    [enterBtnContainer startCanvasAnimation];
     
     [self.view setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
 }
@@ -116,6 +140,7 @@
                     }
                     completion:^(BOOL finished) {
                         [self animate:b withState:state+1 andLastState:last_state];
+                        NSLog(@"Animation compltedddd");
 
                     }];
     }
@@ -156,9 +181,12 @@
     
     self.animationImgView.animationDuration = 2;
     self.animationImgView.animationRepeatCount = 1;
-    NSLog(@"Start animation");
+    NSLog(@"Starting animation now");
     [self.animationImgView startAnimating];
+    
 }
+
+
 
 - (void) hideNavBar {
     NSLog(@"Hide the nav bar");

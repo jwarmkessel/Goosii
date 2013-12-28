@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Pods-Canvas.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-ECSlidingViewController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -42,37 +47,42 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>26F71111137943849B61B0B2</key>
+		<key>163A58E5A5B1482EB76F9004</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3F0C9DFAA3E64295AF5EFC18</key>
+		<key>1DCA2B6E64E94B9783B77E0C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>481B33B52EFE4DCCB2DB4820</key>
+		<key>2A1D57162C9F463688216D17</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>69C20CE4E38349D188C6ABC8</key>
+		<key>368F16050371478981B2F1FC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>EA6697A4E0FB46A09F6216F3</key>
+		<key>7125FFBB42AC4FF8B3876996</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>EABF61BB156146BC8C32AD1C</key>
+		<key>AE16E4F63E9A4ECCA5483940</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>FA38547F057A411BA788A172</key>
+		<key>C86A64C3C7594097919D0732</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D214B93B5F8A4EF9BCEFFB22</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -20,12 +20,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
-    [NewRelicAgent startWithApplicationToken:@"AAd72363c0bc34636264aa4af9a4f00b6269cea4ab"];
+//    [NewRelicAgent startWithApplicationToken:@"AAd72363c0bc34636264aa4af9a4f00b6269cea4ab"];
     //Set up API environment variables.
     NSObject *goosiiAPI __unused = [[GIGlobalVariables alloc] init];
 
-//    [NewRelicAgent startWithApplicationToken:NEW_RELIC_TOKEN];
-//    NSLog(@"The new relic token %@", NEW_RELIC_TOKEN);
+    [NewRelicAgent startWithApplicationToken:NEW_RELIC_TOKEN];
+    NSLog(@"The new relic token %@", NEW_RELIC_TOKEN);
 
     NSLog(@"THE CURRENT API REQUEST %@", GOOSIIAPI);
  
@@ -125,12 +125,15 @@
                                                NSLog(@"ReceivedData %@", newStr);
                                                newStr = [newStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
                                                
-                                               //Set the user's ID for flurry to track.
-                                               [Flurry setUserID:newStr];
-                                               [Flurry setPushToken:deviceTokenStr];
+                                               if(![newStr isEqualToString:@""]) {
+                                                   [loginName setObject:newStr forKey:@"userId"];
+                                                   [loginName setObject:deviceTokenStr forKey:@"userDevicePushToken"];
+                                                   
+                                                   //Set the user's ID for flurry to track.
+                                                   [Flurry setUserID:newStr];
+                                                   [Flurry setPushToken:deviceTokenStr];
+                                               }
                                                
-                                               [loginName setObject:newStr forKey:@"userId"];
-                                               [loginName setObject:deviceTokenStr forKey:@"userDevicePushToken"];
                                            }];
                     
                     
@@ -161,12 +164,15 @@
                                        NSLog(@"ReceivedData %@", newStr);
                                        newStr = [newStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
                                        
-                                       //Set the user's ID for flurry to track.
-                                       [Flurry setUserID:newStr];
-                                       [Flurry setPushToken:deviceTokenStr];
                                        
-                                       [loginName setObject:newStr forKey:@"userId"];
-                                       [loginName setObject:deviceTokenStr forKey:@"userDevicePushToken"];
+                                       if(![newStr isEqualToString:@""]) {
+                                           [loginName setObject:newStr forKey:@"userId"];
+                                           [loginName setObject:deviceTokenStr forKey:@"userDevicePushToken"];
+
+                                           //Set the user's ID for flurry to track.
+                                           [Flurry setUserID:newStr];
+                                           [Flurry setPushToken:deviceTokenStr];
+                                       }
                                    }];
         }
 
