@@ -1,8 +1,27 @@
 PODS:
+  - AFNetworking (2.0.3):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+    - AFNetworking/UIKit
+  - AFNetworking/NSURLConnection (2.0.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.0.3):
+    - AFNetworking/NSURLConnection
+  - AFNetworking/Reachability (2.0.3)
+  - AFNetworking/Security (2.0.3)
+  - AFNetworking/Serialization (2.0.3)
+  - AFNetworking/UIKit (2.0.3):
+    - AFNetworking/NSURLConnection
   - Canvas (0.1)
   - ECSlidingViewController (0.10.0)
   - FlurrySDK (4.2.3)
   - PunchScrollView (1.0.2)
+  - Reachability (3.1.1)
   - SBJson (3.2)
   - SDWebImage (3.5):
     - SDWebImage/Core
@@ -10,19 +29,23 @@ PODS:
   - TestFlightSDK (2.0)
 
 DEPENDENCIES:
+  - AFNetworking (~> 2.0.3)
   - Canvas (~> 0.1)
   - ECSlidingViewController (~> 0.10.0)
   - FlurrySDK (~> 4.2.3)
   - PunchScrollView (~> 1.0.2)
+  - Reachability (~> 3.1.1)
   - SBJson (~> 3.2)
   - SDWebImage (~> 3.5)
   - TestFlightSDK (~> 2.0)
 
 SPEC CHECKSUMS:
+  AFNetworking: e499052cbf3d743e9bb727bb37adb9dc2547ba15
   Canvas: 1d94806aab1ef0486df719f80f47eccf40a08ae5
   ECSlidingViewController: fc9a9a6564d4a64c0d8c7cf5583d2b9a469ecd04
   FlurrySDK: 20b3fd669eeafd005ca8ff65a1406d1befbc8031
   PunchScrollView: 5f4bedc1230bb29dd68c09cc3b8e57547cfb962a
+  Reachability: be4883bb93f31e38266ae3365e5600a317aae735
   SBJson: abc2bf2baef456d5dae213f9826fe2b6fdf19861
   SDWebImage: f1a72472f8a2d54445f1fedafe2090593d9caf7f
   TestFlightSDK: 940906d4b2550cf397c6f2d2fcc4ebfdcd8ae858

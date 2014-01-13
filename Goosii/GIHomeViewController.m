@@ -8,15 +8,13 @@
 
 #import "GIHomeViewController.h"
 #import <ECSlidingViewController.h>
-#import <CSAnimationView.h>
 
 @interface GIHomeViewController ()
 @property (nonatomic, strong) UIImageView *animationImgView;
-@property (nonatomic, strong) CSAnimationView *goosiiLogoAnimationContainer;
 @end
 
 @implementation GIHomeViewController
-@synthesize animationImgView, slidingMenuButton, goosiiLogoAnimationContainer;
+@synthesize animationImgView, slidingMenuButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -34,24 +32,14 @@
     
     [self.navigationController.navigationBar setAlpha:0.0f];
     
-    goosiiLogoAnimationContainer = [[CSAnimationView alloc] initWithFrame:CGRectMake(74, 100, 172, 117)];
     
-    
-    self.animationImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 172, 117)];
+    self.animationImgView = [[UIImageView alloc] initWithFrame:CGRectMake(74, 100, 172, 117)];
     self.animationImgView.image = [UIImage imageNamed:@"BrokenEggAnim_017.png"];
 
+//    [self.animationImgView startAnimating];
     
-    goosiiLogoAnimationContainer.backgroundColor = [UIColor clearColor];
-    [goosiiLogoAnimationContainer addSubview:self.animationImgView];
-    [self.view addSubview:goosiiLogoAnimationContainer];
+    [self.view addSubview:self.animationImgView];
     
-    goosiiLogoAnimationContainer.duration = 1;
-    goosiiLogoAnimationContainer.delay    = 0;
-    goosiiLogoAnimationContainer.type = CSAnimationTypeZoomOut;
-    
-    [goosiiLogoAnimationContainer startCanvasAnimation];
-    
-    [self runLogoAnimation];
 
     UITapGestureRecognizer *enterTapGesture =
     [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -72,10 +60,8 @@
     
     [self.view addSubview:self.slidingMenuButton];
     
-    CSAnimationView *enterBtnContainer = [[CSAnimationView alloc] initWithFrame:CGRectMake(20, 300, 280, 50)];
-    
     UIButton *enterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    enterBtn.frame = CGRectMake(0, 0, 280, 50);
+    enterBtn.frame = CGRectMake(20, 300, 280, 50);
     //[enterBtn setBackgroundColor:[self colorWithHexString:@"3b5999"]];
     [enterBtn addTarget:self action:@selector(enterBtn:) forControlEvents:UIControlEventTouchUpInside];
     [enterBtn setTitle:@"Tap anywhere to begin." forState:UIControlStateNormal];
@@ -83,18 +69,12 @@
     [enterBtn.titleLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
     [enterBtn.titleLabel setTextColor:[UIColor whiteColor]];
     
-    enterBtnContainer.backgroundColor = [UIColor clearColor];
     
-    enterBtnContainer.duration = 1.5;
-    enterBtnContainer.delay    = 0;
-    enterBtnContainer.type = CSAnimationTypePop;
-    
-    [enterBtnContainer addSubview:enterBtn];
-    [self.view addSubview:enterBtnContainer];
-    
-    [enterBtnContainer startCanvasAnimation];
+    [self.view addSubview:enterBtn];
     
     [self.view setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
+    
+    [self runLogoAnimation];
 }
 
 -(void)viewWillAppear:(BOOL)animated {

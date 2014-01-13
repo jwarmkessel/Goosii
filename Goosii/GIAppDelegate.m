@@ -12,15 +12,23 @@
 #import <Flurry.h>
 #import <Social/Social.h>
 #import <Accounts/Accounts.h>
+#import <Reachability.h>
+#import "GIEventScrollViewController.h"
+#import "GICheckinViewController.h"
+#import <AFNetworkReachabilityManager.h>
+#import <AFNetworking.h>
+#import <AFHTTPRequestOperationManager.h>
+#import "GIUniqueIDGenerator.h"
 
 @implementation GIAppDelegate
 
 @synthesize accountStore = _accountStore;
 @synthesize fbAccount = _fbAccount;
+@synthesize reachability = _reachability;
+@synthesize manager = _manager;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-
-//    [NewRelicAgent startWithApplicationToken:@"AAd72363c0bc34636264aa4af9a4f00b6269cea4ab"];
+    
     //Set up API environment variables.
     NSObject *goosiiAPI __unused = [[GIGlobalVariables alloc] init];
 
@@ -28,19 +36,50 @@
     NSLog(@"The new relic token %@", NEW_RELIC_TOKEN);
 
     NSLog(@"THE CURRENT API REQUEST %@", GOOSIIAPI);
- 
+    
+    //Start AFNetworking Reachability.
+    self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:GOOSIIAPI]];
+    self.manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    NSOperationQueue *operationQueue = self.manager.operationQueue;
+    [self.manager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        switch (status) {
+            case AFNetworkReachabilityStatusNotReachable:
+                // we need to notify a delegete when internet conexion is lost.
+                // [delegate internetConexionLost];
+                NSLog(@"No Internet Conexion");
+                break;
+            {case AFNetworkReachabilityStatusReachableViaWiFi:
+                NSLog(@"WIFI");
+//                GIUniqueIDGenerator *uniqueIDGenerator = [[GIUniqueIDGenerator alloc] init];
+//                [uniqueIDGenerator connectAndGenerateUniqueId];
+                
+                break;}
+            {case AFNetworkReachabilityStatusReachableViaWWAN:
+                NSLog(@"3G");
+//                GIUniqueIDGenerator *uniqueIDGenerator = [[GIUniqueIDGenerator alloc] init];
+//                [uniqueIDGenerator connectAndGenerateUniqueId];
+                
+                break;}
+            default:
+                NSLog(@"Unkown network status");
+                [operationQueue setSuspended:YES];
+                break;
+        }
+    }];
+    
     //Set testflight device token.
     [TestFlight takeOff:@"bc01fdd6-8f88-4d53-927a-43a17ff87eee"];
     
     //Flurry analytics
-
     [Flurry setCrashReportingEnabled:YES];
     [Flurry startSession:@"TG9C2BZ4V4KX78GXYD4K"];
     
     // Let the device know we want to receive push notifications
 	[[UIApplication sharedApplication] registerForRemoteNotificationTypes:
      (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+    
 
+    [self.manager.reachabilityManager startMonitoring];
     return YES;
 }
 
@@ -114,32 +153,71 @@
                     
                     NSURL *url = [NSURL URLWithString:urlPost];
                     NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-                    [NSURLConnection sendAsynchronousRequest:urlRequest
-                                                       queue:[NSOperationQueue mainQueue]
-                                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                                               
-                                               // your data or an error will be ready here
-                                               NSString* newStr = [[NSString alloc] initWithData:data
-                                                                                        encoding:NSUTF8StringEncoding];
-                                               
-                                               NSLog(@"ReceivedData %@", newStr);
-                                               newStr = [newStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
-                                               
-                                               if(![newStr isEqualToString:@""]) {
-                                                   [loginName setObject:newStr forKey:@"userId"];
-                                                   [loginName setObject:deviceTokenStr forKey:@"userDevicePushToken"];
-                                                   
-                                                   //Set the user's ID for flurry to track.
-                                                   [Flurry setUserID:newStr];
-                                                   [Flurry setPushToken:deviceTokenStr];
-                                               }
-                                               
-                                           }];
                     
-                    
+                    NSURLResponse* response = nil;
+                    NSError *error = nil;
+                    NSData* data = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
+
+                    if(!error) {
+                        // your data or an error will be ready here
+                        NSString* newStr = [[NSString alloc] initWithData:data
+                                                                 encoding:NSUTF8StringEncoding];
+                        
+                        NSLog(@"ReceivedData %@", newStr);
+                        newStr = [newStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+                        
+                        if(![newStr isEqualToString:@""]) {
+                            [loginName setObject:newStr forKey:@"userId"];
+                            [loginName setObject:deviceTokenStr forKey:@"userDevicePushToken"];
+                            
+                            //Set the user's ID for flurry to track.
+                            [Flurry setUserID:newStr];
+                            [Flurry setPushToken:deviceTokenStr];
+                        }
+                        
+                        if(error) {
+                            [self.manager.reachabilityManager startMonitoring];
+                        }
+                    }
                 } else {
+                    
                     NSLog(@"ERR: %@",error);
                     // Fail gracefully...
+                    NSLog(@"I'm totally NOT given access to facebook so just do a regular create user");
+                    
+                    NSUUID *uid = [UIDevice currentDevice].identifierForVendor;
+                    
+                    NSLog(@"IdentifierForVendor %@ STOP",[uid UUIDString]);
+                    NSString *urlPost = [NSString stringWithFormat:@"%@createUser/%@/%@", GOOSIIAPI, [uid UUIDString], deviceTokenStr];
+                    
+                    
+                    NSURL *url = [NSURL URLWithString:urlPost];
+                    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+                    
+                    NSURLResponse* response = nil;
+                    NSError *error = nil;
+                    NSData* data = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
+                    
+                    if(!error) {
+                    
+                        // your data or an error will be ready here
+                        NSString* newStr = [[NSString alloc] initWithData:data
+                                                                 encoding:NSUTF8StringEncoding];
+                        
+                        NSLog(@"ReceivedData %@", newStr);
+                        newStr = [newStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+                        
+                        if(![newStr isEqualToString:@""]) {
+                            [loginName setObject:newStr forKey:@"userId"];
+                            [loginName setObject:deviceTokenStr forKey:@"userDevicePushToken"];
+                            
+                            //Set the user's ID for flurry to track.
+                            [Flurry setUserID:newStr];
+                            [Flurry setPushToken:deviceTokenStr];
+                        }
+                    } else {
+                        [self.manager.reachabilityManager startMonitoring];
+                    }
                 }
             }
              ];
@@ -153,31 +231,33 @@
             
             NSURL *url = [NSURL URLWithString:urlPost];
             NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-            [NSURLConnection sendAsynchronousRequest:urlRequest
-                                               queue:[NSOperationQueue mainQueue]
-                                   completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                                       
-                                       // your data or an error will be ready here
-                                       NSString* newStr = [[NSString alloc] initWithData:data
-                                                                                encoding:NSUTF8StringEncoding];
-                                       
-                                       NSLog(@"ReceivedData %@", newStr);
-                                       newStr = [newStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
-                                       
-                                       
-                                       if(![newStr isEqualToString:@""]) {
-                                           [loginName setObject:newStr forKey:@"userId"];
-                                           [loginName setObject:deviceTokenStr forKey:@"userDevicePushToken"];
-
-                                           //Set the user's ID for flurry to track.
-                                           [Flurry setUserID:newStr];
-                                           [Flurry setPushToken:deviceTokenStr];
-                                       }
-                                   }];
+            NSURLResponse* response = nil;
+            NSError *error = nil;
+            NSData* data = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
+            
+            if(!error) {
+                // your data or an error will be ready here
+                NSString* newStr = [[NSString alloc] initWithData:data
+                                                         encoding:NSUTF8StringEncoding];
+                
+                NSLog(@"ReceivedData %@", newStr);
+                newStr = [newStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+                
+                
+                if(![newStr isEqualToString:@""]) {
+                    [loginName setObject:newStr forKey:@"userId"];
+                    [loginName setObject:deviceTokenStr forKey:@"userDevicePushToken"];
+                    
+                    //Set the user's ID for flurry to track.
+                    [Flurry setUserID:newStr];
+                    [Flurry setPushToken:deviceTokenStr];
+                }
+                
+            } else {
+                [self.manager.reachabilityManager startMonitoring];
+            }
         }
-
     }
-
 }
 
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
@@ -210,7 +290,6 @@
             NSLog(@"connection failed");
         }
     } else {
-        
         NSUUID *uid = [UIDevice currentDevice].identifierForVendor;
         
         NSLog(@"IdentifierForVendor %@",[uid UUIDString]);
@@ -220,23 +299,28 @@
         
         NSURL *url = [NSURL URLWithString:urlPost];
         NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-        [NSURLConnection sendAsynchronousRequest:urlRequest
-                                           queue:[NSOperationQueue mainQueue]
-                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                                   
-                                   // your data or an error will be ready here
-                                   NSString* newStr = [[NSString alloc] initWithData:data
-                                                                            encoding:NSUTF8StringEncoding];
-                                   
-                                   NSLog(@"ReceivedData %@", newStr);
-                                   //Set Flurry user's ID.
-                                  [Flurry setUserID:newStr];
-                                   
-                                   newStr = [newStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
-                                   [plist setObject:newStr forKey:@"userId"];
-                               }];
-    }
+        
+        NSURLResponse* response = nil;
+        NSError *error = nil;
+        NSData* data = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
 
+        if(!error) {
+            // your data or an error will be ready here
+            NSString* newStr = [[NSString alloc] initWithData:data
+                                                     encoding:NSUTF8StringEncoding];
+            
+            NSLog(@"ReceivedData %@", newStr);
+            //Set Flurry user's ID.
+            [Flurry setUserID:newStr];
+            
+            newStr = [newStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+            [plist setObject:newStr forKey:@"userId"];
+            
+        } else {
+            [self.manager.reachabilityManager startMonitoring];
+        }
+    }
+    
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
@@ -261,6 +345,22 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
+    //If reachable and there isn't a company id than call the server to create one.
+    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
+    
+    NSString *userIdString;
+    
+    if([plist objectForKey:@"userId"]) {
+        userIdString = [plist objectForKey:@"userId"];
+        NSLog(@"THe string length %lu", (unsigned long)userIdString.length);
+    }
+    
+    if(![plist objectForKey:@"userId"] || userIdString.length != 24) {
+    
+        GIUniqueIDGenerator *uniqueIdGenerator = [[GIUniqueIDGenerator alloc] init];
+        [uniqueIdGenerator connectAndGenerateUniqueId];
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

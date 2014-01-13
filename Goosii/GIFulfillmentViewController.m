@@ -142,70 +142,69 @@
     //
     //    NSLog(@"The facebook urlpost %@", urlPost);
     
-    if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
-    {
-        SLComposeViewController *sharingComposer = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-        
-        SLComposeViewControllerCompletionHandler __block completionHandler=^(SLComposeViewControllerResult result){
-            if (result == SLComposeViewControllerResultCancelled) {
-                
-                NSLog(@"Cancelled");
-                
-            } else {
-                NSLog(@"Posting to facebook.");
-                
-                NSLog(@"The result %d", result);
-                GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
-                
-                NSString *urlString = [NSString stringWithFormat:@"%@removeFulfillmentObject/%@/%@", GOOSIIAPI, self.company.companyId, [plist objectForKey:@"userId"]];
-                
-                NSLog(@"Remove fulfillment flag %@", urlString);
-                
-                NSURL *url = [NSURL URLWithString:urlString];
-                NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-                [NSURLConnection sendAsynchronousRequest:urlRequest
-                                                   queue:[NSOperationQueue mainQueue]
-                                       completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                                           
-                                           // your data or an error will be ready here
-                                           NSString* newStr = [[NSString alloc] initWithData:data
-                                                                                    encoding:NSUTF8StringEncoding];
-                                           
-                                           NSLog(@"ReceivedData %@", newStr);
-                                           
-                                           NSArray *viewControllerArray = [self.navigationController viewControllers];
-                                           NSLog(@"Nav controller array %lu", (unsigned long)[[self.navigationController viewControllers] count]);
-                                           int parentViewControllerIndex = [viewControllerArray count] - 2;
-                                           
-                                           if([[self.navigationController.viewControllers objectAtIndex:(parentViewControllerIndex)] isKindOfClass:[GICheckinViewController class]]) {
-                                               [self performSegueWithIdentifier:@"rewardViewSegue" sender:self];
-                                           } else {
-                                               [self performSegueWithIdentifier:@"rewardStateViewSegue" sender:self];
-                                           }    
-                                       }];
-            }
+
+    SLComposeViewController *sharingComposer = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+    
+    SLComposeViewControllerCompletionHandler __block completionHandler=^(SLComposeViewControllerResult result){
+        if (result == SLComposeViewControllerResultCancelled) {
             
-            [sharingComposer dismissViewControllerAnimated:YES completion:nil];
-        };
-        [sharingComposer setCompletionHandler:completionHandler];
-        [sharingComposer setInitialText:[NSString stringWithFormat:@"%@ %@",[self editableText],[self permanentText]]];
-        [sharingComposer addURL:[NSURL URLWithString:company.website]];        
+            NSLog(@"Cancelled");
+            
+        } else {
+            NSLog(@"Posting to facebook.");
+            
+            NSLog(@"The result %d", result);
+            GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
+            
+            NSString *urlString = [NSString stringWithFormat:@"%@removeFulfillmentObject/%@/%@", GOOSIIAPI, self.company.companyId, [plist objectForKey:@"userId"]];
+            
+            NSLog(@"Remove fulfillment flag %@", urlString);
+            
+            NSURL *url = [NSURL URLWithString:urlString];
+            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+            [NSURLConnection sendAsynchronousRequest:urlRequest
+                                               queue:[NSOperationQueue mainQueue]
+                                   completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                                       
+                                       // your data or an error will be ready here
+                                       NSString* newStr = [[NSString alloc] initWithData:data
+                                                                                encoding:NSUTF8StringEncoding];
+                                       
+                                       NSLog(@"ReceivedData %@", newStr);
+                                       
+                                       NSArray *viewControllerArray = [self.navigationController viewControllers];
+                                       NSLog(@"Nav controller array %lu", (unsigned long)[[self.navigationController viewControllers] count]);
+                                       int parentViewControllerIndex = [viewControllerArray count] - 2;
+                                       
+                                       if([[self.navigationController.viewControllers objectAtIndex:(parentViewControllerIndex)] isKindOfClass:[GICheckinViewController class]]) {
+                                           [self performSegueWithIdentifier:@"rewardViewSegue" sender:self];
+                                       } else {
+                                           [self performSegueWithIdentifier:@"rewardStateViewSegue" sender:self];
+                                       }    
+                                   }];
+        }
         
-        [self presentViewController:sharingComposer animated:YES completion:^{
-            for (UIView *viewLayer1 in [[sharingComposer view] subviews]) {
-                for (UIView *viewLayer2 in [viewLayer1 subviews]) {
-                    if ([viewLayer2 isKindOfClass:[UIView class]]) {
-                        for (UIView *viewLayer3 in [viewLayer2 subviews]) {
-                            if ([viewLayer3 isKindOfClass:[UITextView class]]) {
-                                [(UITextView *)viewLayer3 setDelegate:self];
-                                sharingTextView = (UITextView *)viewLayer3;
-                            }
+        [sharingComposer dismissViewControllerAnimated:YES completion:nil];
+    };
+    [sharingComposer setCompletionHandler:completionHandler];
+    [sharingComposer setInitialText:[NSString stringWithFormat:@"%@ %@",[self editableText],[self permanentText]]];
+    [sharingComposer addURL:[NSURL URLWithString:company.website]];        
+    
+    [self presentViewController:sharingComposer animated:YES completion:^{
+        for (UIView *viewLayer1 in [[sharingComposer view] subviews]) {
+            for (UIView *viewLayer2 in [viewLayer1 subviews]) {
+                if ([viewLayer2 isKindOfClass:[UIView class]]) {
+                    for (UIView *viewLayer3 in [viewLayer2 subviews]) {
+                        if ([viewLayer3 isKindOfClass:[UITextView class]]) {
+                            [(UITextView *)viewLayer3 setDelegate:self];
+                            sharingTextView = (UITextView *)viewLayer3;
                         }
                     }
                 }
             }
-        }];
-    }
+        }
+    }];
+
 }
 
 - (NSString *)editableText
@@ -305,7 +304,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     CGRect prizeImgView = CGRectMake((200/2-45), 135, 95, 90.0);
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:prizeImgView];
     
-    [[SDImageCache sharedImageCache] removeImageForKey:[NSString stringWithFormat:@"%@/companyAssets/%@/rewardImageThumb.png", kBASE_URL, company.companyId] fromDisk:YES];
+    [[SDImageCache sharedImageCache] removeImageForKey:[NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, company.companyId] fromDisk:YES];
+    [[SDImageCache sharedImageCache] removeImageForKey:[NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, company.companyId] fromDisk:YES];
 
     NSString *urlString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, company.companyId];
     

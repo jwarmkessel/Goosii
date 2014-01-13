@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <Accounts/Accounts.h>
+#import <AFHTTPRequestOperationManager.h>
+
+@class Reachability;
 
 @interface GIAppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -16,5 +19,8 @@
 
 @property (strong, nonatomic) ACAccountStore *accountStore;
 @property (strong, nonatomic) ACAccount *fbAccount;
+@property (strong, nonatomic) Reachability* reachability;
+@property (strong, nonatomic) AFHTTPRequestOperationManager* manager;
+
 
 @end

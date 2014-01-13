@@ -16,9 +16,6 @@
 		8309748C17837C0900ABC1CF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8309748A17837C0900ABC1CF /* InfoPlist.strings */; };
 		8309748E17837C0900ABC1CF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8309748D17837C0900ABC1CF /* main.m */; };
 		8309749217837C0900ABC1CF /* GIAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8309749117837C0900ABC1CF /* GIAppDelegate.m */; };
-		8309749417837C0900ABC1CF /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 8309749317837C0900ABC1CF /* Default.png */; };
-		8309749617837C0900ABC1CF /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8309749517837C0900ABC1CF /* Default@2x.png */; };
-		8309749817837C0900ABC1CF /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8309749717837C0900ABC1CF /* Default-568h@2x.png */; };
 		8309749B17837C0900ABC1CF /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8309749917837C0900ABC1CF /* MainStoryboard.storyboard */; };
 		830974A9178380E300ABC1CF /* GIInitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 830974A8178380E300ABC1CF /* GIInitViewController.m */; };
 		830974AC1783812A00ABC1CF /* GIMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 830974AB1783812A00ABC1CF /* GIMenuViewController.m */; };
@@ -30,6 +27,8 @@
 		830D2D201797E183003EA961 /* image3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 830D2D1A1797E183003EA961 /* image3.jpg */; };
 		830D2D211797E183003EA961 /* image4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 830D2D1B1797E183003EA961 /* image4.jpg */; };
 		830D2D221797E183003EA961 /* image5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 830D2D1C1797E183003EA961 /* image5.jpg */; };
+		831129EA1877D77D00972233 /* rewardBackgroundPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 831129E91877D77D00972233 /* rewardBackgroundPlaceholder.png */; };
+		831129ED1877DB5700972233 /* GICompanyCheckinCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 831129EC1877DB5700972233 /* GICompanyCheckinCell.m */; };
 		8313FDDC1857F1C700A73A7A /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8313FDDB1857F1C700A73A7A /* Accounts.framework */; };
 		8315EC3D18625967005D69FB /* GIEventScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8315EC3C18625967005D69FB /* GIEventScrollViewController.m */; };
 		83196AF017838A34008A6107 /* GIMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83196AEF17838A34008A6107 /* GIMainViewController.m */; };
@@ -52,6 +51,7 @@
 		8319FABC17E7DB5B00661B91 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8319FABB17E7DB5B00661B91 /* icon.png */; };
 		8319FABE17E7DB6500661B91 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8319FABD17E7DB6500661B91 /* icon@2x.png */; };
 		831F0E9C1842E2D300DD43BD /* imagePlaceHolder.png in Resources */ = {isa = PBXBuildFile; fileRef = 831F0E9B1842E2D300DD43BD /* imagePlaceHolder.png */; };
+		834A82E6187D01FA00E4F55F /* GIUniqueIDGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 834A82E5187D01FA00E4F55F /* GIUniqueIDGenerator.m */; };
 		836BC1A817C3190300EF3007 /* Bubble.png in Resources */ = {isa = PBXBuildFile; fileRef = 836BC19C17C3190300EF3007 /* Bubble.png */; };
 		836BC1A917C3190300EF3007 /* Bubble@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = 836BC19D17C3190300EF3007 /* Bubble@x2.png */; };
 		836BC1AA17C3190300EF3007 /* Bubble1.png in Resources */ = {isa = PBXBuildFile; fileRef = 836BC19E17C3190300EF3007 /* Bubble1.png */; };
@@ -73,6 +73,9 @@
 		83729A5818208E09004DF66E /* Gossii_iPhoneSettings29x29.png in Resources */ = {isa = PBXBuildFile; fileRef = 83729A5718208E09004DF66E /* Gossii_iPhoneSettings29x29.png */; };
 		83729A5A18208EE7004DF66E /* Goosii_iPhone80x80.png in Resources */ = {isa = PBXBuildFile; fileRef = 83729A5918208EE7004DF66E /* Goosii_iPhone80x80.png */; };
 		83729A5C18208EF2004DF66E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83729A5B18208EF2004DF66E /* Images.xcassets */; };
+		83917CED18821BFA00540EBF /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 83917CEA18821BFA00540EBF /* Default.png */; };
+		83917CEE18821BFA00540EBF /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83917CEB18821BFA00540EBF /* Default@2x.png */; };
+		83917CF018821D3E00540EBF /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83917CEF18821D3E00540EBF /* Default-568h@2x.png */; };
 		83A4A754183AEC0F00C7FE3A /* BrokenEggAnim_000.png in Resources */ = {isa = PBXBuildFile; fileRef = 83A4A67C183AEC0F00C7FE3A /* BrokenEggAnim_000.png */; };
 		83A4A755183AEC0F00C7FE3A /* BrokenEggAnim_001.png in Resources */ = {isa = PBXBuildFile; fileRef = 83A4A67D183AEC0F00C7FE3A /* BrokenEggAnim_001.png */; };
 		83A4A756183AEC0F00C7FE3A /* BrokenEggAnim_002.png in Resources */ = {isa = PBXBuildFile; fileRef = 83A4A67E183AEC0F00C7FE3A /* BrokenEggAnim_002.png */; };
@@ -327,9 +330,6 @@
 		8309748F17837C0900ABC1CF /* Goosii-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Goosii-Prefix.pch"; sourceTree = "<group>"; };
 		8309749017837C0900ABC1CF /* GIAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GIAppDelegate.h; sourceTree = "<group>"; };
 		8309749117837C0900ABC1CF /* GIAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GIAppDelegate.m; sourceTree = "<group>"; };
-		8309749317837C0900ABC1CF /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		8309749517837C0900ABC1CF /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		8309749717837C0900ABC1CF /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		8309749A17837C0900ABC1CF /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		830974A7178380E300ABC1CF /* GIInitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIInitViewController.h; sourceTree = "<group>"; };
 		830974A8178380E300ABC1CF /* GIInitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIInitViewController.m; sourceTree = "<group>"; };
@@ -345,6 +345,9 @@
 		830D2D1A1797E183003EA961 /* image3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image3.jpg; sourceTree = "<group>"; };
 		830D2D1B1797E183003EA961 /* image4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image4.jpg; sourceTree = "<group>"; };
 		830D2D1C1797E183003EA961 /* image5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image5.jpg; sourceTree = "<group>"; };
+		831129E91877D77D00972233 /* rewardBackgroundPlaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rewardBackgroundPlaceholder.png; path = ../../../../rewardBackgroundPlaceholder.png; sourceTree = "<group>"; };
+		831129EB1877DB5700972233 /* GICompanyCheckinCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GICompanyCheckinCell.h; sourceTree = "<group>"; };
+		831129EC1877DB5700972233 /* GICompanyCheckinCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GICompanyCheckinCell.m; sourceTree = "<group>"; };
 		8313FDDB1857F1C700A73A7A /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		8315EC3B18625967005D69FB /* GIEventScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GIEventScrollViewController.h; path = ../GIEventScrollViewController.h; sourceTree = "<group>"; };
 		8315EC3C18625967005D69FB /* GIEventScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GIEventScrollViewController.m; path = ../GIEventScrollViewController.m; sourceTree = "<group>"; };
@@ -379,6 +382,8 @@
 		8319FABB17E7DB5B00661B91 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ../icon.png; sourceTree = "<group>"; };
 		8319FABD17E7DB6500661B91 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon@2x.png"; path = "../icon@2x.png"; sourceTree = "<group>"; };
 		831F0E9B1842E2D300DD43BD /* imagePlaceHolder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = imagePlaceHolder.png; sourceTree = "<group>"; };
+		834A82E4187D01FA00E4F55F /* GIUniqueIDGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIUniqueIDGenerator.h; sourceTree = "<group>"; };
+		834A82E5187D01FA00E4F55F /* GIUniqueIDGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIUniqueIDGenerator.m; sourceTree = "<group>"; };
 		836BC19C17C3190300EF3007 /* Bubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bubble.png; sourceTree = "<group>"; };
 		836BC19D17C3190300EF3007 /* Bubble@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bubble@x2.png"; sourceTree = "<group>"; };
 		836BC19E17C3190300EF3007 /* Bubble1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bubble1.png; sourceTree = "<group>"; };
@@ -401,6 +406,9 @@
 		83729A5718208E09004DF66E /* Gossii_iPhoneSettings29x29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Gossii_iPhoneSettings29x29.png; sourceTree = "<group>"; };
 		83729A5918208EE7004DF66E /* Goosii_iPhone80x80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Goosii_iPhone80x80.png; sourceTree = "<group>"; };
 		83729A5B18208EF2004DF66E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		83917CEA18821BFA00540EBF /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		83917CEB18821BFA00540EBF /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		83917CEF18821D3E00540EBF /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		83A4A67C183AEC0F00C7FE3A /* BrokenEggAnim_000.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BrokenEggAnim_000.png; sourceTree = "<group>"; };
 		83A4A67D183AEC0F00C7FE3A /* BrokenEggAnim_001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BrokenEggAnim_001.png; sourceTree = "<group>"; };
 		83A4A67E183AEC0F00C7FE3A /* BrokenEggAnim_002.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BrokenEggAnim_002.png; sourceTree = "<group>"; };
@@ -723,6 +731,8 @@
 				830974A8178380E300ABC1CF /* GIInitViewController.m */,
 				830974AA1783812A00ABC1CF /* GIMenuViewController.h */,
 				830974AB1783812A00ABC1CF /* GIMenuViewController.m */,
+				834A82E4187D01FA00E4F55F /* GIUniqueIDGenerator.h */,
+				834A82E5187D01FA00E4F55F /* GIUniqueIDGenerator.m */,
 				83196AF117838A40008A6107 /* MainFlow */,
 				83196AF217838A69008A6107 /* ActivityFlow */,
 				83196B021783AF2B008A6107 /* Dashboard */,
@@ -735,6 +745,7 @@
 		8309748817837C0900ABC1CF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				831129E91877D77D00972233 /* rewardBackgroundPlaceholder.png */,
 				83AC9C791855757800F186E1 /* GINoEventsNearbyBackgroundGradient-568h@2x.png */,
 				83AC9C741855751D00F186E1 /* GINoEventsNearbyBackgroundGradient.png */,
 				83AC9C751855751D00F186E1 /* GINoEventsNearbyBackgroundGradient@2x.png */,
@@ -756,9 +767,9 @@
 				8309748A17837C0900ABC1CF /* InfoPlist.strings */,
 				8309748D17837C0900ABC1CF /* main.m */,
 				8309748F17837C0900ABC1CF /* Goosii-Prefix.pch */,
-				8309749317837C0900ABC1CF /* Default.png */,
-				8309749517837C0900ABC1CF /* Default@2x.png */,
-				8309749717837C0900ABC1CF /* Default-568h@2x.png */,
+				83917CEF18821D3E00540EBF /* Default-568h@2x.png */,
+				83917CEA18821BFA00540EBF /* Default.png */,
+				83917CEB18821BFA00540EBF /* Default@2x.png */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -852,6 +863,8 @@
 			children = (
 				83196B0E1785731F008A6107 /* GICompany.h */,
 				83196B0F1785731F008A6107 /* GICompany.m */,
+				831129EB1877DB5700972233 /* GICompanyCheckinCell.h */,
+				831129EC1877DB5700972233 /* GICompanyCheckinCell.m */,
 			);
 			name = MainFlowResources;
 			sourceTree = "<group>";
@@ -1269,10 +1282,7 @@
 				83A4A7C5183AEC0F00C7FE3A /* BrokenEggAnim_016@2x.png in Resources */,
 				83A4A80A183AEC0F00C7FE3A /* Intro_0067@2x.png in Resources */,
 				8309748C17837C0900ABC1CF /* InfoPlist.strings in Resources */,
-				8309749417837C0900ABC1CF /* Default.png in Resources */,
 				83A4A774183AEC0F00C7FE3A /* Intro_0014.png in Resources */,
-				8309749617837C0900ABC1CF /* Default@2x.png in Resources */,
-				8309749817837C0900ABC1CF /* Default-568h@2x.png in Resources */,
 				83AC9C7A1855757800F186E1 /* GINoEventsNearbyBackgroundGradient-568h@2x.png in Resources */,
 				83A4A7AE183AEC0F00C7FE3A /* Intro_0072.png in Resources */,
 				8309749B17837C0900ABC1CF /* MainStoryboard.storyboard in Resources */,
@@ -1316,6 +1326,7 @@
 				83A4A7A3183AEC0F00C7FE3A /* Intro_0061.png in Resources */,
 				83A4A766183AEC0F00C7FE3A /* Intro_0000.png in Resources */,
 				83A4A804183AEC0F00C7FE3A /* Intro_0061@2x.png in Resources */,
+				83917CEE18821BFA00540EBF /* Default@2x.png in Resources */,
 				83A4A7DE183AEC0F00C7FE3A /* Intro_0023@2x.png in Resources */,
 				830D2D211797E183003EA961 /* image4.jpg in Resources */,
 				830D2D221797E183003EA961 /* image5.jpg in Resources */,
@@ -1351,6 +1362,7 @@
 				83A4A796183AEC0F00C7FE3A /* Intro_0048.png in Resources */,
 				83F9244E17AC937F00E97376 /* No_Partic_Back.png in Resources */,
 				83A4A815183AEC0F00C7FE3A /* Intro_0078@2x.png in Resources */,
+				831129EA1877D77D00972233 /* rewardBackgroundPlaceholder.png in Resources */,
 				83F9244F17AC937F00E97376 /* Partic_Back.png in Resources */,
 				83A4A827183AEC0F00C7FE3A /* BrokenEggAnim_017-568h@2x.png in Resources */,
 				83A4A7F9183AEC0F00C7FE3A /* Intro_0050@2x.png in Resources */,
@@ -1405,6 +1417,7 @@
 				83A4A821183AEC0F00C7FE3A /* BrokenEggAnim_011-568h@2x.png in Resources */,
 				83A4A7EE183AEC0F00C7FE3A /* Intro_0039@2x.png in Resources */,
 				83A4A7B4183AEC0F00C7FE3A /* Intro_0078.png in Resources */,
+				83917CF018821D3E00540EBF /* Default-568h@2x.png in Resources */,
 				83A4A779183AEC0F00C7FE3A /* Intro_0019.png in Resources */,
 				83A4A81D183AEC0F00C7FE3A /* BrokenEggAnim_007-568h@2x.png in Resources */,
 				83A4A7E3183AEC0F00C7FE3A /* Intro_0028@2x.png in Resources */,
@@ -1509,6 +1522,7 @@
 				83A4A768183AEC0F00C7FE3A /* Intro_0002.png in Resources */,
 				83A4A7ED183AEC0F00C7FE3A /* Intro_0038@2x.png in Resources */,
 				83A4A7FC183AEC0F00C7FE3A /* Intro_0053@2x.png in Resources */,
+				83917CED18821BFA00540EBF /* Default.png in Resources */,
 				83A4A793183AEC0F00C7FE3A /* Intro_0045.png in Resources */,
 				83A4A816183AEC0F00C7FE3A /* BrokenEggAnim_000-568h@2x.png in Resources */,
 				83A4A7B3183AEC0F00C7FE3A /* Intro_0077.png in Resources */,
@@ -1568,6 +1582,7 @@
 				8309748E17837C0900ABC1CF /* main.m in Sources */,
 				8309749217837C0900ABC1CF /* GIAppDelegate.m in Sources */,
 				830974A9178380E300ABC1CF /* GIInitViewController.m in Sources */,
+				831129ED1877DB5700972233 /* GICompanyCheckinCell.m in Sources */,
 				830974AC1783812A00ABC1CF /* GIMenuViewController.m in Sources */,
 				830974AF178381D400ABC1CF /* GIMainNavViewController.m in Sources */,
 				830974B21783829000ABC1CF /* GIActivityViewController.m in Sources */,
@@ -1589,6 +1604,7 @@
 				8300C01D17D94A1900D9FC4C /* GIRewardViewController.m in Sources */,
 				8319FAAA17E7B47700661B91 /* GIGlobalVariables.m in Sources */,
 				83AC9C65185563C800F186E1 /* GINoEventsNearby.m in Sources */,
+				834A82E6187D01FA00E4F55F /* GIUniqueIDGenerator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1677,7 +1693,7 @@
 			baseConfigurationReference = 74FD184883D948B3BC8A4AB3 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1698,7 +1714,7 @@
 			baseConfigurationReference = 74FD184883D948B3BC8A4AB3 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

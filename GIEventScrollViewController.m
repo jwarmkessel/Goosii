@@ -11,11 +11,11 @@
 #import "GIProgressBar.h"
 #import <QuartzCore/QuartzCore.h>
 #import "GICountingLabel.h"
-#import <CSAnimationView.h>
 #import <Social/Social.h>
 #import "GIPlist.h"
 #import "GICompany.h"
 #import "GICheckinViewController.h"
+#import "GIRewardEmployeeController.h"
 
 @interface GIEventScrollViewController () {
     UITextView *sharingTextView;
@@ -34,12 +34,14 @@
 @property (nonatomic, strong) UILabel *companyNameLbl;
 @property (nonatomic, strong) UILabel *companyLbl;
 
+@property (nonatomic, strong) GIRewardEmployeeController *rewardEmployeeView;
+
 @property (nonatomic, strong) UIImageView *rewardImageView;
 
 @end
 
 @implementation GIEventScrollViewController
-@synthesize eventScrollView, timeDurationBar, participationLbl, participateTitleLbl, toggle, blinkTimer, company, webView;
+@synthesize eventScrollView, timeDurationBar, participationLbl, participateTitleLbl, toggle, blinkTimer, company, webView, rewardEmployeeView;
 
 BOOL isEvent = 1;
 BOOL isTransformed = 0;
@@ -52,7 +54,44 @@ BOOL isTransformed = 0;
     
     NSString *urlString = [NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, self.company.companyId];
     
+    
+    /************* Test last moidifed code*/
+    
     [[SDImageCache sharedImageCache] removeImageForKey:[NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, self.company.companyId] fromDisk:YES];
+//
+//    UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:[NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, self.company.companyId]];
+//    
+//    UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:[NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, self.company.companyId]];
+//    
+//    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+//        /* retrieve file attributes */
+//        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:&error];
+//        if (attributes != nil) {
+//            self.fileDate = [attributes fileModificationDate];
+//        }
+//        else {
+//            URLCacheAlertWithError(error);
+//        }
+//    }
+//    
+    
+    /***************************************/
+    
+//    [[SDImageCache sharedImageCache] removeImageForKey:[NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, self.company.companyId] fromDisk:YES];
+    
+//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+//    [request setHTTPMethod:@"HEAD"];
+//    [NSURLConnection sendAsynchronousRequest:request
+//                                       queue:[NSOperationQueue mainQueue]
+//                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+//                               NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
+//                               if ([httpResponse respondsToSelector:@selector(allHeaderFields)]) {
+//                                   NSString *lastModifiedString = [[httpResponse allHeaderFields] objectForKey:@"Last-Modified"];
+//                                   NSLog(@"THE LAST MODIFIED STRING %@", lastModifiedString);
+//                               }
+//                           }];
+    
+//    [[SDImageCache sharedImageCache] removeImageForKey:[NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, self.company.companyId] fromDisk:YES];
     
     [_backgroundImageView setImageWithURL:[NSURL URLWithString:urlString]
                          placeholderImage:[UIImage imageNamed:@"backgroundImage.jpg"]];
@@ -78,19 +117,13 @@ BOOL isTransformed = 0;
     if(!isEvent) {
         [self.view bringSubviewToFront:self.webView];
     }
-    
 }
-
-
 
 - (void)viewDidLoad
 {
     
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    
-    
-    NSLog(@"view did load for scroll view");
     
     self.navigationController.navigationBarHidden = NO;
     
@@ -108,9 +141,27 @@ BOOL isTransformed = 0;
         self.navigationController.navigationBar.barTintColor = [self colorWithHexString:@"C63D0F"];
   
     }
-  
+    
+//    self.navigationController.navigationBar.layer.shadowColor = [[UIColor blackColor] CGColor];
+//    self.navigationController.navigationBar.layer.shadowOffset = CGSizeMake(1.0f, 1.0f);
+//    self.navigationController.navigationBar.layer.shadowRadius = 3.0f;
+//    
+//  
+//    self.navigationController.navigationBar.translucent = NO;
+//    [self.navigationController.navigationBar setAlpha:1];
     self.navigationController.navigationBar.translucent = YES;
-    [self.navigationController.navigationBar setAlpha:1];
+    
+    NSShadow *shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8];
+    shadow.shadowOffset = CGSizeMake(0, 1);
+    [[UINavigationBar appearance] setTitleTextAttributes: [NSDictionary dictionaryWithObjectsAndKeys:
+                                                           [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
+                                                           shadow, NSShadowAttributeName,
+                                                           [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
+    
+//    self.eventScrollView.bounces = NO;
+    
+    
 
     //Override the back button.
     self.backButton = [[UIBarButtonItem alloc] initWithTitle:@"Checkin"
@@ -124,14 +175,14 @@ BOOL isTransformed = 0;
     //Set the reward image but hide it first.
     self.rewardImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.000000, 63.000000, 320.000000, 178.000000)];
     
-    [[SDImageCache sharedImageCache] removeImageForKey:[NSString stringWithFormat:@"%@/companyAssets/%@/rewardImageThumb.png", kBASE_URL, self.company.companyId] fromDisk:YES];
+    [[SDImageCache sharedImageCache] removeImageForKey:[NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, self.company.companyId] fromDisk:YES];
     
     NSString *rewardImageUrlString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, self.company.companyId];
     
     NSLog(@"%@", rewardImageUrlString);
     
     [self.rewardImageView setImageWithURL:[NSURL URLWithString:rewardImageUrlString]
-                         placeholderImage:[UIImage imageNamed:@"backgroundImage.jpg"]];
+                         placeholderImage:[UIImage imageNamed:@"rewardBackgroundPlaceholder.png"]];
     
     [self.eventScrollView addSubview:self.rewardImageView];
 
@@ -278,19 +329,8 @@ BOOL isTransformed = 0;
 
     
     /***********************************************/
-    CSAnimationView *participateTitleLblContainer = [[CSAnimationView alloc] initWithFrame:CGRectMake(localsTotalLbl.frame.origin.x + 5, localsTotalLbl.frame.origin.y + 180, progressBarWidth, progressBarThickness)];
-    
     self.participateTitleLbl = [[UILabel alloc] initWithFrame:CGRectMake(localsTotalLbl.frame.origin.x + 5, localsTotalLbl.frame.origin.y + 180, progressBarWidth, progressBarThickness)];
     
-    [participateTitleLblContainer addSubview:participateTitleLbl];
-    
-    participateTitleLblContainer.duration = 1;
-    participateTitleLblContainer.delay    = 0;
-    participateTitleLblContainer.type = CSAnimationTypeShake;
-    
-    [participateTitleLblContainer startCanvasAnimation];
-
-
     participateTitleLbl.text = @"Participate to improve you odds!";
     [participateTitleLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:10.0f]];
     participateTitleLbl.textColor = [UIColor whiteColor];
@@ -346,8 +386,40 @@ BOOL isTransformed = 0;
     [twitterBtn addTarget:self
                    action:@selector(twitterParticipationBtnHandler)
          forControlEvents:UIControlEventTouchUpInside];
-
     
+    //Enter the user into the contest if they haven't already.
+//    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
+//    
+//    NSString *enterEventUrlString = [NSString stringWithFormat:@"%@enterContest/%@/%@", GOOSIIAPI,[plist objectForKey:@"userId"], self.company.companyId];
+//    
+//    NSURL *enterEventURL = [NSURL URLWithString:enterEventUrlString];
+//    NSURLRequest *enterEventRequest = [NSURLRequest requestWithURL:enterEventURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+//    
+//    [NSURLConnection sendAsynchronousRequest:enterEventRequest
+//                                       queue:[NSOperationQueue mainQueue]
+//                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+//                               
+//                               // your data or an error will be ready here
+//                               NSString* newStr = [[NSString alloc] initWithData:data
+//                                                                        encoding:NSUTF8StringEncoding];
+//                               NSLog(@"response: %@", newStr);
+//                               
+//                               //If this is the first time checking in.
+//                               if([newStr isEqualToString:@"YES"]) {
+//                                   
+//                                   rewardEmployeeView = [[GIRewardEmployeeController alloc] initWithNibName:@"GIRewardEmployeeController" bundle:nil];
+//                                   [self addChildViewController:rewardEmployeeView];
+//                                   
+//                                   if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+//                                       [self.rewardEmployeeView.view setCenter:CGPointMake(self.rewardEmployeeView.view.center.x, (self.rewardEmployeeView.view.center.y - 20.0))];
+//                                   }
+//                                   
+//                                   [self.eventScrollView addSubview:rewardEmployeeView.view];
+//                                   
+//                                   UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Skip" style:UIBarButtonItemStylePlain target:self action:@selector(refreshPropertyList:)];
+//                                   self.navigationItem.rightBarButtonItem = anotherButton;
+//                               }
+//                           }];
 }
 
 - (void)swipeLeft:(UISwipeGestureRecognizer *)swipe {
@@ -527,10 +599,11 @@ BOOL isTransformed = 0;
     buttonFrame.origin.y += offset.y;
     NSLog(@"button's frame: %f, %f, %f, %f", buttonFrame.origin.x, buttonFrame.origin.y, buttonFrame.size.width, buttonFrame.size.height);
     //without the CATransaction the mask's frame setting is actually slighty animated, appearing to give it a delay as we scroll around
-    [CATransaction begin];
-    [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
-    self.maskLayer.frame = buttonFrame;
-    [CATransaction commit];
+//    [CATransaction begin];
+//    [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
+//    self.maskLayer.frame = buttonFrame;
+//    [CATransaction commit];
+    
 }                                               // any offset changes
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView NS_AVAILABLE_IOS(3_2) {} // any zoom scale changes
 

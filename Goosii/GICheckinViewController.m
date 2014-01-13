@@ -20,7 +20,7 @@
 #import <SDImageCache.h>
 #import "GINoEventsNearby.h"
 #import "GIEventScrollViewController.h"
-
+#import "GICompanyCheckinCell.h"
 
 #define METERS_PER_MILE 1609.344
 #define METERS_TO_MILE_CONVERSION 0.00062137
@@ -106,7 +106,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     NSLog(@"Check-in View Will Appear");
     [super viewWillAppear:YES];
-    [self.nearbyLocationsAry removeAllObjects];
+
     //Start loading mask.
     self.loadingMask = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.loadingMask.backgroundColor = [UIColor blackColor];
@@ -157,40 +157,78 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+//    static NSString *CellIdentifier = @"Cell";
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+//    if (cell == nil) {
+//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+//    }
+//    GICompany *company = [self.nearbyLocationsAry objectAtIndex:indexPath.row];
+//    
+//    NSLog(@"%@", [NSString stringWithFormat:@"row %d", indexPath.row]);
+//    
+//    [cell.textLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
+//    cell.textLabel.text = company.name;
+//    
+//    // Here we use the new provided setImageWithURL: method to load the web image
+//    
+//    NSString *urlRewardString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImageThumb.png", kBASE_URL, company.companyId];
+//    
+//    [[SDImageCache sharedImageCache] removeImageForKey:urlRewardString fromDisk:YES];
+//
+//    NSLog(@"%@", urlRewardString);
+//    [cell.imageView setImageWithURL:[NSURL URLWithString:urlRewardString]
+//                   placeholderImage:[UIImage imageNamed:@"imagePlaceHolder.png"]];
+//    
+//    UILabel *milesLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 80, cell.frame.size.height)];
+//    
+//    milesLbl.text = company.distanceStr;
+//    
+//    cell.accessoryView =milesLbl;
+//    return cell;
+    
+    /*******************************************************************************************/
+    
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    GICompanyCheckinCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[GICompanyCheckinCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell"];
     }
     GICompany *company = [self.nearbyLocationsAry objectAtIndex:indexPath.row];
     
     NSLog(@"%@", [NSString stringWithFormat:@"row %d", indexPath.row]);
     
-    [cell.textLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
-    cell.textLabel.text = company.name;
+//    [cell.textLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
+    [cell.nameLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
+
+    cell.nameLabel.text = company.name;
     
     // Here we use the new provided setImageWithURL: method to load the web image
     
-    NSString *urlRewardString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImageThumb.png", kBASE_URL, company.companyId];
+    NSString *urlRewardString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, company.companyId];
     
     [[SDImageCache sharedImageCache] removeImageForKey:urlRewardString fromDisk:YES];
-
+    
     NSLog(@"%@", urlRewardString);
-    [cell.imageView setImageWithURL:[NSURL URLWithString:urlRewardString]
-                   placeholderImage:[UIImage imageNamed:@"imagePlaceHolder.png"]];
+    [cell.mainLabel setImageWithURL:[NSURL URLWithString:urlRewardString]
+                   placeholderImage:[UIImage imageNamed:@"rewardBackgroundPlaceholder.png"]];
     
-    UILabel *milesLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 80, cell.frame.size.height)];
+//    UILabel *milesLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 80, cell.frame.size.height)];
+    cell.distancelbl.text = company.distanceStr;
+//    milesLbl.text = company.distanceStr;
+    if([company.fulfillment isEqualToString:@"YES"]) {
+
+        [cell setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
+    } else {
+        [cell setBackgroundColor:[UIColor whiteColor]];
+    }
     
-    milesLbl.text = company.distanceStr;
-    
-    cell.accessoryView =milesLbl;
     return cell;
 }
 
 //Change the Height of the Cell [Default is 44]:
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    return 100;
+    return 198;
 }
 /*
 // Override to support conditional editing of the table view.
@@ -281,6 +319,34 @@
         NSLog(@"The time in Milliseconds %f", timeInMilliseconds);
         
         GICompany *selectedCompany = (GICompany*)[self.nearbyLocationsAry objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:([selectedCompany.endDate floatValue] / 1000)];
+        // Divided by 1000 (i.e. removed three trailing zeros) ^^^^^^^^
+        NSString *formattedDateString = [dateFormatter stringFromDate:date];
+        // Fri, 28 Jun 2013 11:26:29 GMT
+        NSLog(@"formattedDateString: %@", formattedDateString);
+        
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:@"yyyy-MM-dd"];
+        
+        NSDateFormatter *timeFormat = [[NSDateFormatter alloc] init];
+        [timeFormat setDateFormat:@"HH:mm:ss"];
+        
+        NSDate *now = [[NSDate alloc] init];
+        
+        NSLog(@"Compare NOW %@ with Interval %@", now, formattedDateString);
+        
+        NSString *theDate = [dateFormat stringFromDate:now];
+        NSString *theTime = [timeFormat stringFromDate:now];
+        
+        NSLog(@"\n"
+              "theDate: |%@| \n"
+              "theTime: |%@| \n"
+              , theDate, theTime);
+        
+        NSLog(@"Compare milliseconds ENDDATE %f with MILLISECONDS %f", [selectedCompany.endDate floatValue], timeInMilliseconds);
 
         //TODO CHANGE THIS BACK TO <=
         if(([selectedCompany.endDate floatValue] / 1000) < timeInMilliseconds ||  timeInMilliseconds < ([selectedCompany.startDate floatValue] / 1000)) {
@@ -326,6 +392,7 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+    
     GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
     NSLog(@"The manager.location %@", manager.location);
     NSString *urlString = [NSString stringWithFormat:@"%@geoSpatialQuery/%@/%f/%f", GOOSIIAPI, [plist objectForKey:@"userId"], manager.location.coordinate.longitude, manager.location.coordinate.latitude];
@@ -338,6 +405,7 @@
                                        queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
                                
+                               [self.nearbyLocationsAry removeAllObjects];
                                if(!error) {
                                    NSLog(@"THE RESPONSE %@", response);
                                    
@@ -597,7 +665,7 @@
                                    UILabel *errorStatusLbl = [[UILabel alloc] initWithFrame:rect];
                                    [errorStatusLbl setBackgroundColor:[self colorWithHexString:@"EED202"]];
                                    
-                                   [errorStatusLbl setText:@"Oops, something went wrong. Check back in a few minutes"];
+                                   [errorStatusLbl setText:@"Oops, you are probably not connected to the Internet."];
                                    
                                    errorStatusLbl.numberOfLines = 0;
                                    [errorStatusLbl sizeToFit];

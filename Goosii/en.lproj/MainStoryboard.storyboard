@@ -97,7 +97,7 @@
                         <outletCollection property="eventList" destination="bKh-oM-cbO" id="ziI-t1-PxJ"/>
                         <segue destination="68Q-h0-bku" kind="push" identifier="fulfillmentViewSegue" id="XGq-dg-sFL"/>
                         <segue destination="dL8-8f-K2r" kind="push" identifier="rewardStateViewSegue" id="D0o-4r-Ssu"/>
-                        <segue destination="Wnt-BP-x8N" kind="push" identifier="eventDrillDownViewSegue" id="Rg0-xA-cjA"/>
+                        <segue destination="lRG-hr-8DZ" kind="push" identifier="eventDrillDownViewSegue" id="yXe-3u-STW"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ACI-f9-veL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -122,7 +122,6 @@
         <!--Event Scroll View Controller-->
         <scene sceneID="chU-WO-Fr2">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ZIK-tm-dlU" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="Wnt-BP-x8N" customClass="GIEventScrollViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="934-rJ-aIJ"/>
@@ -132,7 +131,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="1020"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oLd-aY-9nJ">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oLd-aY-9nJ">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="1020"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
@@ -141,12 +140,6 @@
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="bottom" secondItem="oLd-aY-9nJ" secondAttribute="bottom" id="LRD-Vb-kPm"/>
-                            <constraint firstItem="oLd-aY-9nJ" firstAttribute="leading" secondItem="QYG-em-JiV" secondAttribute="leading" id="sob-Bb-oTv"/>
-                            <constraint firstAttribute="trailing" secondItem="oLd-aY-9nJ" secondAttribute="trailing" id="tIg-Rh-lah"/>
-                            <constraint firstItem="oLd-aY-9nJ" firstAttribute="top" secondItem="QYG-em-JiV" secondAttribute="top" id="xYw-jD-t8J"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ENx-Xv-7iS"/>
                     <nil key="simulatedTopBarMetrics"/>
@@ -156,6 +149,7 @@
                         <outlet property="view" destination="oLd-aY-9nJ" id="5mo-li-hFs"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZIK-tm-dlU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2833" y="-1072"/>
         </scene>
@@ -181,7 +175,7 @@
             </objects>
             <point key="canvasLocation" x="1049" y="-620"/>
         </scene>
-        <!--Checkin View Controller - Checkin-->
+        <!--Checkin View Controller - Nearby Events-->
         <scene sceneID="xug-O3-Euy">
             <objects>
                 <tableViewController id="P0o-uj-P0Z" customClass="GICheckinViewController" sceneMemberID="viewController">
@@ -194,12 +188,12 @@
                             <outlet property="delegate" destination="P0o-uj-P0Z" id="ZBv-QN-Mmu"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Checkin" id="hsm-hD-afZ"/>
+                    <navigationItem key="navigationItem" title="Nearby Events" id="hsm-hD-afZ"/>
                     <connections>
                         <outlet property="view" destination="VwC-dL-50g" id="e3U-Qy-0xT"/>
                         <segue destination="68Q-h0-bku" kind="push" identifier="fulfillmentViewSegue" id="V9X-fL-NRd"/>
                         <segue destination="mwn-UX-0kU" kind="push" identifier="rewardViewSegue" id="pz8-aJ-UFd"/>
-                        <segue destination="Wnt-BP-x8N" kind="push" identifier="eventDrillDownViewSegue" id="Gbo-Ms-kBU"/>
+                        <segue destination="lRG-hr-8DZ" kind="push" identifier="eventDrillDownViewSegue" id="7Of-lh-wJU"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pRg-Ba-iEq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -315,7 +309,7 @@
                             <tableViewSection id="9ZC-Ui-yC3">
                                 <cells>
                                     <tableViewCell alpha="0.30000001192092896" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="15" id="028-jU-Caj" customClass="GIEventViewCell">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="15"/>
+                                        <rect key="frame" x="0.0" y="64" width="320" height="15"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="028-jU-Caj" id="nxP-jU-YOF">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="15"/>
@@ -323,7 +317,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell alpha="0.30000001192092896" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="FAK-ea-w4z" customClass="GIEventViewCell">
-                                        <rect key="frame" x="0.0" y="15" width="320" height="40"/>
+                                        <rect key="frame" x="0.0" y="79" width="320" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FAK-ea-w4z" id="Zx1-i1-EDP">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
@@ -331,7 +325,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell alpha="0.30000001192092896" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="20" id="zcM-jA-WJh" customClass="GIEventViewCell">
-                                        <rect key="frame" x="0.0" y="55" width="320" height="20"/>
+                                        <rect key="frame" x="0.0" y="119" width="320" height="20"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zcM-jA-WJh" id="Pgy-An-Mvy">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="20"/>
@@ -339,7 +333,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell tag="12" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="92" id="gzr-L8-oHe" customClass="GIEventViewCell">
-                                        <rect key="frame" x="0.0" y="75" width="320" height="92"/>
+                                        <rect key="frame" x="0.0" y="139" width="320" height="92"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gzr-L8-oHe" id="6fv-m0-bzQ">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="92"/>
@@ -347,7 +341,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell hidden="YES" opaque="NO" tag="10" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="20" id="U9H-dc-cot" customClass="GIEventViewCell">
-                                        <rect key="frame" x="0.0" y="167" width="320" height="20"/>
+                                        <rect key="frame" x="0.0" y="231" width="320" height="20"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="U9H-dc-cot" id="78C-OP-0Xd">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="20"/>
@@ -355,7 +349,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell alpha="0.80000000000000004" tag="13" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="45" id="xFc-R5-fF8" customClass="GIEventViewCell">
-                                        <rect key="frame" x="0.0" y="187" width="320" height="45"/>
+                                        <rect key="frame" x="0.0" y="251" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xFc-R5-fF8" id="nni-G2-KgB">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
@@ -363,7 +357,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell hidden="YES" opaque="NO" alpha="0.80000001192092896" tag="13" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="20" id="eod-Y7-KGB" customClass="GIEventViewCell">
-                                        <rect key="frame" x="0.0" y="232" width="320" height="20"/>
+                                        <rect key="frame" x="0.0" y="296" width="320" height="20"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eod-Y7-KGB" id="6Vc-1L-Nq6">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="20"/>
@@ -371,7 +365,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell alpha="0.80000001192092896" tag="13" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="45" id="lbM-3N-bmS" customClass="GIEventViewCell">
-                                        <rect key="frame" x="0.0" y="252" width="320" height="45"/>
+                                        <rect key="frame" x="0.0" y="316" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lbM-3N-bmS" id="a5O-dE-VRo">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
@@ -379,7 +373,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell hidden="YES" opaque="NO" alpha="0.80000001192092896" tag="13" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="20" id="vHF-7o-4qh" customClass="GIEventViewCell">
-                                        <rect key="frame" x="0.0" y="297" width="320" height="20"/>
+                                        <rect key="frame" x="0.0" y="361" width="320" height="20"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vHF-7o-4qh" id="vRh-3k-sgT">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="20"/>
@@ -387,7 +381,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell alpha="0.80000001192092896" tag="13" contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="158" id="CDy-az-bQN" customClass="GIEventViewCell">
-                                        <rect key="frame" x="0.0" y="317" width="320" height="158"/>
+                                        <rect key="frame" x="0.0" y="381" width="320" height="158"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CDy-az-bQN" id="wcY-iC-D3M">
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="158"/>
@@ -477,9 +471,9 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="pz8-aJ-UFd"/>
-        <segue reference="V9X-fL-NRd"/>
-        <segue reference="Gbo-Ms-kBU"/>
+        <segue reference="yXe-3u-STW"/>
+        <segue reference="XGq-dg-sFL"/>
         <segue reference="D0o-4r-Ssu"/>
+        <segue reference="pz8-aJ-UFd"/>
     </inferredMetricsTieBreakers>
 </document>

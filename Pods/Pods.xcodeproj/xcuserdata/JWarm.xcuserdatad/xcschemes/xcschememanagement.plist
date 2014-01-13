@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Pods-AFNetworking.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Canvas.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -20,6 +25,11 @@
 			<false/>
 		</dict>
 		<key>Pods-PunchScrollView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-Reachability.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -47,42 +57,52 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>163A58E5A5B1482EB76F9004</key>
+		<key>12A24BC747EE4536AD6B0A4A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1DCA2B6E64E94B9783B77E0C</key>
+		<key>40B3174514394ED3880F4535</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2A1D57162C9F463688216D17</key>
+		<key>5D8A9F3D49F248A2BB505E54</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>368F16050371478981B2F1FC</key>
+		<key>6311F3084EE64C57B0ECE6FD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7125FFBB42AC4FF8B3876996</key>
+		<key>8677DAACBC824F3CB7360207</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AE16E4F63E9A4ECCA5483940</key>
+		<key>C6BE27C1A51F42D8916BD767</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C86A64C3C7594097919D0732</key>
+		<key>D3094A2985524C3EA24FF318</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D214B93B5F8A4EF9BCEFFB22</key>
+		<key>E5EF46315CD34218AF73E445</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F7DDBC66678D4E37935B86D1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FA301DF73DE84845962234DE</key>
 		<dict>
 			<key>primary</key>
 			<true/>

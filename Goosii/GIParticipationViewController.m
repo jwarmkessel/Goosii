@@ -466,6 +466,13 @@
                    placeholderImage:[UIImage imageNamed:@"imagePlaceHolder.png"]];
     [cell.textLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
     cell.textLabel.text = company.name;
+
+    if([company.fulfillment isEqualToString:@"YES"]) {
+        
+        [cell setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
+    } else {
+        [cell setBackgroundColor:[UIColor whiteColor]];
+    }
     
     return cell;
 }
