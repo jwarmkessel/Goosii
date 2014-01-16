@@ -130,30 +130,11 @@
                     <view key="view" contentMode="scaleToFill" id="QYG-em-JiV">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="1020"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oLd-aY-9nJ">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="1020"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <connections>
-                                    <outlet property="delegate" destination="Wnt-BP-x8N" id="CIK-59-fXe"/>
-                                </connections>
-                            </scrollView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="oLd-aY-9nJ" firstAttribute="leading" secondItem="QYG-em-JiV" secondAttribute="leading" id="0IS-CK-hQQ"/>
-                            <constraint firstAttribute="trailing" secondItem="oLd-aY-9nJ" secondAttribute="trailing" id="CyM-yr-a5q"/>
-                            <constraint firstAttribute="bottom" secondItem="oLd-aY-9nJ" secondAttribute="bottom" id="W1h-Ra-fKb"/>
-                            <constraint firstItem="oLd-aY-9nJ" firstAttribute="top" secondItem="QYG-em-JiV" secondAttribute="top" id="cEu-9r-iSG"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ENx-Xv-7iS"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <connections>
-                        <outlet property="eventScrollView" destination="oLd-aY-9nJ" id="RiX-pL-T40"/>
-                        <outlet property="view" destination="oLd-aY-9nJ" id="5mo-li-hFs"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZIK-tm-dlU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -49,6 +49,15 @@ BOOL isTransformed = 0;
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+
+    
+    }
+
+- (void)viewDidLoad
+{
+    
+    [super viewDidLoad];
+    
     //I need to set these items because company doesn't get allocated to memory until this point for some reason.
     _backgroundImageView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
@@ -58,40 +67,6 @@ BOOL isTransformed = 0;
     /************* Test last moidifed code*/
     
     [[SDImageCache sharedImageCache] removeImageForKey:[NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, self.company.companyId] fromDisk:YES];
-//
-//    UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:[NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, self.company.companyId]];
-//    
-//    UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:[NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, self.company.companyId]];
-//    
-//    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-//        /* retrieve file attributes */
-//        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:&error];
-//        if (attributes != nil) {
-//            self.fileDate = [attributes fileModificationDate];
-//        }
-//        else {
-//            URLCacheAlertWithError(error);
-//        }
-//    }
-//    
-    
-    /***************************************/
-    
-//    [[SDImageCache sharedImageCache] removeImageForKey:[NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, self.company.companyId] fromDisk:YES];
-    
-//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
-//    [request setHTTPMethod:@"HEAD"];
-//    [NSURLConnection sendAsynchronousRequest:request
-//                                       queue:[NSOperationQueue mainQueue]
-//                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-//                               NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
-//                               if ([httpResponse respondsToSelector:@selector(allHeaderFields)]) {
-//                                   NSString *lastModifiedString = [[httpResponse allHeaderFields] objectForKey:@"Last-Modified"];
-//                                   NSLog(@"THE LAST MODIFIED STRING %@", lastModifiedString);
-//                               }
-//                           }];
-    
-//    [[SDImageCache sharedImageCache] removeImageForKey:[NSString stringWithFormat:@"%@/companyAssets/%@/backgroundImage.jpg", kBASE_URL, self.company.companyId] fromDisk:YES];
     
     [_backgroundImageView setImageWithURL:[NSURL URLWithString:urlString]
                          placeholderImage:[UIImage imageNamed:@"backgroundImage.jpg"]];
@@ -100,29 +75,27 @@ BOOL isTransformed = 0;
     [self.imageMaskView setBackgroundColor:[UIColor blackColor]];
     [self.imageMaskView setAlpha:1];
     
-//    self.blurView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 200, 320, 568)];
-//    [self.view addSubview:self.blurView];
+    //    self.blurView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 200, 320, 568)];
+    //    [self.view addSubview:self.blurView];
     
+    self.eventScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,0,320,400)];
     [self.eventScrollView setDelegate:self];
     [self.eventScrollView setBackgroundColor:[UIColor clearColor]];
     [self.eventScrollView setContentSize:CGSizeMake(320, 1000)];
     self.eventScrollView.frame = CGRectMake(0,0,320,568);
     
+    
     [self.view addSubview:_backgroundImageView];
     //    [self.view bringSubviewToFront:_backgroundImageView];
     //    [self.view bringSubviewToFront:self.imageMaskView];
     //    [self.view bringSubviewToFront:self.blurView];
+    [self.view addSubview:self.eventScrollView];
     [self.view bringSubviewToFront:self.eventScrollView];
     
     if(!isEvent) {
         [self.view bringSubviewToFront:self.webView];
     }
-}
 
-- (void)viewDidLoad
-{
-    
-    [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
     self.navigationController.navigationBarHidden = NO;

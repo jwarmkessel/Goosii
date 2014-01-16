@@ -10,7 +10,7 @@
 @class GICompany;
 
 @interface GIEventScrollViewController : UIViewController <UIScrollViewDelegate, UITextViewDelegate, UITextFieldDelegate>
-@property (strong, nonatomic) IBOutlet UIScrollView *eventScrollView;
+@property (strong, nonatomic) UIScrollView *eventScrollView;
 
 @property (nonatomic, strong) GICompany * company;
 
