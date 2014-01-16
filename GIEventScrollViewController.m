@@ -168,12 +168,46 @@ BOOL isTransformed = 0;
                                                        style:UIBarButtonItemStyleBordered
                                                       target:self
                                                       action:@selector(handleBack:)];
+    
+    
+    
+    
+    
 
     self.navigationItem.leftBarButtonItem = self.backButton;
 
 
+    UILabel *totalParticipatingContainer = [[UILabel alloc] initWithFrame:CGRectMake(0.000000, 63.000000, 320.000000, 60.000000)];
+    [totalParticipatingContainer setBackgroundColor:[self colorWithHexString:@"FDF3E7"]];
+//    [totalParticipatingContainer setAlpha:0.8];
+    [self.eventScrollView addSubview: totalParticipatingContainer];
+    
+    NSLog(@"First Background Tag 2 %f, %f, %f, %f", totalParticipatingContainer.frame.origin.x, totalParticipatingContainer.frame.origin.y, totalParticipatingContainer.frame.size.width, totalParticipatingContainer.frame.size.height );
+    
+    GICountingLabel *localsTotalLbl = [[GICountingLabel alloc] initWithFrame:CGRectMake(totalParticipatingContainer.frame.origin.x, totalParticipatingContainer.frame.origin.y, totalParticipatingContainer.frame.size.width, 80.0f)];
+    
+    localsTotalLbl.format = @"%d Participating";
+    localsTotalLbl.method = UILabelCountingMethodLinear;
+    [localsTotalLbl countFrom:0 to:[self.company.totalParticipants floatValue] withDuration:3.0f];
+    
+    localsTotalLbl.textAlignment = NSTextAlignmentCenter;
+    [localsTotalLbl setFont:[UIFont fontWithName:@"AppleSDGothicNeo-medium" size:40]];
+    localsTotalLbl.textColor = [self colorWithHexString:@"3B3738"];
+    
+    localsTotalLbl.clipsToBounds = NO;
+    localsTotalLbl.layer.shadowColor = [[UIColor blackColor] CGColor];
+    localsTotalLbl.layer.shadowOffset = CGSizeMake(0,5);
+    localsTotalLbl.layer.shadowOpacity = 0.5;
+    
+    [self.eventScrollView addSubview:localsTotalLbl];
+    
+    
+    
+    
+    
+
     //Set the reward image but hide it first.
-    self.rewardImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.000000, 63.000000, 320.000000, 178.000000)];
+    self.rewardImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.000000, 123.000000, 320.000000, 178.000000)];
     
     [[SDImageCache sharedImageCache] removeImageForKey:[NSString stringWithFormat:@"%@/companyAssets/%@/rewardImage.jpg", kBASE_URL, self.company.companyId] fromDisk:YES];
     
@@ -198,16 +232,16 @@ BOOL isTransformed = 0;
     rewardDescLbl.textColor = [UIColor whiteColor];
     [self.rewardImageView addSubview:rewardDescLbl];
     
-    _companyLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.000000, 238.000000, 320.000000, 178.000000)];
+    _companyLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.000000, 298.000000, 320.000000, 100.000000)];
     [_companyLbl setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
-    [_companyLbl setAlpha:0.6];
+//    [_companyLbl setAlpha:0.6];
     [self.eventScrollView addSubview:_companyLbl];
     
     NSLog(@"First Background Tag 1 %f, %f, %f, %f", _companyLbl.frame.origin.x, _companyLbl.frame.origin.y, _companyLbl.frame.size.width, _companyLbl.frame.size.height );
     _companyNameLbl = [[UILabel alloc] initWithFrame:_companyLbl.frame];
-    _companyNameLbl.text = self.company.name;
+    _companyNameLbl.text = [NSString stringWithFormat:@"%@ wants to reward you", self.company.name];
     _companyNameLbl.textAlignment = NSTextAlignmentCenter;
-    [_companyNameLbl setFont:[UIFont systemFontOfSize:30]];
+    [_companyNameLbl setFont:[UIFont systemFontOfSize:15]];
     _companyNameLbl.textColor = [UIColor whiteColor];
     
     [self.eventScrollView addSubview:_companyNameLbl];
@@ -224,26 +258,26 @@ BOOL isTransformed = 0;
 //    [_companyNameLbl addGestureRecognizer:SwipeRight];
     
     
-    UILabel *localsLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.000000, 417.000000, 320.000000, 188.000000)];
+    UILabel *localsLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.000000, 395.000000, 320.000000, 120.000000)];
     [localsLbl setBackgroundColor:[self colorWithHexString:@"FDF3E7"]];
     [localsLbl setAlpha:0.8];
     [self.eventScrollView addSubview: localsLbl];
     NSLog(@"First Background Tag 2 %f, %f, %f, %f", localsLbl.frame.origin.x, localsLbl.frame.origin.y, localsLbl.frame.size.width, localsLbl.frame.size.height );
-    GICountingLabel *localsTotalLbl = [[GICountingLabel alloc] initWithFrame:CGRectMake(localsLbl.frame.origin.x, localsLbl.frame.origin    .y, localsLbl.frame.size.width, (localsLbl.frame.size.height/2))];
-    localsTotalLbl.format = @"%d Participating";
-    localsTotalLbl.method = UILabelCountingMethodLinear;
-    [localsTotalLbl countFrom:0 to:[self.company.totalParticipants floatValue] withDuration:3.0f];
-
-    localsTotalLbl.textAlignment = NSTextAlignmentLeft;
-    [localsTotalLbl setFont:[UIFont fontWithName:@"AppleSDGothicNeo-medium" size:40]];
-    localsTotalLbl.textColor = [self colorWithHexString:@"3B3738"];
-    
-    [self.eventScrollView addSubview:localsTotalLbl];
+//    GICountingLabel *localsTotalLbl = [[GICountingLabel alloc] initWithFrame:CGRectMake(localsLbl.frame.origin.x, localsLbl.frame.origin    .y, localsLbl.frame.size.width, (localsLbl.frame.size.height/2))];
+//    localsTotalLbl.format = @"%d Participating";
+//    localsTotalLbl.method = UILabelCountingMethodLinear;
+//    [localsTotalLbl countFrom:0 to:[self.company.totalParticipants floatValue] withDuration:3.0f];
+//
+//    localsTotalLbl.textAlignment = NSTextAlignmentLeft;
+//    [localsTotalLbl setFont:[UIFont fontWithName:@"AppleSDGothicNeo-medium" size:40]];
+//    localsTotalLbl.textColor = [self colorWithHexString:@"3B3738"];
+//    
+//    [self.eventScrollView addSubview:localsTotalLbl];
     
     /***********************************************/
     //Logic for the TIME Progress Bar
     /***********************************************/
-    float progressBarThickness = 50.0f;
+    float progressBarThickness = 40.0f;
     float progressBarWidth = 300.0f;
     
     //Convert milliseconds to seconds.
@@ -257,16 +291,16 @@ BOOL isTransformed = 0;
     NSString *timeStamp = [dateFormatter stringFromDate:epochNSDate];
     NSString *announceDateStr = [NSString stringWithFormat:@"Reward to be announced %@", timeStamp];
     
-    UILabel *endDateLbl = [[UILabel alloc] initWithFrame:CGRectMake(localsTotalLbl.frame.origin.x + 15, localsTotalLbl.frame.origin.y + 70, progressBarWidth, progressBarThickness)];
+    UILabel *endDateLbl = [[UILabel alloc] initWithFrame:CGRectMake(localsLbl.frame.origin.x + 15, localsLbl.frame.origin.y + 20, progressBarWidth, progressBarThickness)];
     endDateLbl.text = announceDateStr;
     [endDateLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:13.0]];
     endDateLbl.textColor = [UIColor whiteColor];
     endDateLbl.backgroundColor = [UIColor clearColor];
     
-    CGRect timeDurationBarRect = CGRectMake(localsTotalLbl.frame.origin.x + 10, localsTotalLbl.frame.origin.y + 70, 0, progressBarThickness);
+    CGRect timeDurationBarRect = CGRectMake(localsLbl.frame.origin.x + 10, localsLbl.frame.origin.y + 20, 0, progressBarThickness);
     
     //Set the color of the progress bars.
-    CGRect backgroundRect = CGRectMake(localsTotalLbl.frame.origin.x + 10, localsTotalLbl.frame.origin.y + 70, progressBarWidth, progressBarThickness);
+    CGRect backgroundRect = CGRectMake(localsLbl.frame.origin.x + 10, localsLbl.frame.origin.y + 20, progressBarWidth, progressBarThickness);
     
     GIProgressBar *backgroundProgressBar = [[GIProgressBar alloc] initWithFrame:backgroundRect hexStringColor:@"3B3738"];
     [backgroundProgressBar setAlpha:0.6];
@@ -282,7 +316,7 @@ BOOL isTransformed = 0;
         
         float percentWidth = [self.company.timePercentage floatValue] * progressBarWidth;
         NSLog(@"The caluc %f", percentWidth);
-        self.timeDurationBar.frame = CGRectMake(localsTotalLbl.frame.origin.x + 10, localsTotalLbl.frame.origin.y + 70, percentWidth, progressBarThickness);
+        self.timeDurationBar.frame = CGRectMake(localsLbl.frame.origin.x + 10, localsLbl.frame.origin.y + 20, percentWidth, progressBarThickness);
         
     } completion:^(BOOL finished) {
         NSLog(@"done");
@@ -293,7 +327,7 @@ BOOL isTransformed = 0;
     //Logic for the Participation Progress
     /***********************************************/
     
-    self.participationLbl = [[UILabel alloc] initWithFrame:CGRectMake(localsTotalLbl.frame.origin.x + 15, localsTotalLbl.frame.origin.y + 130, progressBarWidth, progressBarThickness)];
+    self.participationLbl = [[UILabel alloc] initWithFrame:CGRectMake(localsLbl.frame.origin.x + 15, localsLbl.frame.origin.y + 70, progressBarWidth, progressBarThickness)];
     
     float participationNum = [@"0" floatValue] * 100;
     
@@ -303,12 +337,12 @@ BOOL isTransformed = 0;
     self.participationLbl.backgroundColor = [UIColor clearColor];
     
     //Progress bar elements for participation rate and the duration of the contest.
-    CGRect participationBarBackgroundRect = CGRectMake(localsTotalLbl.frame.origin.x + 10, localsTotalLbl.frame.origin.y + 130, progressBarWidth, progressBarThickness);
+    CGRect participationBarBackgroundRect = CGRectMake(localsLbl.frame.origin.x + 10, localsLbl.frame.origin.y + 70, progressBarWidth, progressBarThickness);
     
     GIProgressBar *participationBarBackground = [[GIProgressBar alloc] initWithFrame:participationBarBackgroundRect hexStringColor:@"3B3738"];
     [participationBarBackground setAlpha:0.6];
     
-    CGRect participationBarRect = CGRectMake(localsTotalLbl.frame.origin.x + 10, localsTotalLbl.frame.origin.y + 130, 0, progressBarThickness);
+    CGRect participationBarRect = CGRectMake(localsLbl.frame.origin.x + 10, localsLbl.frame.origin.y + 70, 0, progressBarThickness);
 
     self.participationBar = [[GIProgressBar alloc] initWithFrame:participationBarRect hexStringColor:@"2D5D28"];
     
@@ -321,7 +355,7 @@ BOOL isTransformed = 0;
         
         float partWidth = [self.company.participationPercentage floatValue] * progressBarWidth;
         NSLog(@"The calculation %f", partWidth);
-        self.participationBar.frame = CGRectMake(localsTotalLbl.frame.origin.x + 10, localsTotalLbl.frame.origin.y + 130, partWidth, progressBarThickness);
+        self.participationBar.frame = CGRectMake(localsLbl.frame.origin.x + 10, localsLbl.frame.origin.y + 70, partWidth, progressBarThickness);
         
     } completion:^(BOOL finished) {
         NSLog(@"done");
@@ -329,14 +363,16 @@ BOOL isTransformed = 0;
 
     
     /***********************************************/
-    self.participateTitleLbl = [[UILabel alloc] initWithFrame:CGRectMake(localsTotalLbl.frame.origin.x + 5, localsTotalLbl.frame.origin.y + 180, progressBarWidth, progressBarThickness)];
+    self.participateTitleLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, localsLbl.frame.origin.y + 130, 320.0f, progressBarThickness)];
     
+    [participateTitleLbl setBackgroundColor:[self colorWithHexString:@"000000"]];
+    participateTitleLbl.textAlignment = NSTextAlignmentCenter;
     participateTitleLbl.text = @"Participate to improve you odds!";
+    participateTitleLbl.alpha = 0.5;
     [participateTitleLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:10.0f]];
     participateTitleLbl.textColor = [UIColor whiteColor];
-    participateTitleLbl.backgroundColor = [UIColor clearColor];
-    
-    UILabel *fulfillmentBackground = [[UILabel alloc] initWithFrame:CGRectMake(0.000000, 605.000000, 320.000000, 188.000000)];
+
+    UILabel *fulfillmentBackground = [[UILabel alloc] initWithFrame:CGRectMake(0.000000, 605.000000, 280.000000, 150.000000)];
     [fulfillmentBackground setBackgroundColor:[self colorWithHexString:@"7E8F7C"]];
     [fulfillmentBackground setAlpha:0.8];
     [self.eventScrollView addSubview: fulfillmentBackground];
@@ -344,7 +380,7 @@ BOOL isTransformed = 0;
     
     //FACEBOOK
     
-    CGRect facebookBtnRect = CGRectMake(localsTotalLbl.frame.origin.x + 10, localsTotalLbl.frame.origin.y + 220, progressBarWidth, progressBarThickness);
+    CGRect facebookBtnRect = CGRectMake(localsLbl.frame.origin.x + 10, localsLbl.frame.origin.y + 220, progressBarWidth, progressBarThickness);
     UIButton *facebookBtn = [[UIButton alloc] initWithFrame:facebookBtnRect];
     [facebookBtn setBackgroundColor:[self colorWithHexString:@"3b5999"]];
     
@@ -367,7 +403,7 @@ BOOL isTransformed = 0;
     
     //TWITTER
     
-    CGRect twitterBtnRect = CGRectMake(localsTotalLbl.frame.origin.x + 10, localsTotalLbl.frame.origin.y + 280, progressBarWidth, progressBarThickness);
+    CGRect twitterBtnRect = CGRectMake(localsLbl.frame.origin.x + 10, localsLbl.frame.origin.y + 280, progressBarWidth, progressBarThickness);
     UIButton *twitterBtn = [[UIButton alloc] initWithFrame:twitterBtnRect];
     [twitterBtn setBackgroundColor:[self colorWithHexString:@"1dcaff"]];
     
@@ -594,11 +630,11 @@ BOOL isTransformed = 0;
     NSLog(@"scrollViewDidScroll");
     CGPoint offset = scrollView.contentOffset;
     
-    CGRect buttonFrame = CGRectMake(0,0,320, 568);
-    buttonFrame.origin.x += offset.x;
-    buttonFrame.origin.y += offset.y;
-    NSLog(@"button's frame: %f, %f, %f, %f", buttonFrame.origin.x, buttonFrame.origin.y, buttonFrame.size.width, buttonFrame.size.height);
-    //without the CATransaction the mask's frame setting is actually slighty animated, appearing to give it a delay as we scroll around
+//    CGRect buttonFrame = CGRectMake(0,0,320, 568);
+//    buttonFrame.origin.x += offset.x;
+//    buttonFrame.origin.y += offset.y;
+//    NSLog(@"button's frame: %f, %f, %f, %f", buttonFrame.origin.x, buttonFrame.origin.y, buttonFrame.size.width, buttonFrame.size.height);
+//    //without the CATransaction the mask's frame setting is actually slighty animated, appearing to give it a delay as we scroll around
 //    [CATransaction begin];
 //    [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
 //    self.maskLayer.frame = buttonFrame;
@@ -683,134 +719,126 @@ BOOL isTransformed = 0;
 
 - (void)fbParticipationBtnHandler {
     
+    SLComposeViewController *sharingComposer = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
     
-    if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
-    {
-        SLComposeViewController *sharingComposer = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-        
-        SLComposeViewControllerCompletionHandler __block completionHandler=^(SLComposeViewControllerResult result){
-            if (result == SLComposeViewControllerResultCancelled) {
-                
-                NSLog(@"Cancelled");
-                
-            } else {
-                NSLog(@"Posting to facebook.");
-                
-                //Update participation percentage
-                [self updateParticipationPercentage];
-                
-                //request update user participation
-                NSLog(@"The result %d", result);
-                GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
-                NSString *urlString = [NSString stringWithFormat:@"%@addUserParticipation/%@/%@", GOOSIIAPI, [plist objectForKey:@"userId"], self.company.companyId];
-                
-                NSLog(@"getUserContests %@", urlString);
-                NSURL *url = [NSURL URLWithString:urlString];
-                
-                NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-                
-                [NSURLConnection sendAsynchronousRequest:urlRequest
-                                                   queue:[NSOperationQueue mainQueue]
-                                       completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                                           
-                                           // your data or an error will be ready here
-                                           NSString* newStr = [[NSString alloc] initWithData:data
-                                                                                    encoding:NSUTF8StringEncoding];
-                                           
-                                           NSLog(@"ReceivedData %@", newStr);
-                                           
-                                       }];
-                
-            }
+    SLComposeViewControllerCompletionHandler __block completionHandler=^(SLComposeViewControllerResult result){
+        if (result == SLComposeViewControllerResultCancelled) {
             
-            [sharingComposer dismissViewControllerAnimated:YES completion:nil];
-        };
-        [sharingComposer setCompletionHandler:completionHandler];
-        [sharingComposer setInitialText:[NSString stringWithFormat:@"%@ %@",[self editableText],[self permanentText]]];
+            NSLog(@"Cancelled");
+            
+        } else {
+            NSLog(@"Posting to facebook.");
+            
+            //Update participation percentage
+            [self updateParticipationPercentage];
+            
+            //request update user participation
+            NSLog(@"The result %d", result);
+            GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
+            NSString *urlString = [NSString stringWithFormat:@"%@addUserParticipation/%@/%@", GOOSIIAPI, [plist objectForKey:@"userId"], self.company.companyId];
+            
+            NSLog(@"getUserContests %@", urlString);
+            NSURL *url = [NSURL URLWithString:urlString];
+            
+            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+            
+            [NSURLConnection sendAsynchronousRequest:urlRequest
+                                               queue:[NSOperationQueue mainQueue]
+                                   completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                                       
+                                       // your data or an error will be ready here
+                                       NSString* newStr = [[NSString alloc] initWithData:data
+                                                                                encoding:NSUTF8StringEncoding];
+                                       
+                                       NSLog(@"ReceivedData %@", newStr);
+                                       
+                                   }];
+            
+        }
         
-        [sharingComposer addURL:[NSURL URLWithString:self.company.website]];
-        
-        [self presentViewController:sharingComposer animated:YES completion:^{
-            for (UIView *viewLayer1 in [[sharingComposer view] subviews]) {
-                for (UIView *viewLayer2 in [viewLayer1 subviews]) {
-                    if ([viewLayer2 isKindOfClass:[UIView class]]) {
-                        for (UIView *viewLayer3 in [viewLayer2 subviews]) {
-                            if ([viewLayer3 isKindOfClass:[UITextView class]]) {
-                                [(UITextView *)viewLayer3 setDelegate:self];
-                                sharingTextView = (UITextView *)viewLayer3;
-                            }
+        [sharingComposer dismissViewControllerAnimated:YES completion:nil];
+    };
+    [sharingComposer setCompletionHandler:completionHandler];
+    [sharingComposer setInitialText:[NSString stringWithFormat:@"%@ %@",[self editableText],[self permanentText]]];
+    
+    [sharingComposer addURL:[NSURL URLWithString:self.company.website]];
+    
+    [self presentViewController:sharingComposer animated:YES completion:^{
+        for (UIView *viewLayer1 in [[sharingComposer view] subviews]) {
+            for (UIView *viewLayer2 in [viewLayer1 subviews]) {
+                if ([viewLayer2 isKindOfClass:[UIView class]]) {
+                    for (UIView *viewLayer3 in [viewLayer2 subviews]) {
+                        if ([viewLayer3 isKindOfClass:[UITextView class]]) {
+                            [(UITextView *)viewLayer3 setDelegate:self];
+                            sharingTextView = (UITextView *)viewLayer3;
                         }
                     }
                 }
             }
-        }];
-    }
+        }
+    }];
 }
 
 - (void)twitterParticipationBtnHandler {
     
+    SLComposeViewController *sharingComposer = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
     
-    if([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
-    {
-        SLComposeViewController *sharingComposer = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-        
-        SLComposeViewControllerCompletionHandler __block completionHandler=^(SLComposeViewControllerResult result){
-            if (result == SLComposeViewControllerResultCancelled) {
-                
-                NSLog(@"Cancelled");
-                
-            } else {
-                NSLog(@"Posting to twitter.");
-                
-                //Update participation percentage
-                [self updateParticipationPercentage];
-                
-                //request update user participation
-                NSLog(@"The result %d", result);
-                GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
-                NSString *urlString = [NSString stringWithFormat:@"%@addUserParticipation/%@/%@", GOOSIIAPI, [plist objectForKey:@"userId"], self.company.companyId];
-                
-                NSLog(@"getUserContests %@", urlString);
-                NSURL *url = [NSURL URLWithString:urlString];
-                
-                NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-                
-                [NSURLConnection sendAsynchronousRequest:urlRequest
-                                                   queue:[NSOperationQueue mainQueue]
-                                       completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                                           
-                                           // your data or an error will be ready here
-                                           NSString* newStr = [[NSString alloc] initWithData:data
-                                                                                    encoding:NSUTF8StringEncoding];
-                                           
-                                           NSLog(@"ReceivedData %@", newStr);
-                                           
-                                       }];
-                
-            }
+    SLComposeViewControllerCompletionHandler __block completionHandler=^(SLComposeViewControllerResult result){
+        if (result == SLComposeViewControllerResultCancelled) {
             
-            [sharingComposer dismissViewControllerAnimated:YES completion:nil];
-        };
-        [sharingComposer setCompletionHandler:completionHandler];
-        [sharingComposer setInitialText:[NSString stringWithFormat:@"%@ %@",[self editableText],[self permanentText]]];
+            NSLog(@"Cancelled");
+            
+        } else {
+            NSLog(@"Posting to twitter.");
+            
+            //Update participation percentage
+            [self updateParticipationPercentage];
+            
+            //request update user participation
+            NSLog(@"The result %d", result);
+            GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
+            NSString *urlString = [NSString stringWithFormat:@"%@addUserParticipation/%@/%@", GOOSIIAPI, [plist objectForKey:@"userId"], self.company.companyId];
+            
+            NSLog(@"getUserContests %@", urlString);
+            NSURL *url = [NSURL URLWithString:urlString];
+            
+            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+            
+            [NSURLConnection sendAsynchronousRequest:urlRequest
+                                               queue:[NSOperationQueue mainQueue]
+                                   completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                                       
+                                       // your data or an error will be ready here
+                                       NSString* newStr = [[NSString alloc] initWithData:data
+                                                                                encoding:NSUTF8StringEncoding];
+                                       
+                                       NSLog(@"ReceivedData %@", newStr);
+                                       
+                                   }];
+            
+        }
         
-        [sharingComposer addURL:[NSURL URLWithString:self.company.website]];
-        
-        [self presentViewController:sharingComposer animated:YES completion:^{
-            for (UIView *viewLayer1 in [[sharingComposer view] subviews]) {
-                for (UIView *viewLayer2 in [viewLayer1 subviews]) {
-                    if ([viewLayer2 isKindOfClass:[UIView class]]) {
-                        for (UIView *viewLayer3 in [viewLayer2 subviews]) {
-                            if ([viewLayer3 isKindOfClass:[UITextView class]]) {
-                                [(UITextView *)viewLayer3 setDelegate:self];
-                                sharingTextView = (UITextView *)viewLayer3;
-                            }
+        [sharingComposer dismissViewControllerAnimated:YES completion:nil];
+    };
+    [sharingComposer setCompletionHandler:completionHandler];
+    [sharingComposer setInitialText:[NSString stringWithFormat:@"%@ %@",[self editableText],[self permanentText]]];
+    
+    [sharingComposer addURL:[NSURL URLWithString:self.company.website]];
+    
+    [self presentViewController:sharingComposer animated:YES completion:^{
+        for (UIView *viewLayer1 in [[sharingComposer view] subviews]) {
+            for (UIView *viewLayer2 in [viewLayer1 subviews]) {
+                if ([viewLayer2 isKindOfClass:[UIView class]]) {
+                    for (UIView *viewLayer3 in [viewLayer2 subviews]) {
+                        if ([viewLayer3 isKindOfClass:[UITextView class]]) {
+                            [(UITextView *)viewLayer3 setDelegate:self];
+                            sharingTextView = (UITextView *)viewLayer3;
                         }
                     }
                 }
             }
-        }];
-    }
+        }
+    }];
 }
 
 
