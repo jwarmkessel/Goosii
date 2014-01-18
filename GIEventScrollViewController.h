@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Accounts/Accounts.h>
+
 @class GICompany;
 
 @interface GIEventScrollViewController : UIViewController <UIScrollViewDelegate, UITextViewDelegate, UITextFieldDelegate>
@@ -19,6 +21,13 @@
 @property (assign) BOOL toggle;
 @property (nonatomic, strong) UIButton* infoBtn;
 
+@property (strong, nonatomic) ACAccountStore *accountStore;
+@property (strong, nonatomic) ACAccount *fbAccount;
+
 - (void)showNoEventsPopUp:(NSString*)newsURL;
 
 @end
+
+
+
+

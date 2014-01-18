@@ -601,7 +601,7 @@ BOOL isTransformed = 0;
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     NSLog(@"scrollViewDidScroll");
-    CGPoint offset = scrollView.contentOffset;
+//    CGPoint offset = scrollView.contentOffset;
     
 //    CGRect buttonFrame = CGRectMake(0,0,320, 568);
 //    buttonFrame.origin.x += offset.x;
@@ -691,6 +691,41 @@ BOOL isTransformed = 0;
 }
 
 - (void)fbParticipationBtnHandler {
+    
+    // Initialize the account store
+    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+    
+    if (accountStore == nil) {
+        accountStore = [[ACAccountStore alloc] init];
+    }
+    
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
+        NSLog(@"I'm totally logged in");
+        //App id: 474606345992201
+        //Secret key: 6cf03ae9cb0976ec0736557edbe14544
+        
+        ACAccountType * facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+        
+        NSDictionary *options = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                 @"474606345992201", ACFacebookAppIdKey,
+                                 [NSArray arrayWithObject:@"email"], ACFacebookPermissionsKey,
+                                 ACFacebookAudienceKey, ACFacebookAudienceEveryone,
+                                 nil];
+        
+        [accountStore requestAccessToAccountsWithType:facebookAccountType options:options completion:^(BOOL granted, NSError *error) {
+            if (granted) {
+                NSLog(@"Success");
+                NSArray *accounts = [accountStore accountsWithAccountType:facebookAccountType];
+                
+                ACAccount *fbAccount = [accounts lastObject];
+                
+                NSLog(@"===== username %@", fbAccount.userFullName);
+            }
+        }];
+    }else {
+        NSLog(@"Access not granted");
+    }
+    
     
     SLComposeViewController *sharingComposer = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
     

@@ -33,10 +33,11 @@
 @property (strong, nonatomic) UIActivityIndicatorView *indicator;
 
 @property (nonatomic, strong) GINoEventsNearby *noEventsNearbyController;
+@property (nonatomic, strong) MKMapView *mapView;
 @end
 
 @implementation GICheckinViewController
-@synthesize loadingMask, nearbyLocationsAry, locationManager, indicator, noEventsNearbyController;
+@synthesize loadingMask, nearbyLocationsAry, locationManager, indicator, noEventsNearbyController, mapView;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -66,13 +67,23 @@
         self.navigationController.navigationBar.barTintColor = [self colorWithHexString:@"C63D0F"];
 
     }
-
-    //Start location services.
-    self.locationManager = [[CLLocationManager alloc] init];
-    [self.locationManager setDelegate:self];
-    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    self.locationManager.distanceFilter = 5;
-    [self.locationManager startUpdatingLocation];
+    
+    mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, 320, 568)];
+    [mapView setDelegate:self];
+    
+    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
+    
+    if(![plist objectForKey:@"locationTrigger"]) {
+        [self.tableView addSubview:mapView];
+    } else {
+        //Start location services.
+        self.locationManager = [[CLLocationManager alloc] init];
+        [self.locationManager setDelegate:self];
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        self.locationManager.distanceFilter = 5;
+        [self.locationManager startUpdatingLocation];
+        
+    }
     
     self.nearbyLocationsAry = [[NSMutableArray alloc] init];
     
@@ -90,6 +101,7 @@
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:refreshControl];
+    
 }
 
 - (void)refresh:(UIRefreshControl *)refreshControl {
@@ -156,38 +168,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-//    static NSString *CellIdentifier = @"Cell";
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-//    if (cell == nil) {
-//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-//    }
-//    GICompany *company = [self.nearbyLocationsAry objectAtIndex:indexPath.row];
-//    
-//    NSLog(@"%@", [NSString stringWithFormat:@"row %d", indexPath.row]);
-//    
-//    [cell.textLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
-//    cell.textLabel.text = company.name;
-//    
-//    // Here we use the new provided setImageWithURL: method to load the web image
-//    
-//    NSString *urlRewardString = [NSString stringWithFormat:@"%@/companyAssets/%@/rewardImageThumb.png", kBASE_URL, company.companyId];
-//    
-//    [[SDImageCache sharedImageCache] removeImageForKey:urlRewardString fromDisk:YES];
-//
-//    NSLog(@"%@", urlRewardString);
-//    [cell.imageView setImageWithURL:[NSURL URLWithString:urlRewardString]
-//                   placeholderImage:[UIImage imageNamed:@"imagePlaceHolder.png"]];
-//    
-//    UILabel *milesLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 80, cell.frame.size.height)];
-//    
-//    milesLbl.text = company.distanceStr;
-//    
-//    cell.accessoryView =milesLbl;
-//    return cell;
-    
-    /*******************************************************************************************/
-    
+{    
     static NSString *CellIdentifier = @"Cell";
     GICompanyCheckinCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -197,7 +178,6 @@
     
     NSLog(@"%@", [NSString stringWithFormat:@"row %d", indexPath.row]);
     
-//    [cell.textLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
     [cell.nameLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
 
     cell.nameLabel.text = company.name;
@@ -209,12 +189,25 @@
     [[SDImageCache sharedImageCache] removeImageForKey:urlRewardString fromDisk:YES];
     
     NSLog(@"%@", urlRewardString);
-    [cell.mainLabel setImageWithURL:[NSURL URLWithString:urlRewardString]
-                   placeholderImage:[UIImage imageNamed:@"rewardBackgroundPlaceholder.png"]];
     
-//    UILabel *milesLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 80, cell.frame.size.height)];
+    cell.mainLabel.alpha = 0;
+    
+    [cell.mainLabel setImageWithURL:[NSURL URLWithString:urlRewardString] placeholderImage:[UIImage imageNamed:@"rewardBackgroundPlaceholder.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+        [UIView animateWithDuration:0.4 animations:^{
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+            cell.mainLabel.alpha = 1;
+#pragma clang diagnostic pop
+
+            cell.mainLabel = nil;
+        } completion:^(BOOL finished) {
+            NSLog(@"Image loaded");
+        }];
+    }];
+    
     cell.distancelbl.text = company.distanceStr;
-//    milesLbl.text = company.distanceStr;
+
     if([company.fulfillment isEqualToString:@"YES"]) {
 
         [cell setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
@@ -394,6 +387,7 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     
     GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
+    
     NSLog(@"The manager.location %@", manager.location);
     NSString *urlString = [NSString stringWithFormat:@"%@geoSpatialQuery/%@/%f/%f", GOOSIIAPI, [plist objectForKey:@"userId"], manager.location.coordinate.longitude, manager.location.coordinate.latitude];
     
@@ -680,6 +674,11 @@
     [self.locationManager stopMonitoringSignificantLocationChanges ];
     [self.locationManager stopUpdatingLocation];
     [self.locationManager stopUpdatingHeading];
+    [UIView animateWithDuration:0.5 animations:^{
+        mapView.alpha = 0;
+    } completion:^(BOOL finished) {
+        [mapView removeFromSuperview];
+    }];
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
@@ -697,6 +696,14 @@
 - (BOOL)locationManagerShouldDisplayHeadingCalibration:(CLLocationManager *)manager {
     NSLog(@"locationManagerShouldDisplayHeadingCalibration");
     return YES;
+}
+
+- (void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered {
+    self.locationManager = [[CLLocationManager alloc] init];
+    [self.locationManager setDelegate:self];
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    self.locationManager.distanceFilter = 5;
+    [self.locationManager startUpdatingLocation];
 }
 
 -(UIColor*)colorWithHexString:(NSString*)hex {

@@ -8,13 +8,18 @@
 
 #import "GIHomeViewController.h"
 #import <ECSlidingViewController.h>
+#import <Social/Social.h>
+#import "GIPlist.h"
+#import <Flurry.h>
 
 @interface GIHomeViewController ()
 @property (nonatomic, strong) UIImageView *animationImgView;
+@property (nonatomic, strong) UIButton *facebookBtn;
+@property (nonatomic, strong) UITapGestureRecognizer *enterTapGesture;
 @end
 
 @implementation GIHomeViewController
-@synthesize animationImgView, slidingMenuButton;
+@synthesize animationImgView, slidingMenuButton, facebookBtn, enterTapGesture;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -28,22 +33,22 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
     
     [self.navigationController.navigationBar setAlpha:0.0f];
     
     
     self.animationImgView = [[UIImageView alloc] initWithFrame:CGRectMake(74, 100, 172, 117)];
     self.animationImgView.image = [UIImage imageNamed:@"BrokenEggAnim_017.png"];
-
-//    [self.animationImgView startAnimating];
     
     [self.view addSubview:self.animationImgView];
     
 
-    UITapGestureRecognizer *enterTapGesture =
+    enterTapGesture =
     [[UITapGestureRecognizer alloc] initWithTarget:self
                                             action:@selector(enterTapHandler:)];
+    
+    enterTapGesture.enabled = YES;
+    
     [self.view addGestureRecognizer:enterTapGesture];
     
     self.slidingMenuButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -69,9 +74,8 @@
     [enterBtn.titleLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
     [enterBtn.titleLabel setTextColor:[UIColor whiteColor]];
     
-    
     [self.view addSubview:enterBtn];
-    
+
     [self.view setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
     
     [self runLogoAnimation];
@@ -84,7 +88,14 @@
 }
 
 -(IBAction)enterBtn:(id)sender {
-    [self performSegueWithIdentifier:@"checkinDisplaySegue" sender:self];       
+    
+    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
+    NSLog(@"ENTER BTN CLICKED");
+    if([plist objectForKey:@"userId"]) {
+        [self performSegueWithIdentifier:@"checkinDisplaySegue" sender:self];
+    } else {
+        [self getUniqueUserId];
+    }
 }
 -(IBAction)revealMenu:(id)sender {
 
@@ -104,7 +115,14 @@
 
 
 - (void)enterTapHandler:(UITapGestureRecognizer *)recognizer {
-    [self performSegueWithIdentifier:@"checkinDisplaySegue" sender:self];    
+    
+    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
+    NSLog(@"ENTER enterTapHandler CLICKED");
+    if([plist objectForKey:@"userId"]) {
+        [self performSegueWithIdentifier:@"checkinDisplaySegue" sender:self];
+    } else {
+        [self getUniqueUserId];
+    }
 }
 
 -(void) animate:(UIView*) b withState: (int) state andLastState:(int) last_state {
@@ -211,6 +229,64 @@
                            green:((float) g / 255.0f)
                             blue:((float) b / 255.0f)
                            alpha:1.0f];
+}
+
+-(BOOL)getUniqueUserId {
+    
+    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
+    
+    enterTapGesture.enabled = NO;
+    //Start loading mask.
+    UIView *loadingMask = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    loadingMask.backgroundColor = [UIColor blackColor];
+    loadingMask.alpha = 0.5;
+    
+    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicator.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
+    indicator.center = self.view.center;
+    [self.view addSubview:indicator];
+    [indicator bringSubviewToFront:self.view];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = TRUE;
+    
+    [self.view addSubview:loadingMask];
+    [self.view addSubview:indicator];
+    
+    [loadingMask setUserInteractionEnabled:NO];
+    [indicator startAnimating];
+    //Create http request string
+    NSString *urlPost = [NSString stringWithFormat:@"%@getUserUniqueId", GOOSIIAPI];
+    NSLog(@"Create User urlstring %@", urlPost);
+    
+    NSURL *url = [NSURL URLWithString:urlPost];
+    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+    
+    NSURLResponse* response = nil;
+    NSError *error = nil;
+    NSData* data = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
+    
+    if(!error) {
+        // your data or an error will be ready here
+        NSString* newStr = [[NSString alloc] initWithData:data
+                                                 encoding:NSUTF8StringEncoding];
+        
+        NSLog(@"ReceivedData %@", newStr);
+        newStr = [newStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+        
+        if(![newStr isEqualToString:@""]) {
+            [plist setObject:newStr forKey:@"userId"];
+            
+            //Set the user's ID for flurry to track.
+            [Flurry setUserID:newStr];
+            
+            [loadingMask removeFromSuperview];
+            [indicator stopAnimating];
+            enterTapGesture.enabled = YES;
+            
+            return YES;
+        }
+    }
+    
+    return NO;
 }
 
 @end

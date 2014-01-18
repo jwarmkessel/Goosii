@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
+#import <Accounts/Accounts.h>
 @class GICompany;
 @class GIProgressBar;
 
@@ -22,6 +23,9 @@
 @property (assign) BOOL toggle;
 @property (nonatomic, strong) UIButton* infoBtn;
 @property (nonatomic, strong) GIProgressBar *participationBar;
+
+@property (strong, nonatomic) ACAccountStore *accountStore;
+@property (strong, nonatomic) ACAccount *fbAccount;
 
 - (void)showNoEventsPopUp:(NSString*)newsURL;
 @end
