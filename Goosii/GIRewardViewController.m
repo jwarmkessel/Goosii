@@ -148,10 +148,8 @@
     
     saveForLaterBtn.enabled = YES;
     
-    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
-    
     if([textField.text length] != 0) {
-        NSString *validatePasswordUrlString = [NSString stringWithFormat:@"%@checkPassword/%@/%@/%@", GOOSIIAPI, self.company.companyId, [plist objectForKey:@"userId"],textField.text];
+        NSString *validatePasswordUrlString = [NSString stringWithFormat:@"%@checkPassword/%@/%@/%@", GOOSIIAPI, self.company.companyId, [[NSUserDefaults standardUserDefaults] stringForKey:@"userId"],textField.text];
         
         NSURL *url = [NSURL URLWithString:validatePasswordUrlString];
         

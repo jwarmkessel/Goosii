@@ -42,9 +42,7 @@
     
     imgView.image = img;
     
-    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
-    
-    NSString *urlRewardString = [NSString stringWithFormat:@"%@getReward/%@/%@", GOOSIIAPI, self.company.companyId, [plist objectForKey:@"userId"]];
+    NSString *urlRewardString = [NSString stringWithFormat:@"%@getReward/%@/%@", GOOSIIAPI, self.company.companyId, [[NSUserDefaults standardUserDefaults] stringForKey:@"userId"]];
     
     NSLog(@"getUserContests %@", urlRewardString);
     NSURL *getRewardUrl = [NSURL URLWithString:urlRewardString];

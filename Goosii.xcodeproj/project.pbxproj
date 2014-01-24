@@ -27,7 +27,6 @@
 		830D2D201797E183003EA961 /* image3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 830D2D1A1797E183003EA961 /* image3.jpg */; };
 		830D2D211797E183003EA961 /* image4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 830D2D1B1797E183003EA961 /* image4.jpg */; };
 		830D2D221797E183003EA961 /* image5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 830D2D1C1797E183003EA961 /* image5.jpg */; };
-		831129EA1877D77D00972233 /* rewardBackgroundPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 831129E91877D77D00972233 /* rewardBackgroundPlaceholder.png */; };
 		831129ED1877DB5700972233 /* GICompanyCheckinCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 831129EC1877DB5700972233 /* GICompanyCheckinCell.m */; };
 		8313FDDC1857F1C700A73A7A /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8313FDDB1857F1C700A73A7A /* Accounts.framework */; };
 		8315EC3D18625967005D69FB /* GIEventScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8315EC3C18625967005D69FB /* GIEventScrollViewController.m */; };
@@ -301,6 +300,7 @@
 		83AC9C821856863800F186E1 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 83AC9C811856863800F186E1 /* libz.dylib */; };
 		83CF1108184D4D8B003A9B67 /* GIRewardEmployeeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CF1106184D4D8B003A9B67 /* GIRewardEmployeeController.m */; };
 		83CF1109184D4D8B003A9B67 /* GIRewardEmployeeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83CF1107184D4D8B003A9B67 /* GIRewardEmployeeController.xib */; };
+		83DF51FC189331000054C0DD /* rewardBackgroundPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 83DF51FB189331000054C0DD /* rewardBackgroundPlaceholder.png */; };
 		83F9244A17AC937F00E97376 /* Company_Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F9244117AC937F00E97376 /* Company_Back.png */; };
 		83F9244B17AC937F00E97376 /* FB_Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F9244217AC937F00E97376 /* FB_Back.png */; };
 		83F9244C17AC937F00E97376 /* FB_Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F9244317AC937F00E97376 /* FB_Button.png */; };
@@ -345,7 +345,6 @@
 		830D2D1A1797E183003EA961 /* image3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image3.jpg; sourceTree = "<group>"; };
 		830D2D1B1797E183003EA961 /* image4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image4.jpg; sourceTree = "<group>"; };
 		830D2D1C1797E183003EA961 /* image5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image5.jpg; sourceTree = "<group>"; };
-		831129E91877D77D00972233 /* rewardBackgroundPlaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rewardBackgroundPlaceholder.png; path = ../../../../rewardBackgroundPlaceholder.png; sourceTree = "<group>"; };
 		831129EB1877DB5700972233 /* GICompanyCheckinCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GICompanyCheckinCell.h; sourceTree = "<group>"; };
 		831129EC1877DB5700972233 /* GICompanyCheckinCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GICompanyCheckinCell.m; sourceTree = "<group>"; };
 		8313FDDB1857F1C700A73A7A /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
@@ -637,6 +636,7 @@
 		83CF1105184D4D8B003A9B67 /* GIRewardEmployeeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIRewardEmployeeController.h; sourceTree = "<group>"; };
 		83CF1106184D4D8B003A9B67 /* GIRewardEmployeeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIRewardEmployeeController.m; sourceTree = "<group>"; };
 		83CF1107184D4D8B003A9B67 /* GIRewardEmployeeController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GIRewardEmployeeController.xib; sourceTree = "<group>"; };
+		83DF51FB189331000054C0DD /* rewardBackgroundPlaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rewardBackgroundPlaceholder.png; sourceTree = "<group>"; };
 		83F9244117AC937F00E97376 /* Company_Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Company_Back.png; sourceTree = "<group>"; };
 		83F9244217AC937F00E97376 /* FB_Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FB_Back.png; sourceTree = "<group>"; };
 		83F9244317AC937F00E97376 /* FB_Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FB_Button.png; sourceTree = "<group>"; };
@@ -745,7 +745,7 @@
 		8309748817837C0900ABC1CF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				831129E91877D77D00972233 /* rewardBackgroundPlaceholder.png */,
+				83DF51FB189331000054C0DD /* rewardBackgroundPlaceholder.png */,
 				83AC9C791855757800F186E1 /* GINoEventsNearbyBackgroundGradient-568h@2x.png */,
 				83AC9C741855751D00F186E1 /* GINoEventsNearbyBackgroundGradient.png */,
 				83AC9C751855751D00F186E1 /* GINoEventsNearbyBackgroundGradient@2x.png */,
@@ -1362,7 +1362,6 @@
 				83A4A796183AEC0F00C7FE3A /* Intro_0048.png in Resources */,
 				83F9244E17AC937F00E97376 /* No_Partic_Back.png in Resources */,
 				83A4A815183AEC0F00C7FE3A /* Intro_0078@2x.png in Resources */,
-				831129EA1877D77D00972233 /* rewardBackgroundPlaceholder.png in Resources */,
 				83F9244F17AC937F00E97376 /* Partic_Back.png in Resources */,
 				83A4A827183AEC0F00C7FE3A /* BrokenEggAnim_017-568h@2x.png in Resources */,
 				83A4A7F9183AEC0F00C7FE3A /* Intro_0050@2x.png in Resources */,
@@ -1399,6 +1398,7 @@
 				83A4A7A7183AEC0F00C7FE3A /* Intro_0065.png in Resources */,
 				83A4A789183AEC0F00C7FE3A /* Intro_0035.png in Resources */,
 				83A4A7FF183AEC0F00C7FE3A /* Intro_0056@2x.png in Resources */,
+				83DF51FC189331000054C0DD /* rewardBackgroundPlaceholder.png in Resources */,
 				83A4A7CF183AEC0F00C7FE3A /* Intro_0008@2x.png in Resources */,
 				83F9245017AC937F00E97376 /* Partic_Bar_Back.png in Resources */,
 				83F9245117AC937F00E97376 /* Winner_Back.png in Resources */,

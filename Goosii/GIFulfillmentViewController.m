@@ -154,9 +154,8 @@
             NSLog(@"Posting to facebook.");
             
             NSLog(@"The result %d", result);
-            GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
             
-            NSString *urlString = [NSString stringWithFormat:@"%@removeFulfillmentObject/%@/%@", GOOSIIAPI, self.company.companyId, [plist objectForKey:@"userId"]];
+            NSString *urlString = [NSString stringWithFormat:@"%@removeFulfillmentObject/%@/%@", GOOSIIAPI, self.company.companyId, [[NSUserDefaults standardUserDefaults] stringForKey:@"userId"]];
             
             NSLog(@"Remove fulfillment flag %@", urlString);
             
@@ -413,9 +412,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
 -(void)skipBtnHandler:(id)sender {
     
-    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
-    
-    NSString *urlPost = [NSString stringWithFormat:@"%@removeFulfillmentAndReward/%@/%@", GOOSIIAPI, self.company.companyId,[plist objectForKey:@"userId"]];
+    NSString *urlPost = [NSString stringWithFormat:@"%@removeFulfillmentAndReward/%@/%@", GOOSIIAPI, self.company.companyId, [[NSUserDefaults standardUserDefaults] stringForKey:@"userId"]];
 
     NSLog(@"Remove fulfillment flag %@", urlPost);
     

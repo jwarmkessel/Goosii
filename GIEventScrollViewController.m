@@ -742,8 +742,8 @@ BOOL isTransformed = 0;
             
             //request update user participation
             NSLog(@"The result %d", result);
-            GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
-            NSString *urlString = [NSString stringWithFormat:@"%@addUserParticipation/%@/%@", GOOSIIAPI, [plist objectForKey:@"userId"], self.company.companyId];
+
+            NSString *urlString = [NSString stringWithFormat:@"%@addUserParticipation/%@/%@", GOOSIIAPI, [[NSUserDefaults standardUserDefaults] stringForKey:@"userId"], self.company.companyId];
             
             NSLog(@"getUserContests %@", urlString);
             NSURL *url = [NSURL URLWithString:urlString];
@@ -804,8 +804,7 @@ BOOL isTransformed = 0;
             
             //request update user participation
             NSLog(@"The result %d", result);
-            GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
-            NSString *urlString = [NSString stringWithFormat:@"%@addUserParticipation/%@/%@", GOOSIIAPI, [plist objectForKey:@"userId"], self.company.companyId];
+            NSString *urlString = [NSString stringWithFormat:@"%@addUserParticipation/%@/%@", GOOSIIAPI, [[NSUserDefaults standardUserDefaults] stringForKey:@"userId"], self.company.companyId];
             
             NSLog(@"getUserContests %@", urlString);
             NSURL *url = [NSURL URLWithString:urlString];

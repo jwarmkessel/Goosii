@@ -89,9 +89,7 @@
 
 -(IBAction)enterBtn:(id)sender {
     
-    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
-    NSLog(@"ENTER BTN CLICKED");
-    if([plist objectForKey:@"userId"]) {
+    if([[NSUserDefaults standardUserDefaults] stringForKey:@"userId"]) {
         [self performSegueWithIdentifier:@"checkinDisplaySegue" sender:self];
     } else {
         [self getUniqueUserId];
@@ -116,9 +114,7 @@
 
 - (void)enterTapHandler:(UITapGestureRecognizer *)recognizer {
     
-    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
-    NSLog(@"ENTER enterTapHandler CLICKED");
-    if([plist objectForKey:@"userId"]) {
+    if([[NSUserDefaults standardUserDefaults] stringForKey:@"userId"]) {
         [self performSegueWithIdentifier:@"checkinDisplaySegue" sender:self];
     } else {
         [self getUniqueUserId];
@@ -233,8 +229,6 @@
 
 -(BOOL)getUniqueUserId {
     
-    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
-    
     enterTapGesture.enabled = NO;
     //Start loading mask.
     UIView *loadingMask = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -273,7 +267,7 @@
         newStr = [newStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
         
         if(![newStr isEqualToString:@""]) {
-            [plist setObject:newStr forKey:@"userId"];
+            [[NSUserDefaults standardUserDefaults]setObject:newStr forKey:@"userId"];
             
             //Set the user's ID for flurry to track.
             [Flurry setUserID:newStr];

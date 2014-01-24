@@ -80,8 +80,7 @@
     GIEventBoardViewController *parentViewController = (GIEventBoardViewController*)self.parentViewController;
     GICompany *company = parentViewController.company;
     
-    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
-    NSString *urlStr = [NSString stringWithFormat:@"%@insertRecognizedEmployee/%@/%@/%@", GOOSIIAPI, [plist objectForKey:@"userId"], company.companyId, self.textField.text];
+    NSString *urlStr = [NSString stringWithFormat:@"%@insertRecognizedEmployee/%@/%@/%@", GOOSIIAPI, [[NSUserDefaults standardUserDefaults] stringForKey:@"userId"], company.companyId, self.textField.text];
     
     NSURL *url = [NSURL URLWithString:urlStr];
 

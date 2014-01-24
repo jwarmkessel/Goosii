@@ -180,8 +180,8 @@
 }
 
 - (void)makeContestRequest {
-    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
-    NSString *urlString = [NSString stringWithFormat:@"%@getUserContests/%@", GOOSIIAPI, [plist objectForKey:@"userId"]];
+
+    NSString *urlString = [NSString stringWithFormat:@"%@getUserContests/%@", GOOSIIAPI, [[NSUserDefaults standardUserDefaults] stringForKey:@"userId"]];
     
     NSLog(@"getUserContests %@", urlString);
     NSURL *url = [NSURL URLWithString:urlString];
@@ -401,8 +401,7 @@
 }
 
 - (BOOL)determineFulfillment: (NSString*)companyId {
-    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
-    NSString *urlString = [NSString stringWithFormat:@"%@getUserFulfillments/%@/%@", GOOSIIAPI, [plist objectForKey:@"userId"], companyId];
+    NSString *urlString = [NSString stringWithFormat:@"%@getUserFulfillments/%@/%@", GOOSIIAPI, [[NSUserDefaults standardUserDefaults] stringForKey:@"userId"], companyId];
     
     NSLog(@"getUserContests %@", urlString);
     NSURL *url = [NSURL URLWithString:urlString];

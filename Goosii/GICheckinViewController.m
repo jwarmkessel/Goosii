@@ -386,10 +386,8 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     
-    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
-    
     NSLog(@"The manager.location %@", manager.location);
-    NSString *urlString = [NSString stringWithFormat:@"%@geoSpatialQuery/%@/%f/%f", GOOSIIAPI, [plist objectForKey:@"userId"], manager.location.coordinate.longitude, manager.location.coordinate.latitude];
+    NSString *urlString = [NSString stringWithFormat:@"%@geoSpatialQuery/%@/%f/%f", GOOSIIAPI, [[NSUserDefaults standardUserDefaults] stringForKey:@"userId"], manager.location.coordinate.longitude, manager.location.coordinate.latitude];
     
     NSLog(@"THE URL STRING FOR CHECKING IN %@", urlString);
     NSURL *url = [NSURL URLWithString:urlString];
@@ -446,7 +444,7 @@
                                            
                                            
                                            
-                                           if([[plist objectForKey:@"userId"] isEqualToString:partObj]){
+                                           if([[[NSUserDefaults standardUserDefaults] stringForKey:@"userId"] isEqualToString:partObj]){
                                                NSLog(@"User is totally entered already %@", [NSString stringWithFormat:@"%d", totalParticipantsNum]);
                                                isParticipating = YES;
                                            }
@@ -699,6 +697,14 @@
 }
 
 - (void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered {
+    self.locationManager = [[CLLocationManager alloc] init];
+    [self.locationManager setDelegate:self];
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    self.locationManager.distanceFilter = 5;
+    [self.locationManager startUpdatingLocation];
+}
+
+- (void)mapViewDidFinishLoadingMap:(MKMapView *)mapView {
     self.locationManager = [[CLLocationManager alloc] init];
     [self.locationManager setDelegate:self];
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;

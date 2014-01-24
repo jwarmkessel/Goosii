@@ -12,7 +12,6 @@
 #import <Social/Social.h>
 #import "GICountingLabel.h"
 #import "GICompany.h"
-#import "GIPlist.h"
 #import "GICheckinViewController.h"
 #import <MapKit/MapKit.h>
 #import <ECSlidingViewController.h>
@@ -63,9 +62,8 @@
     [super viewDidLoad];
     
     //Enter the user into the contest if they haven't already.
-    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
     
-    NSString *enterEventUrlString = [NSString stringWithFormat:@"%@enterContest/%@/%@", GOOSIIAPI,[plist objectForKey:@"userId"], self.company.companyId];
+    NSString *enterEventUrlString = [NSString stringWithFormat:@"%@enterContest/%@/%@", GOOSIIAPI, [[NSUserDefaults standardUserDefaults] stringForKey:@"userId"], self.company.companyId];
     
     NSURL *enterEventURL = [NSURL URLWithString:enterEventUrlString];
     NSURLRequest *enterEventRequest = [NSURLRequest requestWithURL:enterEventURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
@@ -621,8 +619,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
             
             //request update user participation 
             NSLog(@"The result %d", result);
-            GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
-            NSString *urlString = [NSString stringWithFormat:@"%@addUserParticipation/%@/%@", GOOSIIAPI, [plist objectForKey:@"userId"], self.company.companyId];        
+
+            NSString *urlString = [NSString stringWithFormat:@"%@addUserParticipation/%@/%@", GOOSIIAPI, [[NSUserDefaults standardUserDefaults] stringForKey:@"userId"], self.company.companyId];
             
             NSLog(@"getUserContests %@", urlString);
             NSURL *url = [NSURL URLWithString:urlString];

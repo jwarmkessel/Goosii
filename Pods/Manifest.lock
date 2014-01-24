@@ -17,7 +17,6 @@ PODS:
   - AFNetworking/Serialization (2.0.3)
   - AFNetworking/UIKit (2.0.3):
     - AFNetworking/NSURLConnection
-  - Canvas (0.1)
   - ECSlidingViewController (0.10.0)
   - FlurrySDK (4.2.3)
   - PunchScrollView (1.0.2)
@@ -30,7 +29,6 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0.3)
-  - Canvas (~> 0.1)
   - ECSlidingViewController (~> 0.10.0)
   - FlurrySDK (~> 4.2.3)
   - PunchScrollView (~> 1.0.2)
@@ -41,7 +39,6 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFNetworking: e499052cbf3d743e9bb727bb37adb9dc2547ba15
-  Canvas: 1d94806aab1ef0486df719f80f47eccf40a08ae5
   ECSlidingViewController: fc9a9a6564d4a64c0d8c7cf5583d2b9a469ecd04
   FlurrySDK: 20b3fd669eeafd005ca8ff65a1406d1befbc8031
   PunchScrollView: 5f4bedc1230bb29dd68c09cc3b8e57547cfb962a

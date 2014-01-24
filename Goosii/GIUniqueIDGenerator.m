@@ -30,17 +30,16 @@
     NSLog(@"REACHABLE!");
     
     //If reachable and there isn't a company id than call the server to create one.
-    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
     GIPlist *loginName = [[GIPlist alloc] initWithNamespace:@"Goosii"];
     
     NSString *userIdString;
     
-    if([plist objectForKey:@"userId"]) {
-        userIdString = [plist objectForKey:@"userId"];
+    if([[NSUserDefaults standardUserDefaults] stringForKey:@"userId"]) {
+        userIdString = [[NSUserDefaults standardUserDefaults] stringForKey:@"userId"];
         NSLog(@"THe string length %lu", (unsigned long)userIdString.length);
     }
     
-    if(![plist objectForKey:@"userId"] || userIdString.length != 24) {
+    if(![[NSUserDefaults standardUserDefaults] stringForKey:@"userId"] || userIdString.length != 24) {
         
         NSLog(@"User Id SHOULD BE NIL");
         // do something only for logged in fb users} else {//do something else for non-fb users}
@@ -91,7 +90,8 @@
                                                newStr = [newStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
                                                
                                                if(![newStr isEqualToString:@""]) {
-                                                   [loginName setObject:newStr forKey:@"userId"];
+                                                   [[NSUserDefaults standardUserDefaults]setObject:newStr forKey:@"userId"];
+                                                   
                                                    [loginName setObject:@"empty" forKey:@"userDevicePushToken"];
                                                    
                                                    //Set the user's ID for flurry to track.
@@ -131,7 +131,7 @@
                                        
                                        
                                        if(![newStr isEqualToString:@""]) {
-                                           [loginName setObject:newStr forKey:@"userId"];
+                                           [[NSUserDefaults standardUserDefaults]setObject:newStr forKey:@"userId"];
                                            [loginName setObject:@"empty" forKey:@"userDevicePushToken"];
                                            
                                            //Set the user's ID for flurry to track.

@@ -33,12 +33,18 @@
     NSObject *goosiiAPI __unused = [[GIGlobalVariables alloc] init];
     NSLog(@"THE CURRENT API REQUEST %@", GOOSIIAPI);
     [NewRelicAgent startWithApplicationToken:NEW_RELIC_TOKEN];
-
     
-    //Create and store the users unique identifier
     GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
     
-    if(![plist objectForKey:@"userId"]) {
+    //If user had used GIPlist in the past to store userId get the alphanumeric id and set it in NSUserDefaults.
+    if([plist objectForKey:@"userId"] != NULL) {
+        NSString * plistUserId = [plist objectForKey:@"userId"];
+        [[NSUserDefaults standardUserDefaults]setObject:plistUserId forKey:@"userId"];
+    }
+    
+    NSString *userId = [[NSUserDefaults standardUserDefaults] stringForKey:@"userId"];
+    
+    if(!userId) {
         
         UIView *loadingMask = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 568.0f)];
         [loadingMask setBackgroundColor:[UIColor blackColor]];
@@ -65,7 +71,8 @@
             newStr = [newStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
             
             if(![newStr isEqualToString:@""]) {
-                [plist setObject:newStr forKey:@"userId"];
+                
+                [[NSUserDefaults standardUserDefaults]setObject:newStr forKey:@"userId"];
                 
                 //Set the user's ID for flurry to track.
                 [Flurry setUserID:newStr];
@@ -154,9 +161,9 @@
     } else {
         usersFullName = [fbAccount.userFullName stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
     }
-    if([loginName objectForKey:@"userId"]) {
+    if([[NSUserDefaults standardUserDefaults] stringForKey:@"userId"]) {
         
-        NSString *uniqueId = [loginName objectForKey:@"userId"];
+        NSString *uniqueId = [[NSUserDefaults standardUserDefaults] stringForKey:@"userId"];
         
         NSString *filterStr = [uniqueId stringByReplacingOccurrencesOfString:@"\"" withString:@""];
         NSString *urlPost = [NSString stringWithFormat:@"%@setUserNameAndDeviceToken/%@/%@/%@", GOOSIIAPI, filterStr, deviceTokenStr, usersFullName];
@@ -211,9 +218,8 @@
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     
     //Create and store the users unique identifier
-    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
     
-    if(![plist objectForKey:@"userId"]) {
+    if(![[NSUserDefaults standardUserDefaults] stringForKey:@"userId"]) {
         
         UIView *loadingMask = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 568.0f)];
         [loadingMask setBackgroundColor:[UIColor blackColor]];
@@ -239,7 +245,7 @@
             newStr = [newStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
             
             if(![newStr isEqualToString:@""]) {
-                [plist setObject:newStr forKey:@"userId"];
+                [[NSUserDefaults standardUserDefaults]setObject:newStr forKey:@"userId"];
                 
                 //Set the user's ID for flurry to track.
                 [Flurry setUserID:newStr];
