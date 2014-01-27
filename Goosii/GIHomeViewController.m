@@ -38,6 +38,14 @@
     
     
     self.animationImgView = [[UIImageView alloc] initWithFrame:CGRectMake(74, 100, 172, 117)];
+    
+    float xView = [self.view center].x;
+    float yView = [self.view center].y;
+    
+    float yAnimationImgViewOffset = yView - 117/2;
+    
+    [self.animationImgView setCenter:CGPointMake(xView, yAnimationImgViewOffset)];
+    
     self.animationImgView.image = [UIImage imageNamed:@"BrokenEggAnim_017.png"];
     
     [self.view addSubview:self.animationImgView];
@@ -51,6 +59,7 @@
     
     [self.view addGestureRecognizer:enterTapGesture];
     
+    //Initiate ECSlidingMenu Controller and add sliding menu button.
     self.slidingMenuButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
     
@@ -66,16 +75,16 @@
     [self.view addSubview:self.slidingMenuButton];
     
     UIButton *enterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    enterBtn.frame = CGRectMake(20, 300, 280, 50);
+    enterBtn.frame = CGRectMake(20, 300, 300, 50);
     //[enterBtn setBackgroundColor:[self colorWithHexString:@"3b5999"]];
     [enterBtn addTarget:self action:@selector(enterBtn:) forControlEvents:UIControlEventTouchUpInside];
-    [enterBtn setTitle:@"Tap anywhere to begin." forState:UIControlStateNormal];
+    [enterBtn setTitle:@"Promoting Independent Business." forState:UIControlStateNormal];
     enterBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
     [enterBtn.titleLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
     [enterBtn.titleLabel setTextColor:[UIColor whiteColor]];
     
     [self.view addSubview:enterBtn];
-
+    
     [self.view setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
     
     [self runLogoAnimation];
@@ -87,14 +96,6 @@
     self.navigationController.navigationBarHidden = YES;
 }
 
--(IBAction)enterBtn:(id)sender {
-    
-    if([[NSUserDefaults standardUserDefaults] stringForKey:@"userId"]) {
-        [self performSegueWithIdentifier:@"checkinDisplaySegue" sender:self];
-    } else {
-        [self getUniqueUserId];
-    }
-}
 -(IBAction)revealMenu:(id)sender {
 
     [self.slidingViewController anchorTopViewTo:ECRight animations:^{
