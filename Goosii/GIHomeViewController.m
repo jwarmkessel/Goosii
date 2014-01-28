@@ -7,7 +7,7 @@
 //
 
 #import "GIHomeViewController.h"
-#import <ECSlidingViewController.h>
+//#import <ECSlidingViewController.h>
 #import <Social/Social.h>
 #import "GIPlist.h"
 #import <Flurry.h>
@@ -50,34 +50,10 @@
     
     [self.view addSubview:self.animationImgView];
     
-
-    enterTapGesture =
-    [[UITapGestureRecognizer alloc] initWithTarget:self
-                                            action:@selector(enterTapHandler:)];
-    
-    enterTapGesture.enabled = YES;
-    
-    [self.view addGestureRecognizer:enterTapGesture];
-    
-    //Initiate ECSlidingMenu Controller and add sliding menu button.
-    self.slidingMenuButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    
-    
-    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
-        slidingMenuButton.frame = CGRectMake(8, 10, 38, 24);
-    }else {
-        slidingMenuButton.frame = CGRectMake(8, 30, 38, 24);
-    }
-    
-    [slidingMenuButton setBackgroundImage:[UIImage imageNamed:@"Slide.png"] forState:UIControlStateNormal];
-    [slidingMenuButton addTarget:self action:@selector(revealMenu:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.view addSubview:self.slidingMenuButton];
-    
     UIButton *enterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     enterBtn.frame = CGRectMake(20, 300, 300, 50);
     //[enterBtn setBackgroundColor:[self colorWithHexString:@"3b5999"]];
-    [enterBtn addTarget:self action:@selector(enterBtn:) forControlEvents:UIControlEventTouchUpInside];
+
     [enterBtn setTitle:@"Promoting Independent Business." forState:UIControlStateNormal];
     enterBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
     [enterBtn.titleLabel setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:15.0f]];
@@ -92,18 +68,18 @@
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
-    self.slidingViewController.panGesture.enabled = YES;
-    self.navigationController.navigationBarHidden = YES;
+
+    
 }
 
--(IBAction)revealMenu:(id)sender {
-
-    [self.slidingViewController anchorTopViewTo:ECRight animations:^{
-        NSLog(@"Sliding");
-    } onComplete:^{
-        NSLog(@"complete");
-    }];
-}
+//-(IBAction)revealMenu:(id)sender {
+//
+//    [self.slidingViewController anchorTopViewTo:ECRight animations:^{
+//        NSLog(@"Sliding");
+//    } onComplete:^{
+//        NSLog(@"complete");
+//    }];
+//}
 
 - (void)viewDidAppear:(BOOL)animated {
 
@@ -120,6 +96,12 @@
     } else {
         [self getUniqueUserId];
     }
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    NSLog(@"Preparing for segue from home view");
+    
 }
 
 -(void) animate:(UIView*) b withState: (int) state andLastState:(int) last_state {
@@ -178,6 +160,12 @@
     self.animationImgView.animationRepeatCount = 1;
     NSLog(@"Starting animation now");
     [self.animationImgView startAnimating];
+    
+    [NSTimer scheduledTimerWithTimeInterval:2.0
+                                     target:self
+                                   selector:@selector(enterTapHandler:)
+                                   userInfo:nil
+                                    repeats:NO];
     
 }
 

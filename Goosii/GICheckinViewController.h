@@ -14,6 +14,7 @@
 
 @property (strong, nonatomic) NSMutableArray *nearbyLocationsAry;
 @property (strong, nonatomic) CLLocationManager *locationManager;
+@property (strong, nonatomic) UIButton *slidingMenuButton;
 
 - (void)setInset;
 @end

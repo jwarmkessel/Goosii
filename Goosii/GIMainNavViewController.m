@@ -28,8 +28,10 @@
 
 - (void)viewDidLoad
 {
+    NSLog(@"Main Nav View Controller did load");
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     
 //    self.slidingMenuButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -49,10 +51,16 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    NSLog(@"Main Nav View Controller viewWillAppear");
     [super viewWillAppear:animated];
     
     if (![self.slidingViewController.underLeftViewController isKindOfClass:[GIMenuViewController class]]) {
+        
+        NSLog(@"Is not GIMenuViewController");
+        
         self.slidingViewController.underLeftViewController  = [self.storyboard instantiateViewControllerWithIdentifier:@"Menu"];
+        
+        NSLog(@"Instantiating... Is not GIMenuViewController");
     }
     
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];

@@ -21,6 +21,7 @@
 #import "GINoEventsNearby.h"
 #import "GIEventScrollViewController.h"
 #import "GICompanyCheckinCell.h"
+#import <ECSlidingViewController.h>
 
 #define METERS_PER_MILE 1609.344
 #define METERS_TO_MILE_CONVERSION 0.00062137
@@ -37,7 +38,7 @@
 @end
 
 @implementation GICheckinViewController
-@synthesize loadingMask, nearbyLocationsAry, locationManager, indicator, noEventsNearbyController, mapView;
+@synthesize loadingMask, nearbyLocationsAry, locationManager, indicator, noEventsNearbyController, mapView, slidingMenuButton;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -51,6 +52,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     NSLog(@"Check-in viewDidLoad");
     self.slidingViewController.panGesture.enabled = NO;
     //Set navigation controller variables.
@@ -87,12 +89,46 @@
     
     self.nearbyLocationsAry = [[NSMutableArray alloc] init];
     
+    /********/
+     //Initiate ECSlidingMenu Controller and add sliding menu button.
+//     self.slidingMenuButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//     
+//     
+//     if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+//     slidingMenuButton.frame = CGRectMake(8, 10, 38, 24);
+//     }else {
+//     slidingMenuButton.frame = CGRectMake(8, 30, 38, 24);
+//     }
+//     
+//     [slidingMenuButton setBackgroundImage:[UIImage imageNamed:@"Slide.png"] forState:UIControlStateNormal];
+//     [slidingMenuButton addTarget:self action:@selector(revealMenu:) forControlEvents:UIControlEventTouchUpInside];
+//     
+//     [self.view addSubview:self.slidingMenuButton];
+    
+    /********/
+    
+    UIImage *image = [UIImage imageNamed:@"Slide.png"];
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithImage:image
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:@selector(revealMenu:)];
+    [self.navigationItem setLeftBarButtonItem:barButtonItem];
+    
+
+
+//    UIImage *addImage = [UIImage imageNamed:@"images/global/add"];
+//    UIButton *addButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [addButton setFrame:CGRectMake(0, 0, addImage.size.width, addImage.size.height)];
+//    [addButton setBackgroundImage:addImage forState:UIControlStateNormal];
+//    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
+//    [self.navigationItem setRightBarButtonItem:barButtonItem];
+    
     // change the back button to cancel and add an event handler
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"back"
-                                                                   style:UIBarButtonItemStyleBordered
-                                                                  target:self
-                                                                  action:@selector(handleBack:)];
-    self.navigationItem.leftBarButtonItem = backButton;
+//    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"back"
+//                                                                   style:UIBarButtonItemStyleBordered
+//                                                                  target:self
+//                                                                  action:@selector(handleBack:)];
+//    self.navigationItem.leftBarButtonItem = backButton;
     
     //Set the color of the NavBar
     self.navigationController.navigationBar.translucent = YES;
@@ -104,6 +140,15 @@
     
 }
 
+-(IBAction)revealMenu:(id)sender {
+    
+    [self.slidingViewController anchorTopViewTo:ECRight animations:^{
+        NSLog(@"Sliding");
+    } onComplete:^{
+        NSLog(@"complete");
+    }];
+}
+
 - (void)refresh:(UIRefreshControl *)refreshControl {
     [refreshControl endRefreshing];
 }
@@ -113,6 +158,13 @@
     if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
         [self.tableView setContentInset:UIEdgeInsetsMake(-20,0,0,0)];
     }
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    
+    [super viewDidAppear:animated];
+    self.slidingViewController.panGesture.enabled = YES;
+    self.navigationController.navigationBarHidden = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated {

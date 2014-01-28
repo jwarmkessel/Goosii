@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="cnR-0Z-MUt">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="3qH-VN-dIu">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -21,7 +21,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jfG-6g-6zR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-368" y="-193"/>
+            <point key="canvasLocation" x="-210" y="-201"/>
         </scene>
         <!--Menu View Controller-->
         <scene sceneID="Lmh-9O-Fuh">
@@ -67,7 +67,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SAy-fH-hvx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="76" y="-193"/>
+            <point key="canvasLocation" x="170" y="-193"/>
         </scene>
         <!--Participation View Controller - Event Activity-->
         <scene sceneID="jng-vA-Zv2">
@@ -143,7 +143,7 @@
         <!--Home View Controller-->
         <scene sceneID="VZ2-0B-Kfg">
             <objects>
-                <viewController id="3qH-VN-dIu" customClass="GIHomeViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Home" id="3qH-VN-dIu" customClass="GIHomeViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="zsu-By-Tg8"/>
                         <viewControllerLayoutGuide type="bottom" id="QsE-7d-qlG"/>
@@ -155,17 +155,17 @@
                     </view>
                     <navigationItem key="navigationItem" id="IdF-Vk-Vt3"/>
                     <connections>
-                        <segue destination="P0o-uj-P0Z" kind="push" identifier="checkinDisplaySegue" id="p3S-bL-3ao"/>
+                        <segue destination="cnR-0Z-MUt" kind="modal" identifier="checkinDisplaySegue" id="Nih-GD-uPZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="akP-Qp-pLc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1049" y="-620"/>
+            <point key="canvasLocation" x="17" y="-930"/>
         </scene>
         <!--Checkin View Controller - Nearby Events-->
         <scene sceneID="xug-O3-Euy">
             <objects>
-                <tableViewController id="P0o-uj-P0Z" customClass="GICheckinViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="CheckinView" id="P0o-uj-P0Z" customClass="GICheckinViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="VwC-dL-50g">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -440,16 +440,17 @@
         <scene sceneID="GSa-Ax-a7e">
             <objects>
                 <navigationController storyboardIdentifier="Main" definesPresentationContext="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="x0V-Ld-v11" customClass="GIMainNavViewController" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="IGK-II-ZYJ"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="kU5-m1-YtK">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="3qH-VN-dIu" kind="relationship" relationship="rootViewController" id="92j-oa-3pJ"/>
+                        <segue destination="P0o-uj-P0Z" kind="relationship" relationship="rootViewController" id="Sue-nn-0G5"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xPC-Lb-gHA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="528" y="-620"/>
+            <point key="canvasLocation" x="1032" y="-620"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -458,9 +459,9 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="D0o-4r-Ssu"/>
-        <segue reference="sab-4P-wOL"/>
-        <segue reference="XGq-dg-sFL"/>
+        <segue reference="V9X-fL-NRd"/>
         <segue reference="pz8-aJ-UFd"/>
+        <segue reference="VJY-Ro-THa"/>
+        <segue reference="D0o-4r-Ssu"/>
     </inferredMetricsTieBreakers>
 </document>

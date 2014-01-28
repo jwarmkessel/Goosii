@@ -26,6 +26,7 @@
 
 - (void)viewDidLoad
 {
+    NSLog(@"View did load for GIMenuViewController");
     [super viewDidLoad];
 
     // Uncomment the following line to preserve selection between presentations.

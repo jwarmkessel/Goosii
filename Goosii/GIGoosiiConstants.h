@@ -15,7 +15,7 @@ By changing the environment flag you can change which API environment you want t
 
 SANDBOX | PRODUCTION | DEMO
 */
-#define kENVIRONMENT_FLAG @"PRODUCTION"
+#define kENVIRONMENT_FLAG @"SANDBOX"
 
 /******************************/
 
