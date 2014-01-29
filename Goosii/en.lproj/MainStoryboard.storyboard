@@ -439,7 +439,7 @@
         <!--Main Nav View Controller-->
         <scene sceneID="GSa-Ax-a7e">
             <objects>
-                <navigationController storyboardIdentifier="Main" definesPresentationContext="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="x0V-Ld-v11" customClass="GIMainNavViewController" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Nearby Events" definesPresentationContext="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="x0V-Ld-v11" customClass="GIMainNavViewController" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="IGK-II-ZYJ"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="kU5-m1-YtK">
                         <autoresizingMask key="autoresizingMask"/>

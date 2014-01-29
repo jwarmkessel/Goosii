@@ -249,6 +249,7 @@
                 
                 //Set the user's ID for flurry to track.
                 [Flurry setUserID:newStr];
+                
             }
             
         } else {

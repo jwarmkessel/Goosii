@@ -138,6 +138,62 @@
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:refreshControl];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
+    
+}
+
+- (void)applicationWillEnterForeground:(NSNotification *)notification {
+    NSLog(@"APPLICATION WILL ENTER FOREGROUND FROM CHECKIN VIEW");
+    
+    //Create http request string
+    NSString *urlPost = [NSString stringWithFormat:@"%@getUser/%@", GOOSIIAPI, [[NSUserDefaults standardUserDefaults] stringForKey:@"userId"]];
+    NSLog(@"Create User urlstring %@", urlPost);
+    
+    NSURL *url = [NSURL URLWithString:urlPost];
+    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+    
+    NSURLResponse* response = nil;
+    NSError *error = nil;
+    NSData* data = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
+    
+    if(!error) {
+        // your data or an error will be ready here
+        NSString* newStr = [[NSString alloc] initWithData:data
+                                                 encoding:NSUTF8StringEncoding];
+        
+        NSLog(@"ReceivedData %@", newStr);
+        [[NSUserDefaults standardUserDefaults]setObject:@"2" forKey:@"fulfillments"];
+        
+    } else {
+        NSLog(@"There was an error");
+    }
+
+    
+    //Start loading mask.
+    self.loadingMask = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.loadingMask.backgroundColor = [UIColor blackColor];
+    self.loadingMask.alpha = 0.5;
+    
+    [self.view addSubview:self.loadingMask];
+    [self.view bringSubviewToFront:self.loadingMask];
+    
+
+    
+    self.indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicator.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
+    indicator.center = self.view.center;
+    
+    [self.loadingMask addSubview:indicator];
+    [self.loadingMask bringSubviewToFront:indicator];
+    [indicator startAnimating];
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = TRUE;
+
+    self.locationManager = [[CLLocationManager alloc] init];
+    [self.locationManager setDelegate:self];
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    self.locationManager.distanceFilter = 5;
+    [self.locationManager startUpdatingLocation];
 }
 
 -(IBAction)revealMenu:(id)sender {
@@ -446,7 +502,7 @@
     NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
     
     [NSURLConnection sendAsynchronousRequest:urlRequest
-                                       queue:[NSOperationQueue mainQueue]
+                                       queue:[NSOperationQueue currentQueue]
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
                                
                                [self.nearbyLocationsAry removeAllObjects];
@@ -719,15 +775,24 @@
                                    [errorView addSubview:errorStatusLbl];
                                    [errorStatusLbl setCenter:errorView.center];
                                }
+                               
+
                            }];
     
     [self.locationManager stopMonitoringSignificantLocationChanges ];
     [self.locationManager stopUpdatingLocation];
     [self.locationManager stopUpdatingHeading];
+    
+    
+    
     [UIView animateWithDuration:0.5 animations:^{
         mapView.alpha = 0;
     } completion:^(BOOL finished) {
         [mapView removeFromSuperview];
+        // All instances of TestClass will be notified
+        [[NSNotificationCenter defaultCenter]
+         postNotificationName:@"TestNotification"
+         object:self];
     }];
 }
 

@@ -29,7 +29,7 @@
 	// Do any additional setup after loading the view.
     
     //Instantiate the main view controller otherwise known as the home screen.
-    self.topViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+    self.topViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Nearby Events"];
 }
 
 - (void)didReceiveMemoryWarning
