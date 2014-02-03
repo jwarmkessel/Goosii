@@ -88,6 +88,36 @@
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:refreshControl];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
+}
+
+- (void)applicationWillEnterForeground:(NSNotification *)notification {
+    NSLog(@"APPLICATION WILL ENTER FOREGROUND FROM CHECKIN VIEW");
+
+    [self.tableView reloadData];
+    //Create http request string
+//    NSString *urlPost = [NSString stringWithFormat:@"%@getUser/%@", GOOSIIAPI, [[NSUserDefaults standardUserDefaults] stringForKey:@"userId"]];
+//    NSLog(@"Create User urlstring %@", urlPost);
+//    
+//    NSURL *url = [NSURL URLWithString:urlPost];
+//    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+//    
+//    NSURLResponse* response = nil;
+//    NSError *error = nil;
+//    NSData* data = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
+//    
+//    if(!error) {
+//        // your data or an error will be ready here
+//        NSString* newStr = [[NSString alloc] initWithData:data
+//                                                 encoding:NSUTF8StringEncoding];
+//        
+//        NSLog(@"ReceivedData %@", newStr);
+//        [[NSUserDefaults standardUserDefaults]setObject:@"2" forKey:@"fulfillments"];
+//        
+//    } else {
+//        NSLog(@"There was an error");
+//    }
 }
 
 - (void)refresh:(UIRefreshControl *)refreshControl {
@@ -303,6 +333,8 @@
                                        
                                        //Check fulfillments
                                        NSArray *fulfillments = [userObj objectForKey:@"fulfillments"];
+                                       
+                                       [[NSUserDefaults standardUserDefaults]setObject:[NSString stringWithFormat:@"%lu", (unsigned long)[fulfillments count]] forKey:@"fulfillments"];
                                        
                                        NSString *isFulfillment = @"NO";
                                        for (id contest in fulfillments) {

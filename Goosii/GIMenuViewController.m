@@ -9,11 +9,11 @@
 #import "GIMenuViewController.h"
 
 @interface GIMenuViewController ()
-
+@property (strong, nonatomic) UILabel *fulfillmentFlag;
 @end
 
 @implementation GIMenuViewController
-@synthesize menu;
+@synthesize menu, fulfillmentFlag;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -30,16 +30,21 @@
     
     
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath: [NSIndexPath indexPathForRow:1 inSection:0]];
+    [fulfillmentFlag removeFromSuperview];
     
-    UILabel *fulfillmentFlag = [[UILabel alloc] initWithFrame:CGRectMake(150.0, 6.5, 30.0, 30.0)];
+    fulfillmentFlag = [[UILabel alloc] initWithFrame:CGRectMake(150.0, 6.5, 30.0, 30.0)];
 //    fulfillmentFlag.layer.borderColor = [UIColor blueColor].CGColor;
     [fulfillmentFlag setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
     fulfillmentFlag.layer.borderWidth = 0.5;
-    [cell addSubview:fulfillmentFlag];
+
     fulfillmentFlag.textAlignment = NSTextAlignmentCenter;
     fulfillmentFlag.textColor = [UIColor whiteColor];
     
     fulfillmentFlag.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"fulfillments"];
+    
+    if([[[NSUserDefaults standardUserDefaults] stringForKey:@"fulfillments"] intValue] > 0 ) {
+        [cell addSubview:fulfillmentFlag];
+    }
 }
 
 //- (void)reloadRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation {
@@ -50,6 +55,8 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     NSLog(@"viewWillAppear");
+    
+    [self.tableView setBackgroundColor:[self colorWithHexString:@"E38D6F"]];
 }
 - (void)viewDidLoad
 {
@@ -67,7 +74,51 @@
     self.slidingViewController.underLeftWidthLayout = ECFullWidth;
     
     [self.tableView setContentInset:UIEdgeInsetsMake(40,0,0,0)];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
+}
 
+- (void)applicationWillEnterForeground:(NSNotification *)notification {
+    NSLog(@"APPLICATION WILL ENTER FOREGROUND FROM MENU VIEW");
+    [fulfillmentFlag removeFromSuperview];
+    //Create http request string
+    NSString *urlPost = [NSString stringWithFormat:@"%@getNotificationFlags/%@", GOOSIIAPI, [[NSUserDefaults standardUserDefaults] stringForKey:@"userId"]];
+    NSLog(@"Create User urlstring %@", urlPost);
+    
+    NSURL *url = [NSURL URLWithString:urlPost];
+    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+    
+    NSURLResponse* response = nil;
+    NSError *error = nil;
+    NSData* data = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
+    
+    if(!error) {
+        // your data or an error will be ready here
+        NSString *fulfillmentTotalString = [[NSString alloc] initWithData:data
+                                                 encoding:NSUTF8StringEncoding];
+        
+        NSLog(@"ReceivedData %@", fulfillmentTotalString);
+        [[NSUserDefaults standardUserDefaults]setObject:fulfillmentTotalString forKey:@"fulfillments"];
+        
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath: [NSIndexPath indexPathForRow:1 inSection:0]];
+        
+        fulfillmentFlag = [[UILabel alloc] initWithFrame:CGRectMake(150.0, 6.5, 30.0, 30.0)];
+        //    fulfillmentFlag.layer.borderColor = [UIColor blueColor].CGColor;
+        [fulfillmentFlag setBackgroundColor:[self colorWithHexString:@"C63D0F"]];
+        fulfillmentFlag.layer.borderWidth = 0.5;
+        
+        fulfillmentFlag.textAlignment = NSTextAlignmentCenter;
+        fulfillmentFlag.textColor = [UIColor whiteColor];
+        
+        fulfillmentFlag.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"fulfillments"];
+        
+        if([[[NSUserDefaults standardUserDefaults] stringForKey:@"fulfillments"] intValue] > 0 ) {
+            [cell addSubview:fulfillmentFlag];
+        }
+        
+    } else {
+        NSLog(@"There was an error");
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -106,6 +157,7 @@
     }
     
     cell.textLabel.text = [NSString stringWithFormat:@"%@", [self.menu objectAtIndex:indexPath.row]];
+    [cell setBackgroundColor:[self colorWithHexString:@"E38D6F"]];
     // Configure the cell...
     
     return cell;

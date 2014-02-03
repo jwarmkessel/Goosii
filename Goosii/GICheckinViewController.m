@@ -35,10 +35,13 @@
 
 @property (nonatomic, strong) GINoEventsNearby *noEventsNearbyController;
 @property (nonatomic, strong) MKMapView *mapView;
+@property (nonatomic, strong) UIButton *customSlidingMenuButton;
+@property (nonatomic, strong) UILabel *slideMenuButtonNotificationLabel;
+
 @end
 
 @implementation GICheckinViewController
-@synthesize loadingMask, nearbyLocationsAry, locationManager, indicator, noEventsNearbyController, mapView, slidingMenuButton;
+@synthesize loadingMask, nearbyLocationsAry, locationManager, indicator, noEventsNearbyController, mapView, slidingMenuButton, customSlidingMenuButton, slideMenuButtonNotificationLabel;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -107,14 +110,21 @@
     
     /********/
     
+    customSlidingMenuButton = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage *image = [UIImage imageNamed:@"Slide.png"];
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithImage:image
-                                                                      style:UIBarButtonItemStyleBordered
-                                                                     target:self
-                                                                     action:@selector(revealMenu:)];
-    [self.navigationItem setLeftBarButtonItem:barButtonItem];
+    [customSlidingMenuButton setImage:image forState:UIControlStateNormal];
+    customSlidingMenuButton.frame = CGRectMake(0, 0, 18, 30);
+    
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:customSlidingMenuButton];
     
 
+    [customSlidingMenuButton addTarget:self action:@selector(revealMenu:) forControlEvents:UIControlEventTouchUpInside];
+//    barButtonItem = [[UIBarButtonItem alloc] initWithImage:image
+//                                                     style:UIBarButtonItemStyleBordered
+//                                                    target:self
+//                                                    action:@selector(revealMenu:)];
+    
+    [self.navigationItem setLeftBarButtonItem:barButtonItem];
 
 //    UIImage *addImage = [UIImage imageNamed:@"images/global/add"];
 //    UIButton *addButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -139,6 +149,16 @@
     [self.tableView addSubview:refreshControl];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
+    
+    self.slideMenuButtonNotificationLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, -10.0, 30, 30)];
+    self.slideMenuButtonNotificationLabel.text = [NSString stringWithFormat:@"0"];
+    [self.slideMenuButtonNotificationLabel setBackgroundColor:[self colorWithHexString:@"C63E0F"]];
+    self.slideMenuButtonNotificationLabel.font = [UIFont fontWithName:@"Trebuchet" size:5];
+    [self.slideMenuButtonNotificationLabel setTextColor:[UIColor whiteColor]];
+    self.slideMenuButtonNotificationLabel.textAlignment = NSTextAlignmentCenter;
+    [self.slideMenuButtonNotificationLabel setTag:15];
+    self.slideMenuButtonNotificationLabel.alpha = 0;
+    [self.navigationController.navigationBar addSubview:self.slideMenuButtonNotificationLabel];
     
 }
 
@@ -196,12 +216,27 @@
     [self.locationManager startUpdatingLocation];
 }
 
--(IBAction)revealMenu:(id)sender {
+-(void)revealMenu:(id)sender {
+
+    NSLog(@"Remove the notification from super view");
+    
+    //NSArray *subViews = [self.navigationController.view subviews];
+//    NSArray *subViews = [self.navigationController.navigationBar subviews];
+    
+//    for( id thing in subViews) {
+//        [thing removeFromSuperview];
+//    }
+    
+//    [[subViews firstObject] removeFromSuperview];
+//    UILabel *blah = (UILabel*)[self.navigationController.view viewWithTag:15];
+//    [blah removeFromSuperview];
     
     [self.slidingViewController anchorTopViewTo:ECRight animations:^{
         NSLog(@"Sliding");
+        [self.slideMenuButtonNotificationLabel removeFromSuperview];
     } onComplete:^{
-        NSLog(@"complete");
+        NSLog(@"Completed");
+        [self.slideMenuButtonNotificationLabel removeFromSuperview];
     }];
 }
 
@@ -219,14 +254,17 @@
 - (void)viewDidAppear:(BOOL)animated {
     
     [super viewDidAppear:animated];
+
     self.slidingViewController.panGesture.enabled = YES;
     self.navigationController.navigationBarHidden = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     NSLog(@"Check-in View Will Appear");
+    
     [super viewWillAppear:YES];
-
+    
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     //Start loading mask.
     self.loadingMask = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.loadingMask.backgroundColor = [UIColor blackColor];
@@ -658,6 +696,13 @@
                                        
                                        //Check fulfillments
                                        NSArray *fulfillments = [userObj objectForKey:@"fulfillments"];
+                                       
+                                       [[NSUserDefaults standardUserDefaults]setObject:[NSString stringWithFormat:@"%lu", (unsigned long)[fulfillments count]] forKey:@"fulfillments"];
+                                       
+                                       if([fulfillments count] > 1) {
+                                           self.slideMenuButtonNotificationLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)[fulfillments count]];
+                                           self.slideMenuButtonNotificationLabel.alpha = 1;
+                                       }
                                        
                                        NSString *isFulfillment = @"NO";
                                        for (id contest in fulfillments) {
