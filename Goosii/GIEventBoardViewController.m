@@ -141,8 +141,26 @@
     self.navigationController.navigationBar.translucent = YES;
     [self.navigationController.navigationBar setAlpha:0.9];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForegroundFromEventsView:) name:UIApplicationWillEnterForegroundNotification object:nil];
+
     //Set mapview delegate
     [self.mapView setDelegate:self];
+}
+
+- (void)applicationWillEnterForegroundFromEventsView:(NSNotification *)notification {
+    
+    NSLog(@"APPLICATION WILL ENTER FOREGROUND FROM Events View");
+
+    NSArray *viewControllerArray = [self.navigationController viewControllers];
+    NSLog(@"Nav controller array %lu", (unsigned long)[[self.navigationController viewControllers] count]);
+    int parentViewControllerIndex = [viewControllerArray count] - 1;
+
+    if([[self.navigationController.viewControllers objectAtIndex:(parentViewControllerIndex)] isKindOfClass:[GICheckinViewController class]]) {
+        GICheckinViewController *checkinViewController = (GICheckinViewController *) self.parentViewController;
+        checkinViewController.isEventsPageReopenedFromBackground = YES;
+    }
+    
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 -(void)refreshPropertyList:(id)sender {
@@ -298,6 +316,8 @@
             
         }
         GICheckinViewController *checkinViewController = [self.navigationController.viewControllers objectAtIndex:(parentViewControllerIndex)];
+        
+        checkinViewController.isEventsPageReopenedFromBackground = NO;
         
         [checkinViewController setInset];
         [checkinViewController.locationManager startUpdatingLocation];

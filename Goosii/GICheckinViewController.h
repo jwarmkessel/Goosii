@@ -16,5 +16,7 @@
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) UIButton *slidingMenuButton;
 
+@property (assign) BOOL isEventsPageReopenedFromBackground;
+
 - (void)setInset;
 @end

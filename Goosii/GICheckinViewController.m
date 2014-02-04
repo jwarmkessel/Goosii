@@ -41,7 +41,7 @@
 @end
 
 @implementation GICheckinViewController
-@synthesize loadingMask, nearbyLocationsAry, locationManager, indicator, noEventsNearbyController, mapView, slidingMenuButton, customSlidingMenuButton, slideMenuButtonNotificationLabel;
+@synthesize loadingMask, nearbyLocationsAry, locationManager, indicator, noEventsNearbyController, mapView, slidingMenuButton, customSlidingMenuButton, slideMenuButtonNotificationLabel, isEventsPageReopenedFromBackground;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -55,6 +55,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    isEventsPageReopenedFromBackground = NO;
     
     NSLog(@"Check-in viewDidLoad");
     self.slidingViewController.panGesture.enabled = NO;
@@ -148,6 +150,8 @@
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:refreshControl];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(slidingViewUnderLeftWillAppear:) name:ECSlidingViewUnderLeftWillAppear object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
     
     self.slideMenuButtonNotificationLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, -10.0, 30, 30)];
@@ -162,51 +166,15 @@
     
 }
 
+- (void)slidingViewUnderLeftWillAppear:(NSNotification *)notification {
+    [self.slideMenuButtonNotificationLabel removeFromSuperview];
+}
+
 - (void)applicationWillEnterForeground:(NSNotification *)notification {
     NSLog(@"APPLICATION WILL ENTER FOREGROUND FROM CHECKIN VIEW");
     
-    //Create http request string
-    NSString *urlPost = [NSString stringWithFormat:@"%@getUser/%@", GOOSIIAPI, [[NSUserDefaults standardUserDefaults] stringForKey:@"userId"]];
-    NSLog(@"Create User urlstring %@", urlPost);
-    
-    NSURL *url = [NSURL URLWithString:urlPost];
-    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-    
-    NSURLResponse* response = nil;
-    NSError *error = nil;
-    NSData* data = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
-    
-    if(!error) {
-        // your data or an error will be ready here
-        NSString* newStr = [[NSString alloc] initWithData:data
-                                                 encoding:NSUTF8StringEncoding];
-        
-        NSLog(@"ReceivedData %@", newStr);
-        [[NSUserDefaults standardUserDefaults]setObject:@"2" forKey:@"fulfillments"];
-        
-    } else {
-        NSLog(@"There was an error");
-    }
-
-    
-    //Start loading mask.
-    self.loadingMask = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.loadingMask.backgroundColor = [UIColor blackColor];
-    self.loadingMask.alpha = 0.5;
-    
-    [self.view addSubview:self.loadingMask];
-    [self.view bringSubviewToFront:self.loadingMask];
-    
-
-    
-    self.indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    indicator.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
-    indicator.center = self.view.center;
-    
-    [self.loadingMask addSubview:indicator];
-    [self.loadingMask bringSubviewToFront:indicator];
-    [indicator startAnimating];
-    
+    [self setLoadingMaskAndIndicator];
+    isEventsPageReopenedFromBackground = YES;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = TRUE;
 
     self.locationManager = [[CLLocationManager alloc] init];
@@ -214,6 +182,7 @@
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     self.locationManager.distanceFilter = 5;
     [self.locationManager startUpdatingLocation];
+
 }
 
 -(void)revealMenu:(id)sender {
@@ -265,6 +234,15 @@
     [super viewWillAppear:YES];
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
+    if(!isEventsPageReopenedFromBackground) {
+        NSLog(@"THE LOADING MASK IS BEING LOADED FROM VIEWWILLAPPEAR");
+        [self setLoadingMaskAndIndicator];
+        isEventsPageReopenedFromBackground = YES;
+    }
+}
+
+- (void)setLoadingMaskAndIndicator {
     //Start loading mask.
     self.loadingMask = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.loadingMask.backgroundColor = [UIColor blackColor];
@@ -273,12 +251,15 @@
     self.indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     indicator.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
     indicator.center = self.view.center;
-    [self.view addSubview:indicator];
+    
     [indicator bringSubviewToFront:self.view];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = TRUE;
     
-    [self.view addSubview:self.loadingMask];
-    [self.view addSubview:indicator];
+    
+    
+    
+    [[[UIApplication sharedApplication] keyWindow] addSubview:self.loadingMask];
+    [[[UIApplication sharedApplication] keyWindow] addSubview:indicator];
     
     [indicator startAnimating];
 }
@@ -436,7 +417,9 @@
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-
+    
+    [self.slideMenuButtonNotificationLabel removeFromSuperview];
+    
     NSLog(@"Calling rewardViewSegue");
     if ([[segue identifier] isEqualToString:@"rewardViewSegue"]) {
         
@@ -699,9 +682,12 @@
                                        
                                        [[NSUserDefaults standardUserDefaults]setObject:[NSString stringWithFormat:@"%lu", (unsigned long)[fulfillments count]] forKey:@"fulfillments"];
                                        
-                                       if([fulfillments count] > 1) {
-                                           self.slideMenuButtonNotificationLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)[fulfillments count]];
-                                           self.slideMenuButtonNotificationLabel.alpha = 1;
+                                       if([fulfillments count] > 0) {
+                                           
+                                           [UIView animateWithDuration:1.0 animations:^{
+                                               self.slideMenuButtonNotificationLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)[fulfillments count]];
+                                               self.slideMenuButtonNotificationLabel.alpha = 1;
+                                           }];
                                        }
                                        
                                        NSString *isFulfillment = @"NO";
