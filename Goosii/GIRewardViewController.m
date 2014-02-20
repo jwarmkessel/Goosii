@@ -10,6 +10,7 @@
 #import "GICompany.h"
 #import <QuartzCore/QuartzCore.h>
 #import "GIPlist.h"
+#import "GICheckinViewController.h"
 
 @interface GIRewardViewController ()
 @property (nonatomic, strong)UIButton *saveForLaterBtn;
@@ -124,7 +125,21 @@
 }
 
 - (void)saveForLaterBtnHandler:sender {
-    [self.navigationController popToRootViewControllerAnimated:YES];    
+    // pop to root view controller
+    NSArray *viewControllerArray = [self.navigationController viewControllers];
+    NSLog(@"Nav controller array %lu", (unsigned long)[[self.navigationController viewControllers] count]);
+    int parentViewControllerIndex = [viewControllerArray count] - 2;
+    
+    if([[self.navigationController.viewControllers objectAtIndex:(parentViewControllerIndex)] isKindOfClass:[GICheckinViewController class]]) {
+        GICheckinViewController *checkinViewController = [self.navigationController.viewControllers objectAtIndex:(parentViewControllerIndex)];
+        
+        checkinViewController.isEventsPageReopenedFromBackground = NO;
+        
+        [checkinViewController setInset];
+        [checkinViewController.locationManager startUpdatingLocation];
+        
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{

@@ -180,7 +180,7 @@
                         <outlet property="view" destination="VwC-dL-50g" id="e3U-Qy-0xT"/>
                         <segue destination="68Q-h0-bku" kind="push" identifier="fulfillmentViewSegue" id="V9X-fL-NRd"/>
                         <segue destination="mwn-UX-0kU" kind="push" identifier="rewardViewSegue" id="pz8-aJ-UFd"/>
-                        <segue destination="lRG-hr-8DZ" kind="push" identifier="eventDrillDownViewSegue" id="VJY-Ro-THa"/>
+                        <segue destination="Wnt-BP-x8N" kind="push" identifier="eventDrillDownViewSegue" id="zxw-dR-Uul"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pRg-Ba-iEq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -461,7 +461,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="V9X-fL-NRd"/>
         <segue reference="pz8-aJ-UFd"/>
-        <segue reference="VJY-Ro-THa"/>
         <segue reference="D0o-4r-Ssu"/>
     </inferredMetricsTieBreakers>
 </document>

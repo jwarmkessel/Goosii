@@ -65,9 +65,9 @@
                                                        style:UIBarButtonItemStyleBordered
                                                       target:self
                                                       action:@selector(handleBack:)];
+
     self.navigationItem.leftBarButtonItem = backButton;
 
-    
     //TODO Not sure this is necessary
     [self.tableView setDelegate:self];
     

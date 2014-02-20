@@ -58,6 +58,9 @@ BOOL isTransformed = 0;
     
     [super viewDidLoad];
     
+    //Set the CALayer animation delegate
+    [UIView setAnimationDelegate:self];
+    
     //I need to set these items because company doesn't get allocated to memory until this point for some reason.
     _backgroundImageView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
@@ -302,9 +305,10 @@ BOOL isTransformed = 0;
     
     self.participationLbl = [[UILabel alloc] initWithFrame:CGRectMake(localsLbl.frame.origin.x + 15, localsLbl.frame.origin.y + 70, progressBarWidth, progressBarThickness)];
     
-    float participationNum = [@"0" floatValue] * 100;
+    float participationNum = [self.company.participationPercentage floatValue] * 100;
     
     self.participationLbl.text = [NSString stringWithFormat:@"%i%% Participation", (int) participationNum];
+    NSLog(@"The Participation Label Text %@", self.participationLbl.text);
     [self.participationLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:13.0f]];
     self.participationLbl.textColor = [UIColor whiteColor];
     self.participationLbl.backgroundColor = [UIColor clearColor];
@@ -328,7 +332,7 @@ BOOL isTransformed = 0;
         
         float partWidth = [self.company.participationPercentage floatValue] * progressBarWidth;
         NSLog(@"The calculation %f", partWidth);
-        self.participationBar.frame = CGRectMake(localsLbl.frame.origin.x + 10, localsLbl.frame.origin.y + 70, partWidth, progressBarThickness);
+        self.participationBar.layer.frame = CGRectMake(localsLbl.frame.origin.x + 10, localsLbl.frame.origin.y + 70, partWidth, progressBarThickness);
         
     } completion:^(BOOL finished) {
         NSLog(@"done");
@@ -894,34 +898,36 @@ BOOL isTransformed = 0;
     self.company.participationPercentage = [NSString stringWithFormat:@"%f", partPercentage];
     float participationNum = [self.company.participationPercentage floatValue] * 100;
     self.participationLbl.text = [NSString stringWithFormat:@"%i%% Participation", (int) participationNum];
-    
+    NSLog(@"The Participation Label Text %@", self.participationLbl.text);
     float partWidth = [self.company.participationPercentage floatValue] * 280.0;
     NSLog(@"The percentage %f and cell width %f", [self.company.participationPercentage floatValue], 300.0f);
     NSLog(@"The calculation %f", partWidth);
     
     NSLog(@"The participation bar %f, %f, %f, %f", self.participationBar.layer.frame.origin.x, self.participationBar.layer.frame.origin.y, self.participationBar.layer.frame.size.width, self.participationBar.layer.frame.size.height);
     
-    CGRect newRect = CGRectMake(self.participationBar.frame.origin.x, self.participationBar.frame.origin.y, partWidth, 50.0);
-    [self.participationBar removeFromSuperview];
+    float newPartWidth = [self.company.participationPercentage floatValue] * 300;
+    NSLog(@"The calculation %f", newPartWidth);
     
-    self.participationBar = [[GIProgressBar alloc] initWithFrame:newRect];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        //TODO How do reload the participation progress bar~
-        //        [self.tableView reloadData];
-        //Animate the progress bars to juic-ify this app!
-        [UIView animateWithDuration:1 animations:^{
-            
-            float partWidth = [self.company.participationPercentage floatValue] * 320;
-            NSLog(@"The calculation %f", partWidth);
-            self.participationBar.layer.frame = CGRectMake(0 + 10, 30, partWidth, 50);
-            
-//            [self.eventScrollView setNeedsDisplay];
-            
-        } completion:^(BOOL finished) {
-            NSLog(@"done");
-        }];
-    });
+    float something = [self.company.participationPercentage floatValue] * 300;
+    NSLog(@"The calculation %f", something);
+
+    //Animate the progress bars to juic-ify this app!
+    [UIView animateWithDuration:1 animations:^{
+        
+        float partWidth = [self.company.participationPercentage floatValue] * 300;
+        NSLog(@"The calculation %f", partWidth);
+        
+        self.participationBar.layer.frame = CGRectMake(self.participationBar.frame.origin.x, self.participationBar.frame.origin.y, something, 40);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //This is how you refresh an animation. http://stackoverflow.com/questions/5408234/how-to-force-a-view-to-render-itself
+            [self.participationBar setNeedsDisplay];
+            [[NSRunLoop currentRunLoop] runMode: NSDefaultRunLoopMode beforeDate: [NSDate date]];
+        });
+        
+    } completion:^(BOOL finished) {
+        NSLog(@"done");
+
+    }];
 }
 
 - (void)showNoEventsPopUp:(NSString*)newsURL{
@@ -951,5 +957,13 @@ BOOL isTransformed = 0;
     
     [self.view addSubview:webView];
     [self.view bringSubviewToFront:webView];
+}
+
+- (void) animationDidStart:(CAAnimation *)anim {
+    NSLog(@"animationDidStart");
+}
+
+- (void) animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
+    NSLog(@"animationDidStop");
 }
 @end

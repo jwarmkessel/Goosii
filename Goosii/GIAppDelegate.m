@@ -24,8 +24,7 @@
 
 @synthesize accountStore = _accountStore;
 @synthesize fbAccount = _fbAccount;
-@synthesize reachability = _reachability;
-@synthesize manager = _manager;
+@synthesize reach = _reach;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
@@ -44,6 +43,7 @@
     
     NSString *userId = [[NSUserDefaults standardUserDefaults] stringForKey:@"userId"];
     
+    NSLog(@"The user's id %@", userId);
     if(!userId) {
         
         UIView *loadingMask = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 568.0f)];
@@ -79,38 +79,10 @@
             }
             
         } else {
-            [self.manager.reachabilityManager startMonitoring];
+            //TODO rebound if there is no userID
         }
     }
-    
-    //Start AFNetworking Reachability.
-    self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:GOOSIIAPI]];
-    self.manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    NSOperationQueue *operationQueue = self.manager.operationQueue;
-    [self.manager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        switch (status) {
-            case AFNetworkReachabilityStatusNotReachable:
-                // we need to notify a delegete when internet conexion is lost.
-                // [delegate internetConexionLost];
-                NSLog(@"No Internet Conexion");
-                break;
-            {case AFNetworkReachabilityStatusReachableViaWiFi:
-                NSLog(@"WIFI");
-                
-                break;}
-            {case AFNetworkReachabilityStatusReachableViaWWAN:
-                NSLog(@"3G");
-                
-                break;}
-            default:
-                NSLog(@"Unkown network status");
-                [operationQueue setSuspended:YES];
-                break;
-        }
-    }];
-    
-    [self.manager.reachabilityManager startMonitoring];
-    
+
     //Set testflight device token.
     [TestFlight takeOff:@"bc01fdd6-8f88-4d53-927a-43a17ff87eee"];
     
@@ -253,7 +225,7 @@
             }
             
         } else {
-            [self.manager.reachabilityManager startMonitoring];
+            //TODO Figure out how to rebound here.
         }
     }
 }

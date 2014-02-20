@@ -333,8 +333,6 @@
              completion:^(BOOL finished) {
                  [self.noEventsPopUpView removeFromSuperview];
              }];
-            
-            
         }
         
         [self.navigationController popViewControllerAnimated:YES];

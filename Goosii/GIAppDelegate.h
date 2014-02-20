@@ -19,8 +19,6 @@
 
 @property (strong, nonatomic) ACAccountStore *accountStore;
 @property (strong, nonatomic) ACAccount *fbAccount;
-@property (strong, nonatomic) Reachability* reachability;
-@property (strong, nonatomic) AFHTTPRequestOperationManager* manager;
-
+@property (strong, nonatomic) Reachability* reach;
 
 @end
