@@ -48,10 +48,7 @@ BOOL isTransformed = 0;
 
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-
-    
-    }
+}
 
 - (void)viewDidLoad
 {
@@ -78,20 +75,13 @@ BOOL isTransformed = 0;
     [self.imageMaskView setBackgroundColor:[UIColor blackColor]];
     [self.imageMaskView setAlpha:1];
     
-    //    self.blurView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 200, 320, 568)];
-    //    [self.view addSubview:self.blurView];
-    
     self.eventScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,0,320,400)];
     [self.eventScrollView setDelegate:self];
     [self.eventScrollView setBackgroundColor:[UIColor clearColor]];
     [self.eventScrollView setContentSize:CGSizeMake(320, 1000)];
     self.eventScrollView.frame = CGRectMake(0,0,320,568);
     
-    
     [self.view addSubview:_backgroundImageView];
-    //    [self.view bringSubviewToFront:_backgroundImageView];
-    //    [self.view bringSubviewToFront:self.imageMaskView];
-    //    [self.view bringSubviewToFront:self.blurView];
     [self.view addSubview:self.eventScrollView];
     [self.view bringSubviewToFront:self.eventScrollView];
     
@@ -118,13 +108,6 @@ BOOL isTransformed = 0;
   
     }
     
-//    self.navigationController.navigationBar.layer.shadowColor = [[UIColor blackColor] CGColor];
-//    self.navigationController.navigationBar.layer.shadowOffset = CGSizeMake(1.0f, 1.0f);
-//    self.navigationController.navigationBar.layer.shadowRadius = 3.0f;
-//    
-//  
-//    self.navigationController.navigationBar.translucent = NO;
-//    [self.navigationController.navigationBar setAlpha:1];
     self.navigationController.navigationBar.translucent = YES;
     
     NSShadow *shadow = [[NSShadow alloc] init];
@@ -135,27 +118,16 @@ BOOL isTransformed = 0;
                                                            shadow, NSShadowAttributeName,
                                                            [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
     
-//    self.eventScrollView.bounces = NO;
-    
-    
-
     //Override the back button.
     self.backButton = [[UIBarButtonItem alloc] initWithTitle:@"Checkin"
                                                        style:UIBarButtonItemStyleBordered
                                                       target:self
                                                       action:@selector(handleBack:)];
-    
-    
-    
-    
-    
 
     self.navigationItem.leftBarButtonItem = self.backButton;
 
-
     UILabel *totalParticipatingContainer = [[UILabel alloc] initWithFrame:CGRectMake(0.000000, 63.000000, 320.000000, 60.000000)];
     [totalParticipatingContainer setBackgroundColor:[self colorWithHexString:@"FDF3E7"]];
-//    [totalParticipatingContainer setAlpha:0.8];
     [self.eventScrollView addSubview: totalParticipatingContainer];
     
     NSLog(@"First Background Tag 2 %f, %f, %f, %f", totalParticipatingContainer.frame.origin.x, totalParticipatingContainer.frame.origin.y, totalParticipatingContainer.frame.size.width, totalParticipatingContainer.frame.size.height );
@@ -176,11 +148,6 @@ BOOL isTransformed = 0;
     localsTotalLbl.layer.shadowOpacity = 0.5;
     
     [self.eventScrollView addSubview:localsTotalLbl];
-    
-    
-    
-    
-    
 
     //Set the reward image but hide it first.
     self.rewardImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.000000, 123.000000, 320.000000, 178.000000)];
@@ -222,33 +189,44 @@ BOOL isTransformed = 0;
     
     [self.eventScrollView addSubview:_companyNameLbl];
     
-    
-    UISwipeGestureRecognizer * SwipeLeft=[[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeLeft:)];
-    [SwipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
-    [_companyNameLbl setUserInteractionEnabled:YES];
-    [_companyNameLbl addGestureRecognizer:SwipeLeft];
-    
-//    UISwipeGestureRecognizer * SwipeRight=[[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeRight:)];
-//    [SwipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
+//    UISwipeGestureRecognizer * SwipeLeft=[[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeLeft:)];
+//    [SwipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
 //    [_companyNameLbl setUserInteractionEnabled:YES];
-//    [_companyNameLbl addGestureRecognizer:SwipeRight];
-    
+//    [_companyNameLbl addGestureRecognizer:SwipeLeft];
     
     UILabel *localsLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.000000, 395.000000, 320.000000, 120.000000)];
     [localsLbl setBackgroundColor:[self colorWithHexString:@"FDF3E7"]];
     [localsLbl setAlpha:0.8];
     [self.eventScrollView addSubview: localsLbl];
     NSLog(@"First Background Tag 2 %f, %f, %f, %f", localsLbl.frame.origin.x, localsLbl.frame.origin.y, localsLbl.frame.size.width, localsLbl.frame.size.height );
-//    GICountingLabel *localsTotalLbl = [[GICountingLabel alloc] initWithFrame:CGRectMake(localsLbl.frame.origin.x, localsLbl.frame.origin    .y, localsLbl.frame.size.width, (localsLbl.frame.size.height/2))];
-//    localsTotalLbl.format = @"%d Participating";
-//    localsTotalLbl.method = UILabelCountingMethodLinear;
-//    [localsTotalLbl countFrom:0 to:[self.company.totalParticipants floatValue] withDuration:3.0f];
-//
-//    localsTotalLbl.textAlignment = NSTextAlignmentLeft;
-//    [localsTotalLbl setFont:[UIFont fontWithName:@"AppleSDGothicNeo-medium" size:40]];
-//    localsTotalLbl.textColor = [self colorWithHexString:@"3B3738"];
-//    
-//    [self.eventScrollView addSubview:localsTotalLbl];
+    
+    UIButton *followButton = [[UIButton alloc] initWithFrame:CGRectMake(210.0f, 10.0f, 100.0f, 50.0f)];
+    NSString *followText;
+    if([self.company.isFollowing isEqualToString:@"YES"]) {
+        followText = @"Following";
+        followButton.backgroundColor = [self colorWithHexString:@"C63D0F"];
+    } else {
+        followText = @"Follow";
+        followButton.backgroundColor = [self colorWithHexString:@"0776A0"];
+    }
+    
+    [followButton setTitle:followText forState:UIControlStateNormal];
+    [followButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
+    followButton.titleLabel.textColor = [UIColor whiteColor];
+    
+    [followButton addTarget:self
+                     action:@selector(setFollowCompanyButtonHandler)
+           forControlEvents:UIControlEventTouchUpInside];
+    
+
+    [self.rewardImageView setUserInteractionEnabled:YES];
+    [followButton setUserInteractionEnabled:YES];
+
+    [self.rewardImageView addSubview:followButton];
+    
+    
+    
+    
     
     /***********************************************/
     //Logic for the TIME Progress Bar
@@ -859,6 +837,11 @@ BOOL isTransformed = 0;
 
 - (NSString *)permanentText {
     return @""; //The user will not be able to modify this text.
+}
+
+- (void)setFollowCompanyButtonHandler {
+    NSLog(@"Follow this company");
+    
 }
 
 - (void) updateParticipationPercentage {
