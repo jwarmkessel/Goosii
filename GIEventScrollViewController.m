@@ -33,15 +33,17 @@
 @property (nonatomic, strong) UIBarButtonItem *backButton;
 @property (nonatomic, strong) UILabel *companyNameLbl;
 @property (nonatomic, strong) UILabel *companyLbl;
-
+@property (nonatomic, strong) UIButton *followButton;
+@property (nonatomic, strong) GICountingLabel *localsTotalLbl;
 @property (nonatomic, strong) GIRewardEmployeeController *rewardEmployeeView;
 
 @property (nonatomic, strong) UIImageView *rewardImageView;
+@property (nonatomic, strong) UISwitch *notificationSwitch;
 
 @end
 
 @implementation GIEventScrollViewController
-@synthesize eventScrollView, timeDurationBar, participationLbl, participateTitleLbl, toggle, blinkTimer, company, webView, rewardEmployeeView;
+@synthesize eventScrollView, timeDurationBar, participationLbl, participateTitleLbl, toggle, blinkTimer, company, webView, rewardEmployeeView, followButton, localsTotalLbl, notificationSwitch;
 
 BOOL isEvent = 1;
 BOOL isTransformed = 0;
@@ -132,7 +134,7 @@ BOOL isTransformed = 0;
     
     NSLog(@"First Background Tag 2 %f, %f, %f, %f", totalParticipatingContainer.frame.origin.x, totalParticipatingContainer.frame.origin.y, totalParticipatingContainer.frame.size.width, totalParticipatingContainer.frame.size.height );
     
-    GICountingLabel *localsTotalLbl = [[GICountingLabel alloc] initWithFrame:CGRectMake(totalParticipatingContainer.frame.origin.x, totalParticipatingContainer.frame.origin.y, totalParticipatingContainer.frame.size.width, 80.0f)];
+    localsTotalLbl = [[GICountingLabel alloc] initWithFrame:CGRectMake(totalParticipatingContainer.frame.origin.x, totalParticipatingContainer.frame.origin.y, totalParticipatingContainer.frame.size.width, 80.0f)];
     
     localsTotalLbl.format = @"%d Participating";
     localsTotalLbl.method = UILabelCountingMethodLinear;
@@ -189,18 +191,14 @@ BOOL isTransformed = 0;
     
     [self.eventScrollView addSubview:_companyNameLbl];
     
-//    UISwipeGestureRecognizer * SwipeLeft=[[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeLeft:)];
-//    [SwipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
-//    [_companyNameLbl setUserInteractionEnabled:YES];
-//    [_companyNameLbl addGestureRecognizer:SwipeLeft];
-    
-    UILabel *localsLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.000000, 395.000000, 320.000000, 120.000000)];
+    /*** This is the background for the progress bars ***/
+    UILabel *localsLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.000000, 395.000000, 320.000000, 160.000000)];
     [localsLbl setBackgroundColor:[self colorWithHexString:@"FDF3E7"]];
     [localsLbl setAlpha:0.8];
     [self.eventScrollView addSubview: localsLbl];
     NSLog(@"First Background Tag 2 %f, %f, %f, %f", localsLbl.frame.origin.x, localsLbl.frame.origin.y, localsLbl.frame.size.width, localsLbl.frame.size.height );
     
-    UIButton *followButton = [[UIButton alloc] initWithFrame:CGRectMake(210.0f, 10.0f, 100.0f, 50.0f)];
+    followButton = [[UIButton alloc] initWithFrame:CGRectMake(210.0f, 10.0f, 100.0f, 30.0f)];
     NSString *followText;
     if([self.company.isFollowing isEqualToString:@"YES"]) {
         followText = @"Following";
@@ -221,12 +219,8 @@ BOOL isTransformed = 0;
 
     [self.rewardImageView setUserInteractionEnabled:YES];
     [followButton setUserInteractionEnabled:YES];
-
+    followButton.layer.cornerRadius = 5;
     [self.rewardImageView addSubview:followButton];
-    
-    
-    
-    
     
     /***********************************************/
     //Logic for the TIME Progress Bar
@@ -275,13 +269,29 @@ BOOL isTransformed = 0;
     } completion:^(BOOL finished) {
         NSLog(@"done");
     }];
+    
+    CGRect notificationSwitchRect = CGRectMake(localsLbl.frame.origin.x + 10, localsLbl.frame.origin.y + 80, progressBarWidth, progressBarThickness);
 
+    notificationSwitch = [[UISwitch alloc] initWithFrame:notificationSwitchRect];
+    [notificationSwitch addTarget:self
+                           action: @selector(setNotifications)
+                 forControlEvents:UIControlEventValueChanged];
+    
+    if([self.company.isNotifiable isEqualToString:@"YES"]) {
+        [notificationSwitch setOn:YES];
+    } else {
+        [notificationSwitch setOn:NO];
+    }
+    
+    // Set the desired frame location of onoff here
+    [self.eventScrollView addSubview:notificationSwitch];
+    
     
     /***********************************************/
     //Logic for the Participation Progress
     /***********************************************/
     
-    self.participationLbl = [[UILabel alloc] initWithFrame:CGRectMake(localsLbl.frame.origin.x + 15, localsLbl.frame.origin.y + 70, progressBarWidth, progressBarThickness)];
+    self.participationLbl = [[UILabel alloc] initWithFrame:CGRectMake(localsLbl.frame.origin.x + 15, localsLbl.frame.origin.y + 120, progressBarWidth, progressBarThickness)];
     
     float participationNum = [self.company.participationPercentage floatValue] * 100;
     
@@ -292,12 +302,12 @@ BOOL isTransformed = 0;
     self.participationLbl.backgroundColor = [UIColor clearColor];
     
     //Progress bar elements for participation rate and the duration of the contest.
-    CGRect participationBarBackgroundRect = CGRectMake(localsLbl.frame.origin.x + 10, localsLbl.frame.origin.y + 70, progressBarWidth, progressBarThickness);
+    CGRect participationBarBackgroundRect = CGRectMake(localsLbl.frame.origin.x + 10, localsLbl.frame.origin.y + 120, progressBarWidth, progressBarThickness);
     
     GIProgressBar *participationBarBackground = [[GIProgressBar alloc] initWithFrame:participationBarBackgroundRect hexStringColor:@"3B3738"];
     [participationBarBackground setAlpha:0.6];
     
-    CGRect participationBarRect = CGRectMake(localsLbl.frame.origin.x + 10, localsLbl.frame.origin.y + 70, 0, progressBarThickness);
+    CGRect participationBarRect = CGRectMake(localsLbl.frame.origin.x + 10, localsLbl.frame.origin.y + 120, 0, progressBarThickness);
 
     self.participationBar = [[GIProgressBar alloc] initWithFrame:participationBarRect hexStringColor:@"2D5D28"];
     
@@ -310,7 +320,7 @@ BOOL isTransformed = 0;
         
         float partWidth = [self.company.participationPercentage floatValue] * progressBarWidth;
         NSLog(@"The calculation %f", partWidth);
-        self.participationBar.layer.frame = CGRectMake(localsLbl.frame.origin.x + 10, localsLbl.frame.origin.y + 70, partWidth, progressBarThickness);
+        self.participationBar.layer.frame = CGRectMake(localsLbl.frame.origin.x + 10, localsLbl.frame.origin.y + 120, partWidth, progressBarThickness);
         
     } completion:^(BOOL finished) {
         NSLog(@"done");
@@ -318,7 +328,7 @@ BOOL isTransformed = 0;
 
     
     /***********************************************/
-    self.participateTitleLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, localsLbl.frame.origin.y + 130, 320.0f, progressBarThickness)];
+    self.participateTitleLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, localsLbl.frame.origin.y + 160, 320.0f, progressBarThickness)];
     
     [participateTitleLbl setBackgroundColor:[self colorWithHexString:@"000000"]];
     participateTitleLbl.textAlignment = NSTextAlignmentCenter;
@@ -327,14 +337,12 @@ BOOL isTransformed = 0;
     [participateTitleLbl setFont:[UIFont fontWithName:@"TrebuchetMS-Bold" size:10.0f]];
     participateTitleLbl.textColor = [UIColor whiteColor];
 
-    UILabel *fulfillmentBackground = [[UILabel alloc] initWithFrame:CGRectMake(0.000000, 605.000000, 280.000000, 150.000000)];
+    UILabel *fulfillmentBackground = [[UILabel alloc] initWithFrame:CGRectMake(0.000000, 605.000000, 320.000000, 150.000000)];
     [fulfillmentBackground setBackgroundColor:[self colorWithHexString:@"7E8F7C"]];
     [fulfillmentBackground setAlpha:0.8];
     [self.eventScrollView addSubview: fulfillmentBackground];
 
-    
     //FACEBOOK
-    
     CGRect facebookBtnRect = CGRectMake(localsLbl.frame.origin.x + 10, localsLbl.frame.origin.y + 220, progressBarWidth, progressBarThickness);
     UIButton *facebookBtn = [[UIButton alloc] initWithFrame:facebookBtnRect];
     [facebookBtn setBackgroundColor:[self colorWithHexString:@"3b5999"]];
@@ -357,7 +365,6 @@ BOOL isTransformed = 0;
           forControlEvents:UIControlEventTouchUpInside];
     
     //TWITTER
-    
     CGRect twitterBtnRect = CGRectMake(localsLbl.frame.origin.x + 10, localsLbl.frame.origin.y + 280, progressBarWidth, progressBarThickness);
     UIButton *twitterBtn = [[UIButton alloc] initWithFrame:twitterBtnRect];
     [twitterBtn setBackgroundColor:[self colorWithHexString:@"1dcaff"]];
@@ -377,40 +384,6 @@ BOOL isTransformed = 0;
     [twitterBtn addTarget:self
                    action:@selector(twitterParticipationBtnHandler)
          forControlEvents:UIControlEventTouchUpInside];
-    
-    //Enter the user into the contest if they haven't already.
-//    GIPlist *plist = [[GIPlist alloc] initWithNamespace:@"Goosii"];
-//    
-//    NSString *enterEventUrlString = [NSString stringWithFormat:@"%@enterContest/%@/%@", GOOSIIAPI,[plist objectForKey:@"userId"], self.company.companyId];
-//    
-//    NSURL *enterEventURL = [NSURL URLWithString:enterEventUrlString];
-//    NSURLRequest *enterEventRequest = [NSURLRequest requestWithURL:enterEventURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-//    
-//    [NSURLConnection sendAsynchronousRequest:enterEventRequest
-//                                       queue:[NSOperationQueue mainQueue]
-//                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-//                               
-//                               // your data or an error will be ready here
-//                               NSString* newStr = [[NSString alloc] initWithData:data
-//                                                                        encoding:NSUTF8StringEncoding];
-//                               NSLog(@"response: %@", newStr);
-//                               
-//                               //If this is the first time checking in.
-//                               if([newStr isEqualToString:@"YES"]) {
-//                                   
-//                                   rewardEmployeeView = [[GIRewardEmployeeController alloc] initWithNibName:@"GIRewardEmployeeController" bundle:nil];
-//                                   [self addChildViewController:rewardEmployeeView];
-//                                   
-//                                   if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
-//                                       [self.rewardEmployeeView.view setCenter:CGPointMake(self.rewardEmployeeView.view.center.x, (self.rewardEmployeeView.view.center.y - 20.0))];
-//                                   }
-//                                   
-//                                   [self.eventScrollView addSubview:rewardEmployeeView.view];
-//                                   
-//                                   UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Skip" style:UIBarButtonItemStylePlain target:self action:@selector(refreshPropertyList:)];
-//                                   self.navigationItem.rightBarButtonItem = anotherButton;
-//                               }
-//                           }];
 }
 
 - (void)swipeLeft:(UISwipeGestureRecognizer *)swipe {
@@ -466,46 +439,7 @@ BOOL isTransformed = 0;
     }];
 }
 
-- (void)swipeRight:(UISwipeGestureRecognizer *)swipe {
-    
-    NSLog(@"swipeRight");
-    NSLog(@"x %f y %f", _companyNameLbl.layer.anchorPoint.x, _companyNameLbl.layer.anchorPoint.y);
-    NSLog(@"z %f", _companyNameLbl.layer.anchorPointZ);
 
-    
-    [UIView animateWithDuration:1.0 animations:^{
-        
-        if(swipe.direction == UISwipeGestureRecognizerDirectionLeft) {
-            NSLog(@"Swipe Gesture Left RIIIIIGHT");
-            if(_companyNameLbl.layer.anchorPoint.x == 0) {
-                NSLog(@"swipe --> 0");
-                _companyLbl.layer.transform = CATransform3DMakeRotation((0), 0.0f, 1.0f, 0.0f);
-                _companyNameLbl.layer.transform = CATransform3DMakeRotation((0), 0.0f, 1.0f, 0.0f);
-                
-            }else {
-                NSLog(@"swipe --> 5");
-                _companyLbl.layer.transform = CATransform3DMakeRotation(M_PI, 0.0f, 1.0f, 0.0f);
-                _companyNameLbl.layer.transform = CATransform3DMakeRotation(M_PI, 0.0f, 1.0f, 0.0f);
-            }
-        } else if(swipe.direction == UISwipeGestureRecognizerDirectionRight) {
-            NSLog(@"Swipe Gesture Right");
-            if(_companyNameLbl.layer.anchorPoint.x == 0) {
-                NSLog(@"swipe --> 0");
-                _companyLbl.layer.transform = CATransform3DMakeRotation((0), 0.0f, 1.0f, 0.0f);
-                _companyNameLbl.layer.transform = CATransform3DMakeRotation((0), 0.0f, 1.0f, 0.0f);
-                
-            }else {
-                NSLog(@"swipe --> 5");
-                _companyLbl.layer.transform = CATransform3DMakeRotation(M_PI, 0.0f, 1.0f, 0.0f);
-                _companyNameLbl.layer.transform = CATransform3DMakeRotation(M_PI, 0.0f, 1.0f, 0.0f);
-            }
-        }
-
-        
-    } completion:^(BOOL finished) {
-        NSLog(@"Complete");
-    }];
-}
 -(void)viewDidAppear:(BOOL)animated {
     NSLog(@"viewDidAppear");
     [super viewDidAppear:animated];
@@ -842,6 +776,82 @@ BOOL isTransformed = 0;
 - (void)setFollowCompanyButtonHandler {
     NSLog(@"Follow this company");
     
+    [followButton setUserInteractionEnabled:NO];
+    NSString *userId = [[NSUserDefaults standardUserDefaults] stringForKey:@"userId"];
+    
+    if([self.company.isFollowing isEqualToString:@"NO"]) {
+
+        NSString *enterEventUrlString = [NSString stringWithFormat:@"%@enterContest/%@/%@", GOOSIIAPI,userId, self.company.companyId];
+
+        NSURL *enterEventURL = [NSURL URLWithString:enterEventUrlString];
+        NSURLRequest *enterEventRequest = [NSURLRequest requestWithURL:enterEventURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+
+        [NSURLConnection sendAsynchronousRequest:enterEventRequest
+                                           queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+
+                                   // your data or an error will be ready here
+                                   NSString* newStr = [[NSString alloc] initWithData:data
+                                                                            encoding:NSUTF8StringEncoding];
+                                   NSLog(@"response: %@", newStr);
+
+                                   //If this is the first time checking in.
+//                                   if([newStr isEqualToString:@"YES"]) {
+//
+//                                       rewardEmployeeView = [[GIRewardEmployeeController alloc] initWithNibName:@"GIRewardEmployeeController" bundle:nil];
+//                                       [self addChildViewController:rewardEmployeeView];
+//
+//                                       if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+//                                           [self.rewardEmployeeView.view setCenter:CGPointMake(self.rewardEmployeeView.view.center.x, (self.rewardEmployeeView.view.center.y - 20.0))];
+//                                       }
+//
+//                                       [self.eventScrollView addSubview:rewardEmployeeView.view];
+//
+//                                       UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Skip" style:UIBarButtonItemStylePlain target:self action:@selector(refreshPropertyList:)];
+//                                       self.navigationItem.rightBarButtonItem = anotherButton;
+//                                   }
+                                   [followButton setTitle:@"Following" forState:UIControlStateNormal];
+                                   followButton.backgroundColor = [self colorWithHexString:@"C63D0F"];
+                                   self.company.isFollowing = @"YES";
+                                   
+                                   int totalParticipansInt = [self.company.totalParticipants intValue];
+                                   totalParticipansInt++;
+                                   self.company.totalParticipants = [NSString stringWithFormat:@"%d", totalParticipansInt];
+                                   [localsTotalLbl countFrom:[self.company.totalParticipants floatValue] to:totalParticipansInt withDuration:0.5f];
+                                   
+                                   [followButton setUserInteractionEnabled:YES];
+                               }];
+    } else {
+        NSString *enterEventUrlString = [NSString stringWithFormat:@"%@unFollowCompany/%@/%@", GOOSIIAPI,userId, self.company.companyId];
+        
+        NSURL *enterEventURL = [NSURL URLWithString:enterEventUrlString];
+        NSURLRequest *enterEventRequest = [NSURLRequest requestWithURL:enterEventURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+        
+        [NSURLConnection sendAsynchronousRequest:enterEventRequest
+                                           queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                                   
+                                   // your data or an error will be ready here
+                                   NSString* newStr = [[NSString alloc] initWithData:data
+                                                                            encoding:NSUTF8StringEncoding];
+                                   NSLog(@"response: %@", newStr);
+                                   
+                                   [followButton setTitle:@"Follow" forState:UIControlStateNormal];
+                                   followButton.backgroundColor = [self colorWithHexString:@"0776A0"];
+                                   self.company.isFollowing = @"NO";
+
+                                   int totalParticipansInt = [self.company.totalParticipants intValue];
+                                   totalParticipansInt--;
+                                   self.company.totalParticipants = [NSString stringWithFormat:@"%d", totalParticipansInt];
+                                   
+                                   [localsTotalLbl countFrom:[self.company.totalParticipants floatValue] to:totalParticipansInt withDuration:0.5f];
+                                   
+                                   [self.notificationSwitch setOn:NO animated:YES];
+                                   
+                                   [followButton setUserInteractionEnabled:YES];
+                               }];
+    }
+    
 }
 
 - (void) updateParticipationPercentage {
@@ -911,6 +921,48 @@ BOOL isTransformed = 0;
         NSLog(@"done");
 
     }];
+}
+
+- (void) setNotifications {
+    NSLog(@"notification settings have changed");
+
+    NSString *userId = [[NSUserDefaults standardUserDefaults] stringForKey:@"userId"];
+    if([self.company.isNotifiable isEqualToString:@"YES"]) {
+
+        NSString *enterEventUrlString = [NSString stringWithFormat:@"%@unSetNotifications/%@/%@", GOOSIIAPI,userId, self.company.companyId];
+        
+        NSURL *enterEventURL = [NSURL URLWithString:enterEventUrlString];
+        NSURLRequest *enterEventRequest = [NSURLRequest requestWithURL:enterEventURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+        
+        [NSURLConnection sendAsynchronousRequest:enterEventRequest
+                                           queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                                   
+                                   // your data or an error will be ready here
+                                   NSString* newStr = [[NSString alloc] initWithData:data
+                                                                            encoding:NSUTF8StringEncoding];
+                                   NSLog(@"response: %@", newStr);
+                                   
+                                   self.company.isNotifiable = @"NO";
+                               }];
+    } else {
+        NSString *enterEventUrlString = [NSString stringWithFormat:@"%@setNotifications/%@/%@", GOOSIIAPI,userId, self.company.companyId];
+        
+        NSURL *enterEventURL = [NSURL URLWithString:enterEventUrlString];
+        NSURLRequest *enterEventRequest = [NSURLRequest requestWithURL:enterEventURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+        
+        [NSURLConnection sendAsynchronousRequest:enterEventRequest
+                                           queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                                   
+                                   // your data or an error will be ready here
+                                   NSString* newStr = [[NSString alloc] initWithData:data
+                                                                            encoding:NSUTF8StringEncoding];
+                                   NSLog(@"response: %@", newStr);
+                                   
+                                   self.company.isNotifiable = @"YES";
+                               }];
+    }
 }
 
 - (void)showNoEventsPopUp:(NSString*)newsURL{

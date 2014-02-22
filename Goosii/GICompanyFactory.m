@@ -121,6 +121,8 @@
         float partPercentage = 0;
         float ttlParticipationCount = 0;
         
+        NSString *isNotifiable = @"NO";
+        
         NSArray *contests = [userObj objectForKey:@"contests"];
         
         for (id contest in contests) {
@@ -129,6 +131,19 @@
             NSString *companyId = [company objectForKey:@"_id"];
             
             if([contestCompanyId isEqualToString:companyId]) {
+                
+                //Check if notification is turned on
+                if([contest objectForKey:@"notification"] == nil) {
+                    isNotifiable = @"NO";
+                } else {
+                    float notification = [[contest objectForKey:@"notification"] floatValue];
+                    
+                    if(notification == 0.0f) {
+                        isNotifiable = @"NO";
+                    } else if(notification == 1.0f) {
+                        isNotifiable = @"YES";
+                    }
+                }
                 
                 if([contest objectForKey:@"participationCount"] == nil) {
                     ttlParticipationCount = 1;
@@ -242,7 +257,8 @@
                                                            distance:[NSString stringWithFormat:@"%.2f mi", distanceInMiles]
                                                             website:[event objectForKey:@"website"]
                                                             newsUrl:newsURLString
-                                                            following:isFollowing];
+                                                            following:isFollowing
+                                                           notifiable:isNotifiable];
             
             //Get the distance allowed by the server for checking into nearby companies.
             NSDictionary *distanceConfiguration = [superObject objectForKey:@"distanceConfiguration"];
@@ -275,7 +291,8 @@
                                                 participationPoints:[NSString stringWithFormat:@"%f", ttlParticipationCount]
                                                             website:[event objectForKey:@"website"]
                                                             newsUrl:newsURLString
-                                                            following:isFollowing];
+                                                            following:isFollowing
+                                                           notifiable:isNotifiable];
             
             NSLog(@"The count of companies as they are added %lu", (unsigned long)[self.companies count]);
             [self.companies addObject:companyObj];
@@ -299,6 +316,7 @@
         
         //NSLog(@"The Phone number %@", [company objectForKey:@"telephone"]);
         NSString *isFollowing = @"NO";
+
         int totalParticipantsNum = [participantsAry count];
         
         //Check if user is participating in this event and temporarily add 1 if not
@@ -350,6 +368,9 @@
         float partPercentage = 0;
         float ttlParticipationCount = 0;
         
+        //Check if notification is turned on
+        NSString *isNotifiable = @"NO";
+        
         NSArray *contests = [userObj objectForKey:@"contests"];
         
         for (id contest in contests) {
@@ -360,6 +381,19 @@
             NSString *companyId = [company objectForKey:@"_id"];
             
             if([contestCompanyId isEqualToString:companyId]) {
+                
+                //Check if notification is turned on
+                if([contest objectForKey:@"notification"] == nil) {
+                    isNotifiable = @"NO";
+                } else {
+                    float notification = [[contest objectForKey:@"notification"] floatValue];
+                    
+                    if(notification == 0.0f) {
+                        isNotifiable = @"NO";
+                    } else if(notification == 1.0f) {
+                        isNotifiable = @"YES";
+                    }
+                }
                 
                 NSLog(@"         %@ and %@", contestCompanyId, companyId);
                 
@@ -469,14 +503,13 @@
                                             participationPoints:[NSString stringWithFormat:@"%f", ttlParticipationCount]
                                                         website:[event objectForKey:@"website"]
                                                         newsUrl:newsURLString
-                                                      following:isFollowing];
+                                                      following:isFollowing
+                                                     notifiable:isNotifiable];
         
         NSLog(@"Adding company object");
         [self.companies addObject:companyObj];
         
     }
 }
-
-
 
 @end
